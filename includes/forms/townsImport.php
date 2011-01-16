@@ -15,8 +15,8 @@
             </select>
         </fieldset>
         <fieldset>
-        	<label for="file">Archivo a Importar:</label>
-            <input type="file" name="file" id="file" />
+        	<label for="datos">Archivo a Importar:</label>
+            <input type="file" name="datos" id="datos" />
             <p>El archivo debe estar en formato CSV (Valores Separados por Coma)</p>
         </fieldset>
     	<fieldset class="clear">

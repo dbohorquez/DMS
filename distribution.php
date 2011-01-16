@@ -5,9 +5,13 @@
 <?php if(isset($_POST['bt-edit'])) list($warning, $success) = editDistribution($_POST);?>
 <?php if(isset($_POST['bt-delete'])) list($warning, $success) = delete($_POST);?>
 			<h2>Distribución</h2>
+            <?php 
+			if(isSupervisor($_SESSION['dms_id'])){?>
 			<ul class="toolbar">
             	<li><a href="includes/forms/distributionsAdd.php" class="btn colorbox">Nueva Distribución</a></li>
             </ul>
+			<?php } ?>
+			
             <?php if($success != ''){ echo '<div class="success">' . $success . '</div>'; } ?>
 			<?php if($warning != ''){ echo '<div class="error">' . $warning . '</div>'; } ?>
             <table cellpadding="0" cellspacing="0"><thead>

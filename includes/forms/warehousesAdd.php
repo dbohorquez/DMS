@@ -1,3 +1,6 @@
+
+
+
 <div class="medium">
 	<h3>Agregar Bodega</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>

@@ -42,6 +42,71 @@ function getItemLocation($table,$id){
 	return $row;
 }
 
+function importTowns($data,$file){
+
+						if(is_uploaded_file($file['datos']['tmp_name'])){
+							$archivo = $file['datos']['name'];
+							$filetype = $file['datos']['type'];
+							$filesize = $file['datos']['size'];
+							if(!(($filetype == 'application/vnd.ms-excel' || $filetype == 'application/force-download') and ($filesize < 500000))){
+								$warning = "El archivo debe ser .csv y debe tener un tamaño menor a 500 KB";
+							}else{
+								if(move_uploaded_file($file['datos']['tmp_name'], 'upload/' . $archivo)){
+									chmod( 'upload/' . $archivo , 0777 ); 
+								
+								}
+								
+								$fp=fopen('upload/' .$archivo,"r") or die("Error al abrir el fichero");
+								$line = fgets( $fp, 2024 );
+								
+								
+								
+								while(!feof($fp))
+								{
+								$datos = array(name => $line, provinces_id =>$data['province']);
+								$line = fgets( $fp, 2024 );
+								$id = dbInsert("towns",$datos);
+								}
+								fclose($fp);
+							}
+						}
+						else
+						{
+							$warning = "No ha subido ningún archivo. Debe subir un archivo a importar.";
+							}
+	return array($warning, $success);
+}
+function isAdmin($user){
+	$query = "select * from users where id=$user and profile='Administrador'";
+	$nums_row=runQuery($query,2);
+	
+	if($nums_row>0)
+		return true;
+	else
+		return false;
+}
+
+function isSupervisor($user){
+	$query = "select * from users where id=$user and profile='Supervisor'";
+	$nums_row=runQuery($query,2);
+	
+	if($nums_row>0)
+		return true;
+	else
+		return false;
+}
+
+function isGestor($user){
+	$query = "select * from users where id=$user and profile='Gestor'";
+	$nums_row=runQuery($query,2);
+	
+	if($nums_row>0)
+		return true;
+	else
+		return false;
+}
+
+
 /* Warehouses 
 ============================================================ */
 function addWarehouse($data){	
@@ -280,21 +345,25 @@ function transferProducts ($data){
 function addKit($data){	
 	if($data['name'] != ""){
 		if(!exists("kits","name='$data[name]'")){
-			$datos = array(name => $data['name']);
-			$id = dbInsert("kits",$datos);
-			if($id != ''){
-				foreach($data as $key => $value){
-					if(substr($key,0,5) == 'hitem'){
-						$qtyname = 'citem' . substr($key,-7);
-						$qty = $data[$qtyname];
-						$idp = findRow('products','name',"'".$value."'",'id');
-						$datos = array(kits_id => $id, products_id =>$idp,quantity => $qty);
-						$idlist = dbInsert("kits_products",$datos);
+				if(validateExistenceKitProducts($data)){
+				$datos = array(name => $data['name']);
+				$id = dbInsert("kits",$datos);
+				if($id != ''){
+					foreach($data as $key => $value){
+						if(substr($key,0,5) == 'hitem'){
+							$qtyname = 'citem' . substr($key,-7);
+							$qty = $data[$qtyname];
+							$idp = findRow('products','name',"'".$value."'",'id');
+							$datos = array(kits_id => $id, products_id =>$idp,quantity => $qty);
+							$idlist = dbInsert("kits_products",$datos);
+						}
 					}
+					$success = "El kit fue agregado exitosamente.";
+				}else{
+					$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
 				}
-				$success = "El kit fue agregado exitosamente.";
 			}else{
-				$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
+				$warning ="Un kit debe tener por lo menos dos productos, por favor verifique."; 
 			}
 		}else{
 			$warning = "Ya existe un tipo de producto registrado con el nombre '$data[name]'.";
@@ -307,24 +376,29 @@ function addKit($data){
 
 function editKit($data){	
 	if($data['name'] != ""){
-		if((!exists("kits","name='$data[name]' ")) or (exists("kits","name='$data[name]'")==$data['id'])){										
-			$datos = array(name => $data['name']);
-			$id = dbUpdate("kits",$datos,"id= $data[id]");
-			if($id!=''){
-			$query = "delete from kits_products where kits_id=$data[id]";
-			$result = runQuery($query);	
-			foreach($data as $key => $value){
-				if(substr($key,0,5) == 'hitem'){
-					$qtyname = 'citem' . substr($key,-7);
-					$qty = $data[$qtyname];
-					$idp = findRow('products','name',"'".$value."'",'id');
-					$datos = array(kits_id => $data['id'], products_id =>$idp,quantity => $qty);
-					$idlist = dbInsert("kits_products",$datos);
+		if((!exists("kits","name='$data[name]' ")) or (exists("kits","name='$data[name]'")==$data['id'])){
+			if(validateExistenceKitProducts($data)){
+				$datos = array(name => $data['name']);
+				$id = dbUpdate("kits",$datos,"id= $data[id]");
+				if($id!=''){
+					$query = "delete from kits_products where kits_id=$data[id]";
+					$result = runQuery($query);	
+					foreach($data as $key => $value){
+						if(substr($key,0,5) == 'hitem'){
+							$qtyname = 'citem' . substr($key,-7);
+							$qty = $data[$qtyname];
+							$idp = findRow('products','name',"'".$value."'",'id');
+							$datos = array(kits_id => $data['id'], products_id =>$idp,quantity => $qty);
+							$idlist = dbInsert("kits_products",$datos);
+						}
+					}
+					$success = "El kit fue editado exitosamente.";
+				
+				}else{
+					$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
 				}
-			}
-			$success = "El kit fue editado exitosamente.";
 			}else{
-				$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
+				$warning ="Un kit debe tener por lo menos dos productos, por favor verifique."; 
 			}
 		}else{
 			$warning = "Ya existe un tipo de producto registrado con el nombre '$data[name]'.";
@@ -339,6 +413,24 @@ function getKitProducts($kit){
 	$query = "select p.*, pk.*, k.name kitName from kits k, kits_products pk, products p where k.id = pk.kits_id and pk.products_id = p.id and k.id = $kit group by p.id order by p.name asc";
 	$products = runQuery($query);
 	return $products;
+}
+function validateExistenceKitProducts($data){
+	$sw=0;
+	foreach($data as $key => $value){
+		if(substr($key,0,5) == 'hitem'){
+			$sw++;
+			$qtyname = 'citem' . substr($key,-7);
+			$qty = $data[$qtyname];
+			echo $qty;
+			if($qty>1){
+				$sw++;
+			}	
+		}
+		if($sw>1){
+			return true;
+		}
+	}
+	return false;	
 }
 
 /* Donors
@@ -407,31 +499,34 @@ function editDonor($data){
 ============================================================ */
 function addDonation($data){	
 	if($data['exists']=='false'){
-		
 		if($data['name'] != "" and $data['identification'] != ""){
 			if(is_numeric($data['phonenumber']) and is_numeric($data['fax'])){
 				if(!exists("donors","id='$data[identification]'")){
-					$currentdate = date("Y-m-d");									
-					$datos = array(id => $data['identification'], name => $data['name'], type => $data['type'], address => $data['address'], phonenumber => $data['phonenumber'], faxnumber => $data['fax'], email => $data['email'], towns_id =>$data['town'], creationDate => $currentdate);
-					$fields  = "";
-					$values = "";
-				
-					foreach ($datos as $f => $v){
-						$fields  .= "$f,";
-						$values .= (is_numeric($v) && (intval($v) == $v)) ? $v."," : "'$v',";
-					}
-				
-					//Eliminar las "," sobrantes
-					$fields = substr($fields, 0, -1);
-					$values = substr($values, 0, -1);
-				
-					$query = "insert into donors ({$fields}) values({$values})";
+					if(validateExistenceProduct($data)){
+						$currentdate = date("Y-m-d");									
+						$datos = array(id => $data['identification'], name => $data['name'], type => $data['type'], address => $data['address'], phonenumber => $data['phonenumber'], faxnumber => $data['fax'], email => $data['email'], towns_id =>$data['town'], creationDate => $currentdate);
+						$fields  = "";
+						$values = "";
 					
-					$value = runQuery($query,4);
-					if($value != ''){
-						$success = "El donante fue agregado exitosamente. <br />";
+						foreach ($datos as $f => $v){
+							$fields  .= "$f,";
+							$values .= (is_numeric($v) && (intval($v) == $v)) ? $v."," : "'$v',";
+						}
+					
+						//Eliminar las "," sobrantes
+						$fields = substr($fields, 0, -1);
+						$values = substr($values, 0, -1);
+					
+						$query = "insert into donors ({$fields}) values({$values})";
+						
+						$value = runQuery($query,4);
+						if($value != ''){
+							$success = "El donante fue agregado exitosamente. <br />";
+						}else{
+							$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
+						}
 					}else{
-						$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
+						$warning ="Se debe elegir por lo menos un producto, por favor verifique."; 
 					}
 				}else{
 					$warning = "Ya existe un donante registrado con el id '$data[identification]'.";
@@ -454,30 +549,34 @@ function addDonation($data){
 	return array($warning, $success);
 } 
 
-function editDonation($data){	
-	$datos = array(detail =>$data['detail'],warehouses_id => $data['warehouse'], bill => $data['bill']);
-	if(dbUpdate("donations",$datos,"sequence= $data[id]")){
-		$success = "La donación fue editada exitosamente.";
-	}else{
-		$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
-	}
-				
-	foreach($data as $key => $value){
-		if(substr($key,0,5) == 'hitem'){
-			$qtyname = 'citem' . substr($key,-7);
-			$edname = 'ditem' . substr($key,-7);
-			$qty = $data[$qtyname];
-			$expd = $data[$edname];
-			$idp = findRow('products','name',"'".$value."'",'id');
-			$query = "delete from products_donations where products_id=$idp";
-			$result = runQuery($query);	
-			
-			for ($init = 0; $init <$qty ; $init++){
-				$datos = array(donations_id => $data['id'], products_id =>$idp, state => 1, expirationDate => $expd,warehouses_id => $data['warehouse']);
-				$idlist = dbInsert("products_donations",$datos);
-			}
+function editDonation($data){
+	if(validateExistenceProduct($data)){
+		$datos = array(detail =>$data['detail'],warehouses_id => $data['warehouse'], bill => $data['bill']);
+		if(dbUpdate("donations",$datos,"sequence= $data[id]")){
+			$success = "La donación fue editada exitosamente.";
+		}else{
+			$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
 		}
-	}
+					
+			foreach($data as $key => $value){
+				if(substr($key,0,5) == 'hitem'){
+					$qtyname = 'citem' . substr($key,-7);
+					$edname = 'ditem' . substr($key,-7);
+					$qty = $data[$qtyname];
+					$expd = $data[$edname];
+					$idp = findRow('products','name',"'".$value."'",'id');
+					$query = "delete from products_donations where products_id=$idp";
+					$result = runQuery($query);	
+					
+					for ($init = 0; $init <$qty ; $init++){
+						$datos = array(donations_id => $data['id'], products_id =>$idp, state => 1, expirationDate => $expd,warehouses_id => $data['warehouse']);
+						$idlist = dbInsert("products_donations",$datos);
+					}
+				}
+			}
+		}else{
+			$warning ="Se debe elegir por lo menos un producto, por favor verifique."; 
+		}
 			
 	return array($warning, $success);
 }
@@ -518,7 +617,7 @@ function getProductQuantity($product,$donation = '',$state=''){
 function addUser($data){
 	if($data['name'] != "" && $data['email'] != ''){
 		if(!exists("users","email='$data[email]'")){
-			$pass = substr(md5(rand()),0,8);
+			$pass = substr(md5(rand(),0,8));
 			$encodedPass = md5($pass);
 			$date = date('Y-m-d');
 			$datos = array(name => $data['name'], password => $encodedPass, phoneNumber => $data['phonenumber'], email => $data['email'], profile => $data['profile']);
@@ -608,7 +707,7 @@ function changePassword($data){
 function resetPassword($data){
 	if($data['email']!=''){
 		if($id = exists("users","email='$data[email]'")){
-			$pass = substr(md5(rand()),0,8);
+			$pass = substr(md5(rand(),0,8));
 			$encodedPass = md5($pass);
 			$query = "update users set password = '$encodedPass' where id = '$id'";
 			if(runQuery($query)){
@@ -637,36 +736,123 @@ function resetPassword($data){
 ============================================================ */
 function addDistribution($data){	
 	if($data['warehouse'] != "" and $data['company'] != "" and $data['deliveryDate'] != ""){
-		$warehouse = exists("warehouses","id='$data[warehouse]'");	
-		$company = exists("companies","id='$data[company]'");	
-		if($warehouse and $company ){
-			$datos = array(warehouses_id => $warehouse, companies_id  => $company , deliveryDate => $data['deliveryDate'],state => $data['state']);
-			$id = dbInsert("distributions",$datos);
-	        if($id != ''){
-				foreach($data as $key => $value){
-					if(substr($key,0,5) == 'hitem'){
-						$qtyname = 'citem' . substr($key,-7);
-						$qty = $data[$qtyname];
-						$idp = findRow('products','name',"'".$value."'",'id');
-						$query = "select * from products_donations where products_id=$idp and state in (2) order by expirationDate limit $qty";
-						$result= runQuery($query);
-						while($result and $row = mysql_fetch_array($result)){
-						    $datos = array(products_donations_id => $row['id'], distributions_id =>$id);
-							$idlist = dbInsert("products_donations_distributions",$datos);
-							$update=dbUpdate(products_donations,array(state => 4),"id=$row[id]");
-						}	
+		if(validateExistenceProduct($data)){
+			$warehouse = exists("warehouses","id='$data[warehouse]'");	
+			$company = exists("companies","id='$data[company]'");	
+			if($warehouse and $company ){
+				$datos = array(warehouses_id => $warehouse, companies_id  => $company , deliveryDate => $data['deliveryDate'],state => $data['state']);
+				$id = dbInsert("distributions",$datos);
+				if($id != ''){
+					foreach($data as $key => $value){
+						if(substr($key,0,5) == 'hitem'){
+							$qtyname = 'citem' . substr($key,-7);
+							$qty = $data[$qtyname];
+							$idp = findRow('products','name',"'".$value."'",'id');
+							$query = "select * from products_donations where products_id=$idp and state in (2) order by expirationDate limit $qty";
+							$result= runQuery($query);
+							while($result and $row = mysql_fetch_array($result)){
+								$datos = array(products_donations_id => $row['id'], distributions_id =>$id);
+								$idlist = dbInsert("products_donations_distributions",$datos);
+								$update=dbUpdate(products_donations,array(state => 4),"id=$row[id]");
+							}	
+						}
 					}
+					$success = "La distribución fue agregada exitosamente.";
+				}else{
+					$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
 				}
-				$success = "La distribución fue agregada exitosamente.";
 			}else{
-				$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
+				$warning = "Hay datos que no existen, por favor verifique.";
 			}
 		}else{
-			$warning = "Hay datos que no existen, por favor verifique.";
+			$warning ="Se debe elegir por lo menos un producto, por favor verifique."; 
 		}
 	}else{
 		$warning = "Por favor digite todos los datos obligatorios.";
 	}
 	return array($warning, $success);
 } 
+
+function validateExistenceProduct($data){
+	foreach($data as $key => $value){
+		if(substr($key,0,5) == 'hitem'){
+			return true;
+		}
+	}
+	return false;	
+}
+function editDistribution($data){
+if($data['warehouse'] != "" and $data['company'] != "" and $data['deliveryDate'] != ""){
+		if(validateExistenceProduct($data)){
+			$warehouse = exists("warehouses","id='$data[warehouse]'");	
+			$company = exists("companies","id='$data[company]'");	
+			if($warehouse and $company ){
+				if(dbUpdate("products_donations",array(state => 2),"id in (select products_donations_id from products_donations_distributions where distributions_id=$data[id])")){
+					if(dbDelete("products_donations_distributions","distributions_id=$data[id]")){
+						$datos = array(warehouses_id => $warehouse, companies_id  => $company , deliveryDate => $data['deliveryDate'],state => $data['state']);
+						if(dbUpdate("distributions",$datos,"id=$data[id]")){
+							foreach($data as $key => $value){
+								if(substr($key,0,5) == 'hitem'){
+									$qtyname = 'citem' . substr($key,-7);
+									$qty = $data[$qtyname];
+									$idp = findRow('products','name',"'".$value."'",'id');
+									$query = "select * from products_donations where products_id=$idp and state in (2) order by expirationDate limit $qty";
+									$result= runQuery($query);
+									while($result and $row = mysql_fetch_array($result)){
+										$datos = array(products_donations_id => $row['id'], distributions_id =>$data[id]);
+										$idlist = dbInsert("products_donations_distributions",$datos);
+										$update=dbUpdate(products_donations,array(state => 4),"id=$row[id]");
+									}	
+								}
+							}
+							$success = "La distribución fue agregada exitosamente.";
+						}else{
+							$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
+						}
+					}else{
+					$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
+					}
+				}else{
+					$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
+				}
+			}else{
+				$warning = "Hay datos que no existen, por favor verifique.";
+			}
+		}else{
+			$warning ="Se debe elegir por lo menos un producto, por favor verifique."; 
+		}
+	}else{
+		$warning = "Por favor digite todos los datos obligatorios.";
+	}
+	return array($warning, $success);
+
+}
+
+/* Notifications
+============================================================ */
+
+function sendNotification($data){
+	
+   
+   ini_set(sendmail_from,"example@gobernacion.com");
+   
+	if(mail("example@gobernacion.com",$data['subject'],$data['body'])){
+      $success = "Mensaje Enviado con exito.";
+	  
+	  $datos = array(subject => $data['subject'], from  => $data['from'] , to => $data['to'],body => $data['body'], type => $data['type'], users_id => $data['user']);
+		if(dbInsert("notifications",$datos)){
+			
+		}
+		else
+		{
+			$warning = "El mensaje ha sido enviado, pero no ha podido guardarse en la base de datos. Por favor consulte al Administrador.";
+			}
+   }else{
+      $warning = "El mensaje no ha podido ser enviado";
+   }
+	
+	
+	return array($warning, $success);
+}
+
 ?>

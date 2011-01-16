@@ -11,9 +11,12 @@
             <?php if($warning != ''){ echo '<div class="error">' . $warning . '</div>'; } ?>
             <div class="column c66p">
             	<h3>Usuarios</h3>
-                <ul class="toolbar">
+                <?php if(isSupervisor($_SESSION['dms_id'])){?>
+				<ul class="toolbar">
                     <li><a href="includes/forms/usersAdd.php" class="btn colorbox">Agregar Usuario</a></li>
                 </ul>
+				<?php } ?>
+                
                 <table cellpadding="0" cellspacing="0"><thead>
                     <tr>
                         <th>Nombre</th>
@@ -67,7 +70,9 @@
                     </fieldset>
                 </form>
             	<h3 class="floatleft">Municipios</h3>
-                <a href="includes/forms/townsImport.php" class="btn floatright colorbox">Importar Municipios</a>
+                <?php if(isSupervisor($_SESSION['dms_id'])){?>
+			      <a href="includes/forms/townsImport.php" class="btn floatright colorbox">Importar Municipios</a>
+				<?php } ?>
                 <ul class="toolbar">
                     <li>
                     	<select name="province" id="province" onchange="document.location.href='options.php?p=' + this.value;">
