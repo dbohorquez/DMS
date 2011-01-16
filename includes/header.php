@@ -39,14 +39,24 @@ if($section != 'login' && !isset($_SESSION['dms_authorized'])){ header('Location
                 <li<?php if($section == 'warehouses'){ ?> class="active"<?php } ?>><a href="warehouses.php">Bodegas</a></li>
                 <li<?php if($section == 'products'){ ?> class="active"<?php } ?>><a href="products.php">Productos</a>
                 	<ul>
-                    	<li><a href="producttypes.php">Tipos de Producto</a></li>
-                        <li><a href="kits.php">Kits de Productos</a></li>
+                    	<li><a href="categories.php">Categorías</a></li>
+                        <li><a href="producttypes.php">Tipos</a></li>
+                        <li><a href="kits.php">Kits</a></li>
                     </ul>
                 </li>
                 <li<?php if($section == 'companies'){ ?> class="active"<?php } ?>><a href="companies.php">Entidades</a></li>
-                <li<?php if($section == 'donors'){ ?> class="active"<?php } ?>><a href="donors.php">Donantes</a></li>
-                <li<?php if($section == 'donations'){ ?> class="active"<?php } ?>><a href="donations.php">Donaciones</a></li>
-                <li<?php if($section == 'distribution'){ ?> class="active"<?php } ?>><a href="distribution.php">Distribución</a></li>
+                <li<?php if($section == 'donations'){ ?> class="active"<?php } ?>><a href="donations.php">Donaciones</a>
+                	<ul>
+                    	<li><a href="virtual-receptions.php">Recepción Virtual</a></li>
+                    	<li><a href="donations-promises.php">Promesas de Donación</a></li>
+                        <li><a href="donors.php">Donantes</a></li>
+                    </ul>
+                </li>
+                <li<?php if($section == 'distribution'){ ?> class="active"<?php } ?>><a href="distribution.php">Distribución</a>
+                	<ul>
+                    	<li><a href="beneficiaries.php">Beneficiarios</a></li>
+                    </ul>
+                </li>
             </ul>
             <ul id="options">
             	<li><a href="options.php">Opciones</a></li>

@@ -129,7 +129,7 @@ body, input, textarea, select{
 	left:0;
 	position:absolute;
 	top:100%;
-	width:150px;
+	width:200px;
 }
 
 #nav li:hover ul{
