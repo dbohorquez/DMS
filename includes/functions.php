@@ -111,7 +111,7 @@ function isGestor($user){
 ============================================================ */
 function addWarehouse($data){	
 	if($data['name'] != ""){
-		if(is_numeric($data['phonenumber']) and is_numeric($data['cellphone']) and is_numeric($data['fax'])){
+		//if(is_numeric($data['phonenumber']) and is_numeric($data['cellphone']) and is_numeric($data['fax'])){
 			if(is_numeric($data['occupation'])){ 
 				if($data['occupation'] <= 100 and $data['occupation']>=0){ 	
 					if(!exists("warehouses","name='$data[name]'")){
@@ -131,9 +131,9 @@ function addWarehouse($data){
 			}else{
 				$warning = "El porcentaje de ocupación de la bodega debe ser numérico";
 			}														
-		}else{
+		/*}else{
 			$warning = "Los números telefónicos no pueden contener letras o símbolos";
-		}											
+		}*/											
 	}else{
 		$warning = "Por favor digite todos los datos obligatorios.";
 	}
@@ -142,7 +142,7 @@ function addWarehouse($data){
 
 function editWarehouse($data){	
 	if($data['name'] != ""){
-		if(is_numeric($data['phonenumber']) and is_numeric($data['cellphone']) and is_numeric($data['fax'])){
+	//	if(is_numeric($data['phonenumber']) and is_numeric($data['cellphone']) and is_numeric($data['fax'])){
 			if(is_numeric($data['occupation'])){ 
 				if($data['occupation'] <= 100 and $data['occupation']>=0){ 	
 					if((!exists("warehouses","name='$data[name]' ")) or (exists("warehouses","name='$data[name]'")==$data[id])){										
@@ -161,9 +161,9 @@ function editWarehouse($data){
 			}else{
 				$warning = "El porcentaje de ocupación de la bodega debe ser numérico";
 			}														
-		}else{
+		/*}else{
 			$warning = "Los números telefónicos no pueden contener letras o símbolos";
-		}											
+		}	*/										
 	}else{
 		$warning = "Por favor digite todos los datos obligatorios.";
 	}
@@ -174,7 +174,7 @@ function editWarehouse($data){
 ============================================================ */
 function addCompany($data){	
 	if($data['name'] != "" and $data['nit'] != ""){
-		if(is_numeric($data['phonenumber']) and is_numeric($data['fax'])){
+		//if(is_numeric($data['phonenumber']) and is_numeric($data['fax'])){
 			if(!exists("companies","name='$data[name]'")){
 				$datos = array(id => $data['nit'], name => $data['name'], type => $data['type'], address => $data['address'], contactname => $data['contactname'], phonenumber => $data['phonenumber'], faxnumber => $data['fax'], email => $data['email'], towns_id =>$data['town']);
 				$fields  = "";
@@ -198,9 +198,9 @@ function addCompany($data){
 			}else{
 				$warning = "Ya existe una entidad registrada con el nombre '$data[name]'.";
 			}
-		}else{
+	/*	}else{
 			$warning = "Los números telefónicos no pueden contener letras o símbolos";
-		}											
+		}		*/									
 	}else{
 		$warning = "Por favor digite todos los datos obligatorios.";
 	}
@@ -209,7 +209,7 @@ function addCompany($data){
 
 function editCompany($data){	
 	if($data['name'] != "" and $data['nit'] != ""){
-		if(is_numeric($data['phonenumber']) and is_numeric($data['fax'])){
+	//	if(is_numeric($data['phonenumber']) and is_numeric($data['fax'])){
 			if((!exists("companies","name='$data[name]' ")) or (exists("companies","name='$data[name]'")==$data[id])){										
 				$datos = array(id=> $data['nit'],name => $data['name'], type => $data['type'], address => $data['address'], contactname => $data['contactname'], phonenumber => $data['phonenumber'], faxnumber => $data['fax'],email => $data['email'], towns_id =>$data['town']);
 				if(dbUpdate("companies",$datos,"id= $data[id]")){
@@ -220,9 +220,9 @@ function editCompany($data){
 			}else{
 				$warning = "Ya existe una entidad registrada con el nombre '$data[name]'.";
 			}
-		}else{
+		/*}else{
 			$warning = "Los números telefónicos no pueden contener letras o símbolos";
-		}											
+		}*/											
 	}else{
 		$warning = "Por favor digite todos los datos obligatorios.";
 	}
@@ -338,8 +338,8 @@ function transferProducts ($data){
 		$warning = "Por favor digite todos los datos obligatorios.";
 	}
 	return array($warning, $success);
-
 }
+
 /* Kits 
 ============================================================ */
 function addKit($data){	
@@ -437,7 +437,7 @@ function validateExistenceKitProducts($data){
 ============================================================ */
 function addDonor($data){	
 	if($data['name'] != "" and $data['identification'] != ""){
-		if(is_numeric($data['phonenumber']) and is_numeric($data['fax'])){
+		//if(is_numeric($data['phonenumber']) and is_numeric($data['fax'])){
 			if(!exists("donors","id='$data[identification]'")){
 				$currentdate = date("Y-m-d");									
 				$datos = array(id => $data['identification'], name => $data['name'], type => $data['type'], address => $data['address'], phonenumber => $data['phonenumber'], faxnumber => $data['fax'], email => $data['email'], towns_id =>$data['town'], creationDate => $currentdate);
@@ -463,9 +463,9 @@ function addDonor($data){
 			}else{
 				$warning = "Ya existe un donante registrado con el id '$data[identification]'.";
 			}
-		}else{
+		/*}else{
 			$warning = "Los números telefónicos no pueden contener letras o símbolos";
-		}											
+		}*/											
 	}else{
 		$warning = "Por favor digite todos los datos obligatorios.";
 	}
@@ -475,7 +475,7 @@ function addDonor($data){
 
 function editDonor($data){	
 	if($data['name'] != "" and $data['identification'] != ""){
-		if(is_numeric($data['phonenumber']) and is_numeric($data['fax'])){
+	//	if(is_numeric($data['phonenumber']) and is_numeric($data['fax'])){
 			if((!exists("donors","name='$data[name]' ")) or (exists("donors","name='$data[name]'")==$data['id'])){										
 				$datos = array(id => $data['identification'], name => $data['name'], type => $data['type'], address => $data['address'], phonenumber => $data['phonenumber'], faxnumber => $data['fax'], email => $data['email'], towns_id =>$data['town']);
 				if(dbUpdate("donors",$datos,"id= $data[id]")){
@@ -486,9 +486,9 @@ function editDonor($data){
 			}else{
 				$warning = "Ya existe un donante registrado con el id '$data[identification]'.";
 			}
-		}else{
+		/*}else{
 			$warning = "Los números telefónicos no pueden contener letras o símbolos";
-		}											
+		}*/											
 	}else{
 		$warning = "Por favor digite todos los datos obligatorios.";
 	}
@@ -500,7 +500,7 @@ function editDonor($data){
 function addDonation($data){	
 	if($data['exists']=='false'){
 		if($data['name'] != "" and $data['identification'] != ""){
-			if(is_numeric($data['phonenumber']) and is_numeric($data['fax'])){
+		//	if(is_numeric($data['phonenumber']) and is_numeric($data['fax'])){
 				if(!exists("donors","id='$data[identification]'")){
 					if(validateExistenceProduct($data)){
 						$currentdate = date("Y-m-d");									
@@ -531,9 +531,9 @@ function addDonation($data){
 				}else{
 					$warning = "Ya existe un donante registrado con el id '$data[identification]'.";
 				}
-			}else{
+			/*}else{
 				$warning = "Los números telefónicos no pueden contener letras o símbolos";
-			}											
+			}	*/										
 		}else{
 			$warning = "Por favor digite todos los datos obligatorios.";
 		}
@@ -557,7 +557,6 @@ function editDonation($data){
 		}else{
 			$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
 		}
-					
 			foreach($data as $key => $value){
 				if(substr($key,0,5) == 'hitem'){
 					$qtyname = 'citem' . substr($key,-7);
@@ -611,6 +610,36 @@ function getProductQuantity($product,$donation = '',$state=''){
 	}
 }
 
+function addStatesChanges ($products_donations,$newState,$user,$reason = '' ,$note = ''){
+	if(exists("products_donations","id=$products_donations") and exists("users","id=$user")){
+		$currentState=getCurrentState ($products_donations);
+		$datos = array(products_donations_id => $products_donations, previousState => $currentState, currentState => $newState,users_id => $user,reason => $reason);
+		if(dbInsert("products",$datos)){
+			$datos = array(state => $newState);
+			if(dbUpdate("id",$datos,"id = $products_donations")){
+				return 0;
+			}else{
+				return "Error en el cambio de estado del producto $products_donations. Por favor verifique.";
+			}			
+		}else{
+			return "Error en el cambio de estado del producto $products_donations. Por favor verifique.";
+		}
+	}else{
+		return "Hay datos que no existen para el cambio de estado del producto $products_donations, por favor verifique.";
+	}
+}
+
+function getCurrentState ($products_donations){
+		$query="Select state from products_donations where id=$products_donations";
+		$result= runQuery($query);
+		if($row = mysql_fetch_array($result)){
+			return $row['state'];
+		}else{
+			return 0;
+		}
+	return array($warning, $success);	
+
+}
 
 /* Users
 ============================================================ */

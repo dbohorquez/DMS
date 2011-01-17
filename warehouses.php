@@ -7,7 +7,7 @@
 <?php if(isset($_POST['bt-delete'])) list($warning, $success) = delete($_POST);?>
 			<h2>Bodegas</h2>
 			<ul class="toolbar">
-            <?php if(isSupervisor($_SESSION['dms_id'])){?>
+            <?php if(isSupervisor($_SESSION['dms_id']) or isAdmin($_SESSION['dms_id'])){?>
 			<li><a href="includes/forms/warehousesAdd.php" class="btn colorbox">Nueva Bodega</a></li>
             <li><a href="includes/forms/warehousesTransfer.php" class="btn colorbox">Transferir Productos</a></li>
 			<?php } ?>
