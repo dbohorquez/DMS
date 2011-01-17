@@ -44,3 +44,38 @@ function removeProduct(product){
 	$(qtyId).remove();
 	$(dateId).remove();
 }
+
+
+// Form validations 
+
+var reEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+var reFloat = /^((\d+(\.\d*)?)|((\d*\.)?\d+))$/;
+var reInteger = /^\d+$/;
+
+function isInteger(elem){
+	return reInteger.test(elem.val());
+}
+
+function isEmail(elem){
+	return reEmail.test(elem.val());
+}
+
+function isFloat(elem){
+	return reFloat.test(elem.val());
+}
+
+function isNil(elem) {
+	return elem.val().length == 0
+}
+
+function isSelected(elem) {
+	return elem.val() != 0 && elem.val() != null
+}
+
+function atLeastOne(elem) {
+	return elem.children().length > 0
+}
+
+function isPercentage(elem) {
+	return isFloat(elem) && parseInt(elem.val()) > 0 && parseInt(elem.val()) < 100
+}

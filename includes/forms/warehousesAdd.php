@@ -1,13 +1,11 @@
-
-
-
 <div class="medium">
 	<h3>Agregar Bodega</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
-    <form action="warehouses.php" enctype="application/x-www-form-urlencoded" method="post">
+    <form action="warehouses.php" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateWarehouseForm();">
     <?php include('../functions.php'); ?>
-        <div class="column c50p">
-            <fieldset>
+        	<div id="errorMessage"> </div>
+					<div class="column c50p">
+					  <fieldset>
                 <label for="name">Nombre: <span class="required">*</span></label>
                 <input type="text" class="text" size="48" name="name" id="name" />
             </fieldset>
