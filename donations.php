@@ -28,7 +28,7 @@
                     <th width="50">&nbsp;</th>
                 </tr></thead><tbody>
                 <?php
-					$donations = getTable('donations','','sequence asc');
+					$donations = getTable('donations','deletedAt IS NULL','sequence asc');
 					$numRows = mysql_num_rows($donations);
 					$ddata = '';
 					if($numRows > 0){

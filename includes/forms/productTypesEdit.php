@@ -3,7 +3,16 @@
 		include('../functions.php');
 		$id = $_GET['e']; 
 		$type = getTable('producttypes',"id = $id",'',1);
-	?>
+
+			$categories = getTable('categories','deletedAt IS NULL','name asc');
+			$data = '';
+			while($category = mysql_fetch_array($categories)){
+				$data .= '"' . $category['name'] . '",';
+			}
+			
+			
+		?>
+
 	<h3>Editar Tipo de Producto</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
     <form action="producttypes.php" enctype="application/x-www-form-urlencoded" method="post">
@@ -16,8 +25,25 @@
             <label for="description">Descripción:</label>
             <textarea class="text" cols="44" rows="6" name="description" id="description"><?php echo $type['description']; ?></textarea>
         </fieldset>
+        <fieldset>
+            <label for="category">Categoría: <span class="required">*</span></label>
+            <input type="text" class="text autocomplete" size="48" name="category" id="category" value="<?php $query = "select * from categories where id=$type[categories_id]";
+						$result = runQuery($query);
+						if(mysql_num_rows($result) == 0){
+							return false;
+						}else{
+							$row = mysql_fetch_array($result);
+							echo $row['name'];
+						}  ?>" />
+        </fieldset>
         <fieldset class="clear">
 	        <input type="submit" class="btn" value="Guardar Cambios" name="bt-edit" /><span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
         </fieldset>
     </form>
+    <script type="text/javascript">
+		var data = [<?php echo $data; ?>];
+		$('#category').autocomplete({
+			source: data
+		});
+	</script>
 </div>

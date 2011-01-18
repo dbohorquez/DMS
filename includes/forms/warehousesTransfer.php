@@ -1,7 +1,7 @@
 <div class="medium">
 	<h3>Transferir Productos</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
-    <form action="warehouses.php" enctype="application/x-www-form-urlencoded" method="post">
+    <form action="warehouses.php" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateTransferForm()">
     	<?php
 			include('../functions.php');
 			$items = getTable('products_donations','state = 1 group by products_id','id asc');
@@ -11,6 +11,8 @@
 				$data .= '"' . $product['name'] . '",';
 			}
 		?>
+			<div id="errorMessage"> </div>
+			
         <fieldset>
             <label for="warehouse">Bodega: <span class="required">*</span></label>
             <select name="warehouse" id="warehouse">

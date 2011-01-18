@@ -23,7 +23,7 @@
                     <th width="50">&nbsp;</th>
                 </tr></thead><tbody>
                 <?php
-					$companies = getTable('companies','','id desc');
+					$companies = getTable('companies','deletedAt IS NULL','id desc');
 					$numRows = mysql_num_rows($companies);
 					if($numRows > 0){
 						while($company = mysql_fetch_array($companies)){

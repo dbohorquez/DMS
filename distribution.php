@@ -23,7 +23,7 @@
                     <th width="50">&nbsp;</th>
                 </tr></thead><tbody>
                 <?php
-					$distributions = getTable('distributions','','id desc');
+					$distributions = getTable('distributions','deletedAt IS NULL','id desc');
 					$numRows = mysql_num_rows($distributions);
 					if($numRows > 0){
 						while($distribution = mysql_fetch_array($distributions)){

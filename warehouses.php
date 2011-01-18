@@ -7,7 +7,7 @@
 <?php if(isset($_POST['bt-delete'])) list($warning, $success) = delete($_POST);?>
 			<h2>Bodegas</h2>
 			<ul class="toolbar">
-            <?php if(isSupervisor($_SESSION['dms_id'])){?>
+            <?php if(isSupervisor($_SESSION['dms_id']) or isAdmin($_SESSION['dms_id']) ){?>
 			<li><a href="includes/forms/warehousesAdd.php" class="btn colorbox">Nueva Bodega</a></li>
             <li><a href="includes/forms/warehousesTransfer.php" class="btn colorbox">Transferir Productos</a></li>
 			<?php } ?>
@@ -26,7 +26,7 @@
                     <th width="50">&nbsp;</th>
                 </tr></thead><tbody>
                 <?php
-					$warehouses = getTable('warehouses','','id desc');
+					$warehouses = getTable('warehouses','deletedAt IS NULL','id desc');
 					$numRows = mysql_num_rows($warehouses);
 					if($numRows > 0){
 						while($warehouse = mysql_fetch_array($warehouses)){
@@ -75,3 +75,37 @@
                 </li>
             </ul>
 <?php include('includes/footer.php'); ?>
+<script type="text/javascript">
+
+function validateWarehouseForm(){
+		valid = true
+	  $("form input, form select").removeClass("error")
+		if (isNil($("#name")))
+		{ valid= false; $("#name").addClass("error") }
+		if (!isSelected($("#town")))
+		{ valid= false; $("#town").addClass("error") }
+		if ( !isNil($("#occupation")) && !isPercentage($("#occupation")) )
+		{ valid= false; $("#occupation").addClass("error") }
+		
+		if (!valid)
+		{	jQuery("#errorMessage").html("Falta llenar algunos campos obligatorios(<span class=\"required\">*</span>).");
+			jQuery.colorbox.resize();
+		}
+    return valid;
+}
+
+function validateTransferForm(){
+		valid = true
+	  $("form input").removeClass("error")
+	
+		if (!atLeastOne($(".product-list.text")))
+		{ valid= false; $(".product-list.text").addClass("error") }
+		
+		if (!valid)
+		{	jQuery("#errorMessage").html("Falta llenar algunos campos obligatorios(<span class=\"required\">*</span>).");
+			jQuery.colorbox.resize();
+		}
+    return valid;
+}
+
+</script>
