@@ -52,6 +52,10 @@
                 <input type="text" class="text" size="48" name="contactname" id="contactname" />
             </fieldset>
             <fieldset>
+            	<label for="email">Correo Electrónico:</label>
+                <input type="text" class="text" size="48" name="email" id="email" />
+            </fieldset>
+            <fieldset>
             	<label for="phonenumber">Teléfono:</label>
                 <input type="text" class="text" size="48" name="phonenumber" id="phonenumber" />
             </fieldset>

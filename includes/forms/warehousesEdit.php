@@ -63,6 +63,10 @@
                 <input type="text" class="text" size="48" name="contactname" id="contactname" value="<?php echo $warehouse['contactName']; ?>" />
             </fieldset>
             <fieldset>
+            	<label for="email">Correo Electrónico:</label>
+                <input type="text" class="text" size="48" name="email" id="email" value="<?php echo $warehouse['email']; ?>"/>
+            </fieldset>
+            <fieldset>
             	<label for="phonenumber">Teléfono:</label>
                 <input type="text" class="text" size="48" name="phonenumber" id="phonenumber" value="<?php echo $warehouse['phoneNumber']; ?>" />
             </fieldset>

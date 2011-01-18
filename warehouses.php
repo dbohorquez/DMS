@@ -37,7 +37,7 @@
                     <td><?php echo $warehouse['type'] == 1 ? 'Física' : 'Virtual'; ?><br />
                     	<span<?php echo $warehouse['occupation'] >= 90 ? ' class="full"' : ' class="available"'; ?>><?php echo $warehouse['occupation']; ?>%</span>
                     </td>
-                    <td><?php echo $warehouse['contactName']; ?></td>
+                    <td><a href="mailto:<?php echo $warehouse['email']; ?>"><?php echo $warehouse['contactName']; ?></a></td>
                     <td>
                     	<strong>Tel:</strong> <?php echo $warehouse['phoneNumber']; ?><br />
                     	<strong>Cel:</strong> <?php echo $warehouse['cellphone']; ?><br />
