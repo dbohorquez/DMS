@@ -17,7 +17,7 @@
                     <th width="50">&nbsp;</th>
                 </tr></thead><tbody>
                 <?php
-					$products = getTable('products','flagkit=0','id desc');
+					$products = getTable('products','flagkit=0 and deletedAt IS NULL','id desc');
 					$numRows = mysql_num_rows($products);
 					if($numRows > 0){
 						while($product = mysql_fetch_array($products)){

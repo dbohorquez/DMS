@@ -25,7 +25,7 @@
                         <th width="50">&nbsp;</th>
                     </tr></thead><tbody>
                     <?php
-                        $users = getTable('users','','id asc');
+                        $users = getTable('users','deletedAt IS NULL','id asc');
                         $numRows = mysql_num_rows($users);
                         if($numRows > 0){
                             while($user = mysql_fetch_array($users)){

@@ -26,7 +26,7 @@
                     <th width="50">&nbsp;</th>
                 </tr></thead><tbody>
                 <?php
-					$warehouses = getTable('warehouses','','id desc');
+					$warehouses = getTable('warehouses','deletedAt IS NULL','id desc');
 					$numRows = mysql_num_rows($warehouses);
 					if($numRows > 0){
 						while($warehouse = mysql_fetch_array($warehouses)){

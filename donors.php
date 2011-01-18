@@ -20,7 +20,7 @@
                     <th width="50">&nbsp;</th>
                 </tr></thead><tbody>
                 <?php
-					$donors = getTable('donors','','id asc');
+					$donors = getTable('donors','deletedAt IS NULL','id asc');
 					$numRows = mysql_num_rows($donors);
 					if($numRows > 0){
 						while($donor = mysql_fetch_array($donors)){

@@ -6,7 +6,7 @@
 			include('../functions.php');
 			$id = $_GET['e']; 
 			$product = getTable('products',"id = $id",'',1);
-			$types = getTable('producttypes','','name asc');
+			$types = getTable('producttypes','deletedAt IS NULL','name asc');
 			$data = '';
 			while($type = mysql_fetch_array($types)){
 				$data .= '"' . $type['name'] . '",';

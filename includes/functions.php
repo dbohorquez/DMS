@@ -4,7 +4,10 @@ require_once('basic-functions.php');
 /* General 
 ============================================================ */
 function delete($data){
-	if(dbDelete($data['table'],"id = $data[id]")){
+	//if(dbDelete($data['table'],"id = $data[id]")){
+	$currentdate = date("Y-m-d H:i");										
+	$datos = array(deletedAt=> $currentdate);
+	if(dbUpdate($data['table'],$datos,"id= $data[id]")){	
 		$success = "El elemento fue eliminado.";
 	}else{
 		$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
@@ -234,11 +237,18 @@ function editCompany($data){
 function addProductType($data){	
 	if($data['name'] != ""){
 		if(!exists("producttypes","name='$data[name]'")){
-			$datos = array(name => $data['name'],description => $data['description']);
-			if(dbInsert("producttypes",$datos)){
-				$success = "El tipo de producto fue agregado exitosamente.";
+			
+			if(exists("categories","name='$data[category]'"))
+			{
+					$category = exists("categories","name='$data[category]'");
+					$datos = array(name => $data['name'],description => $data['description'], categories_id =>$category);
+					if(dbInsert("producttypes",$datos)){
+						$success = "El tipo de producto fue agregado exitosamente.";
+					}else{
+						$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
+					}
 			}else{
-				$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
+			$warning = "La categoría digitada no existe. Por favor intentelo nuevamente.";
 			}
 		}else{
 			$warning = "Ya existe un tipo de producto registrado con el nombre '$data[name]'.";
@@ -252,12 +262,20 @@ function addProductType($data){
 function editProductType($data){	
 	if($data['name'] != ""){
 		if((!exists("producttypes","name='$data[name]' ")) or (exists("producttypes","name='$data[name]'")==$data[id])){										
-			$datos = array(name => $data['name'],description => $data['description']);
-			if(dbUpdate("producttypes",$datos,"id= $data[id]")){
-				$success = "El tipo de producto fue editado exitosamente.";
+			
+			if(exists("categories","name='$data[category]'"))
+			{
+					$category = exists("categories","name='$data[category]'");
+					$datos = array(name => $data['name'],description => $data['description'], categories_id =>$category);
+					if(dbUpdate("producttypes",$datos,"id= $data[id]")){
+						$success = "El tipo de producto fue editado exitosamente.";
+					}else{
+						$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
+					}
 			}else{
-				$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
+			$warning = "La categoría digitada no existe. Por favor intentelo nuevamente.";
 			}
+			
 		}else{
 			$warning = "Ya existe un tipo de producto registrado con el nombre '$data[name]'.";
 		}
@@ -272,13 +290,21 @@ function editProductType($data){
 function addProduct($data){	
 	if($data['name'] != ""){
 		if(!exists("products","name='$data[name]'")){
-			$type = exists("producttypes","name='$data[type]'");									
-			$datos = array(name => $data['name'], productTypes_id => $type, description => $data['description'],state => 1,flagkit => 0);
-			if(dbInsert("products",$datos)){
-				$success = "El Producto fue agregado exitosamente.";
+			
+			if(exists("producttypes","name='$data[type]'"))
+			{
+				$type = exists("producttypes","name='$data[type]'");									
+				$datos = array(name => $data['name'], productTypes_id => $type, description => $data['description'],state => 1,flagkit => 0);
+				if(dbInsert("products",$datos)){
+					$success = "El Producto fue agregado exitosamente.";
+				}else{
+					$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
+				}
+
 			}else{
-				$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
+			$warning = "El tipo de producto digitado no existe. Por favor intentelo nuevamente.";
 			}
+
 		}else{
 			$warning = "Ya existe una bodega registrada con el nombre '$data[name]'.";
 		}
@@ -291,14 +317,20 @@ function addProduct($data){
 function editProduct($data){	
 	if($data['name'] != ""){
 		if((!exists("products","name='$data[name]' ")) or (exists("products","name='$data[name]'")==$data[id])){										
-			$type = exists("producttypes","name='$data[type]'");
-			
-			$datos = array(name => $data['name'], productTypes_id => $type,description => $data['description'],state => 1,flagkit => 0);
-			if(dbUpdate("products",$datos,"id= $data[id]")){
-				$success = "El Producto fue editado exitosamente.";
+
+			if(exists("producttypes","name='$data[type]'"))
+			{
+				$type = exists("producttypes","name='$data[type]'");
+				$datos = array(name => $data['name'], productTypes_id => $type,description => $data['description'],state => 1,flagkit => 0);
+				if(dbUpdate("products",$datos,"id= $data[id]")){
+					$success = "El Producto fue editado exitosamente.";
+				}else{
+					$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
+				}
 			}else{
-				$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
+			$warning = "El tipo de producto digitado no existe. Por favor intentelo nuevamente.";
 			}
+			
 		}else{
 			$warning = "Ya existe un producto registrado con el nombre '$data[name]'.";
 		}
@@ -883,5 +915,44 @@ function sendNotification($data){
 	
 	return array($warning, $success);
 }
+
+/* Categories
+============================================================ */
+function addCategory($data){	
+	if($data['name'] != ""){
+		if(!exists("categories","name='$data[name]'")){
+			$datos = array(name => $data['name'],description => $data['description']);
+			if(dbInsert("categories",$datos)){
+				$success = "La categoría fue agregada exitosamente.";
+			}else{
+				$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
+			}
+		}else{
+			$warning = "Ya existe una categoría registrada con el nombre '$data[name]'.";
+		}
+	}else{
+		$warning = "Por favor digite todos los datos obligatorios.";
+	}
+	return array($warning, $success);
+} 
+
+function editCategory($data){	
+	if($data['name'] != ""){
+		if((!exists("categories","name='$data[name]' ")) or (exists("categories","name='$data[name]'")==$data[id])){										
+			$datos = array(name => $data['name'],description => $data['description']);
+			if(dbUpdate("categories",$datos,"id= $data[id]")){
+				$success = "La categoría fue editada exitosamente.";
+			}else{
+				$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
+			}
+		}else{
+			$warning = "Ya existe una categoría registrada con el nombre '$data[name]'.";
+		}
+	}else{
+		$warning = "Por favor digite todos los datos obligatorios.";
+	}
+	return array($warning, $success);
+} 
+
 
 ?>

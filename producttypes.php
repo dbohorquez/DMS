@@ -14,10 +14,11 @@
             	<tr>
                 	<th>Nombre</th>
                     <th>Descripción</th>
+                    <th>Categoría</th>
                     <th width="50">&nbsp;</th>
                 </tr></thead><tbody>
                 <?php
-					$producttypes = getTable('producttypes','','id desc');
+					$producttypes = getTable('producttypes','deletedAt IS NULL','id desc');
 					$numRows = mysql_num_rows($producttypes);
 					if($numRows > 0){
 						while($producttype = mysql_fetch_array($producttypes)){
@@ -25,6 +26,9 @@
                 <tr>
                 	<td><?php echo $producttype['name']; ?></td>
                     <td><?php echo $producttype['description']; ?></td>
+                    <td><?php 
+						echo findRow('categories','id',$producttype['categories_id'],'name');							
+					?></td>
                     <td>
                     	<ul class="table-actions">
                         	<li><a href="includes/forms/productTypesEdit.php?e=<?php echo $producttype['id']; ?>" class="icon edit colorbox" title="Editar"><span>Editar</span></a></li>

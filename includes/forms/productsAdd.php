@@ -4,7 +4,7 @@
     <form action="products.php" enctype="application/x-www-form-urlencoded" method="post">
     	<?php
 			include('../functions.php');
-			$types = getTable('producttypes','','name asc');
+			$types = getTable('producttypes','deletedAt IS NULL','name asc');
 			$data = '';
 			while($type = mysql_fetch_array($types)){
 				$data .= '"' . $type['name'] . '",';
