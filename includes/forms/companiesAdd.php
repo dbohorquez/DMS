@@ -15,8 +15,9 @@
             <fieldset>
             	<label for="type">Tipo de Entidad:</label>
                 <select name="type" id="type">
-                	<option value="1">Proveedora</option>
-                    <option value="2">Canal de Distribución</option>
+                	<option value="3">Gestor</option>
+                    <option value="1">Operador Comercial</option>
+                	<option value="2">Operador de Distribución</option>
                 </select>
             </fieldset>
             <fieldset>

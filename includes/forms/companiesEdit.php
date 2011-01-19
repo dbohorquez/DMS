@@ -21,8 +21,9 @@
             <fieldset>
             	<label for="type">Tipo de Entidad:</label>
                 <select name="type" id="type">
-                	<option value="1"<?php if($company['type'] == 1){ ?> selected="selected"<?php } ?>>Proveedora</option>
-                    <option value="2"<?php if($company['type'] == 2){ ?> selected="selected"<?php } ?>>Canal de Distribución</option>
+                	<option value="3"<?php if($company['type'] == 3){ ?> selected="selected"<?php } ?>>Gestor</option>
+                    <option value="1"<?php if($company['type'] == 1){ ?> selected="selected"<?php } ?>>Operador Comercial</option>
+                    <option value="2"<?php if($company['type'] == 2){ ?> selected="selected"<?php } ?>>Operador de Distribución</option>
                 </select>
             </fieldset>
             <fieldset>

@@ -31,7 +31,20 @@
 				?>
                 <tr>
                 	<td><?php echo $company['name']; ?></td>
-                    <td><?php echo $company['type'] == 1 ? 'Proveedora' : 'Canal de Distribución'; ?></td>
+                    <td><?php 
+					if ($company['type'] == 1)
+					{
+						echo "Operador Comercial";
+					} 
+   					if ($company['type'] == 2)
+					{
+						echo "Operador de Distribución";
+					} 
+   					if ($company['type'] == 3)
+					{
+						echo "Gestor";
+					} 
+					?></td>
                     <td><?php echo $company['contactName']; ?></td>
                     <td>
                     	<strong>Tel:</strong> <?php echo $company['phoneNumber']; ?><br />

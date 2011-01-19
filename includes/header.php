@@ -36,7 +36,11 @@ if($section != 'login' && !isset($_SESSION['dms_authorized'])){ header('Location
             <?php if($section != 'login'){ ?>
             <ul id="nav">
                 <li<?php if($section == 'home'){ ?> class="active"<?php } ?>><a href="index.php">Inicio</a></li>
-                <li<?php if($section == 'warehouses'){ ?> class="active"<?php } ?>><a href="warehouses.php">Bodegas</a></li>
+                <li<?php if($section == 'warehouses'){ ?> class="active"<?php } ?>><a href="warehouses.php">Bodegas</a>
+	                <ul>
+                    	<li><a href="transfers.php">Transferencias</a></li>
+                    </ul>
+                </li>
                 <li<?php if($section == 'products'){ ?> class="active"<?php } ?>><a href="products.php">Productos</a>
                 	<ul>
                     	<li><a href="categories.php">Categorías</a></li>
@@ -47,7 +51,8 @@ if($section != 'login' && !isset($_SESSION['dms_authorized'])){ header('Location
                 <li<?php if($section == 'companies'){ ?> class="active"<?php } ?>><a href="companies.php">Entidades</a></li>
                 <li<?php if($section == 'donations'){ ?> class="active"<?php } ?>><a href="donations.php">Donaciones</a>
                 	<ul>
-                    	<li><a href="virtual-receptions.php">Recepción Virtual</a></li>
+                    	<li><a href="virtual-receptions.php">Donación Virtual</a></li>
+                        <li><a href="donation-checkin.php">Comprobantes DV</a></li>
                     	<li><a href="donations-promises.php">Promesas de Donación</a></li>
                         <li><a href="donors.php">Donantes</a></li>
                     </ul>
