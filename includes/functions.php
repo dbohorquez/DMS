@@ -14,7 +14,17 @@ function delete($data){
 	}
 	return array($warning, $success);
 }
-
+function checkMail($mail){ 
+	if($mail !== ""){ 
+		if(ereg("^[-A-Za-z0-9_]+[-A-Za-z0-9_.]*[@]{1}[-A-Za-z0-9_]+[-A-Za-z0-9_.]*[.]{1}[A-Za-z]{2,5}([\;][-A-Za-z0-9_]+[-A-Za-z0-9_.]*[@]{1}[-A-Za-z0-9_]+[-A-Za-z0-9_.]*[.]{1}[A-Za-z]{2,5})*$", $mail)) {
+			return true; 
+		}else{ 
+			return false; 
+		}
+	}else{ 
+		return false; 
+	}
+}
 function getDonationProducts($id){
 	$query = "select p.*, pd.*, d.* from donations d, products_donations pd, products p where d.sequence = pd.donations_id and pd.products_id = p.id and d.sequence = $id group by p.id order by p.name asc";
 	$products = runQuery($query);
@@ -114,12 +124,13 @@ function isGestor($user){
 ============================================================ */
 function addWarehouse($data){	
 	if($data['name'] != ""){
+		if(checkmail($data['email']) or $data['email']==''){
 		//if(is_numeric($data['phonenumber']) and is_numeric($data['cellphone']) and is_numeric($data['fax'])){
 			if(is_numeric($data['occupation'])){ 
 				if($data['occupation'] <= 100 and $data['occupation']>=0){ 	
 					if(!exists("warehouses","name='$data[name]'")){
 															
-						$datos = array(name => $data['name'], type => $data['type'], description => $data['description'], address => $data['address'],occupation => $data['occupation'], contactName => $data['contactname'], phoneNumber => $data['phonenumber'], faxNumber => $data['fax'],cellphone => $data['cellphone'], towns_id =>$data['town']);
+						$datos = array(name => $data['name'], type => $data['type'], description => $data['description'], address => $data['address'],occupation => $data['occupation'], contactName => $data['contactname'], phoneNumber => $data['phonenumber'], faxNumber => $data['fax'],cellphone => $data['cellphone'], towns_id =>$data['town'],email => $data['email']);
 						if(dbInsert("warehouses",$datos)){
 							$success = "La bodega fue agregada exitosamente.";
 						}else{
@@ -133,7 +144,10 @@ function addWarehouse($data){
 				}														
 			}else{
 				$warning = "El porcentaje de ocupación de la bodega debe ser numérico";
-			}														
+			}
+		}else{
+			$warning = "La dirección de correo electrónico no es válida.";
+		}			
 		/*}else{
 			$warning = "Los números telefónicos no pueden contener letras o símbolos";
 		}*/											
@@ -145,11 +159,12 @@ function addWarehouse($data){
 
 function editWarehouse($data){	
 	if($data['name'] != ""){
+		if(checkmail($data['email']) or $data['email']==''){
 	//	if(is_numeric($data['phonenumber']) and is_numeric($data['cellphone']) and is_numeric($data['fax'])){
 			if(is_numeric($data['occupation'])){ 
 				if($data['occupation'] <= 100 and $data['occupation']>=0){ 	
 					if((!exists("warehouses","name='$data[name]' ")) or (exists("warehouses","name='$data[name]'")==$data[id])){										
-						$datos = array(name => $data['name'], type => $data['type'], description => $data['description'], address => $data['address'],occupation => $data['occupation'], contactname => $data['contactname'], phonenumber => $data['phonenumber'], faxnumber => $data['fax'],cellphone => $data['cellphone'], towns_id =>$data['town']);
+						$datos = array(name => $data['name'], type => $data['type'], description => $data['description'], address => $data['address'],occupation => $data['occupation'], contactname => $data['contactname'], phonenumber => $data['phonenumber'], faxnumber => $data['fax'],cellphone => $data['cellphone'], towns_id =>$data['town'],email => $data['email']);
 						if(dbUpdate("warehouses",$datos,"id= $data[id]")){
 							$success = "La bodega fue editada exitosamente.";
 						}else{
@@ -163,7 +178,10 @@ function editWarehouse($data){
 				}														
 			}else{
 				$warning = "El porcentaje de ocupación de la bodega debe ser numérico";
-			}														
+			}
+		}else{
+			$warning = "La dirección de correo electrónico no es válida.";
+		}
 		/*}else{
 			$warning = "Los números telefónicos no pueden contener letras o símbolos";
 		}	*/										
@@ -177,6 +195,7 @@ function editWarehouse($data){
 ============================================================ */
 function addCompany($data){	
 	if($data['name'] != "" and $data['nit'] != ""){
+		if(checkmail($data['email']) or $data['email']==''){
 		//if(is_numeric($data['phonenumber']) and is_numeric($data['fax'])){
 			if(!exists("companies","name='$data[name]'")){
 				$datos = array(id => $data['nit'], name => $data['name'], type => $data['type'], address => $data['address'], contactname => $data['contactname'], phonenumber => $data['phonenumber'], faxnumber => $data['fax'], email => $data['email'], towns_id =>$data['town']);
@@ -201,6 +220,9 @@ function addCompany($data){
 			}else{
 				$warning = "Ya existe una entidad registrada con el nombre '$data[name]'.";
 			}
+		}else{
+			$warning = "La dirección de correo electrónico no es válida.";
+		}
 	/*	}else{
 			$warning = "Los números telefónicos no pueden contener letras o símbolos";
 		}		*/									
@@ -212,6 +234,7 @@ function addCompany($data){
 
 function editCompany($data){	
 	if($data['name'] != "" and $data['nit'] != ""){
+		if(checkmail($data['email']) or $data['email']==''){
 	//	if(is_numeric($data['phonenumber']) and is_numeric($data['fax'])){
 			if((!exists("companies","name='$data[name]' ")) or (exists("companies","name='$data[name]'")==$data[id])){										
 				$datos = array(id=> $data['nit'],name => $data['name'], type => $data['type'], address => $data['address'], contactname => $data['contactname'], phonenumber => $data['phonenumber'], faxnumber => $data['fax'],email => $data['email'], towns_id =>$data['town']);
@@ -223,6 +246,9 @@ function editCompany($data){
 			}else{
 				$warning = "Ya existe una entidad registrada con el nombre '$data[name]'.";
 			}
+		}else{
+			$warning = "La dirección de correo electrónico no es válida.";
+		}
 		/*}else{
 			$warning = "Los números telefónicos no pueden contener letras o símbolos";
 		}*/											
@@ -469,6 +495,7 @@ function validateExistenceKitProducts($data){
 ============================================================ */
 function addDonor($data){	
 	if($data['name'] != "" and $data['identification'] != ""){
+		if(checkmail($data['email']) or $data['email']==''){
 		//if(is_numeric($data['phonenumber']) and is_numeric($data['fax'])){
 			if(!exists("donors","id='$data[identification]'")){
 				$currentdate = date("Y-m-d");									
@@ -495,6 +522,9 @@ function addDonor($data){
 			}else{
 				$warning = "Ya existe un donante registrado con el id '$data[identification]'.";
 			}
+		}else{
+			$warning = "La dirección de correo electrónico no es válida.";
+		}
 		/*}else{
 			$warning = "Los números telefónicos no pueden contener letras o símbolos";
 		}*/											
@@ -507,6 +537,7 @@ function addDonor($data){
 
 function editDonor($data){	
 	if($data['name'] != "" and $data['identification'] != ""){
+		if(checkmail($data['email']) or $data['email']==''){
 	//	if(is_numeric($data['phonenumber']) and is_numeric($data['fax'])){
 			if((!exists("donors","name='$data[name]' ")) or (exists("donors","name='$data[name]'")==$data['id'])){										
 				$datos = array(id => $data['identification'], name => $data['name'], type => $data['type'], address => $data['address'], phonenumber => $data['phonenumber'], faxnumber => $data['fax'], email => $data['email'], towns_id =>$data['town']);
@@ -518,6 +549,9 @@ function editDonor($data){
 			}else{
 				$warning = "Ya existe un donante registrado con el id '$data[identification]'.";
 			}
+		}else{
+			$warning = "La dirección de correo electrónico no es válida.";
+		}
 		/*}else{
 			$warning = "Los números telefónicos no pueden contener letras o símbolos";
 		}*/											
@@ -677,27 +711,31 @@ function getCurrentState ($products_donations){
 ============================================================ */
 function addUser($data){
 	if($data['name'] != "" && $data['email'] != ''){
-		if(!exists("users","email='$data[email]'")){
-			$pass = substr(md5(rand(),0,8));
-			$encodedPass = md5($pass);
-			$date = date('Y-m-d');
-			$datos = array(name => $data['name'], password => $encodedPass, phoneNumber => $data['phonenumber'], email => $data['email'], profile => $data['profile']);
-			if(dbInsert("users",$datos)){
-				$to      = $data['email'];
-				$subject    = 'Bienvenido a Sahana Caribe';
-				$message   = 'Su cuenta ha sido creada. Ingrese a http://www.sahanacaribe.org/ para iniciar sesión. Su contraseña provisional es ' . $pass;
-				$headers = 'From: Sahana Caribe <admin@sahanacaribe.com>' . "\r\n" .'Fecha: '.$date. "\r\n";
-				if(mail($to, $subject, $message, $headers)){
-					$success = "El usuario ha sido agregado exitosamente.";
+		if(checkmail($data['email']) or $data['email']==''){
+			if(!exists("users","email='$data[email]'")){
+				$pass = substr(md5(rand(),0,8));
+				$encodedPass = md5($pass);
+				$date = date('Y-m-d');
+				$datos = array(name => $data['name'], password => $encodedPass, phoneNumber => $data['phonenumber'], email => $data['email'], profile => $data['profile']);
+				if(dbInsert("users",$datos)){
+					$to      = $data['email'];
+					$subject    = 'Bienvenido a Sahana Caribe';
+					$message   = 'Su cuenta ha sido creada. Ingrese a http://www.sahanacaribe.org/ para iniciar sesión. Su contraseña provisional es ' . $pass;
+					$headers = 'From: Sahana Caribe <admin@sahanacaribe.com>' . "\r\n" .'Fecha: '.$date. "\r\n";
+					if(mail($to, $subject, $message, $headers)){
+						$success = "El usuario ha sido agregado exitosamente.";
+					}else{
+						$warning = "El usuario ha sido creado pero no se ha podido enviar el correo activación. Por favor elimine al usuario e inténtelo nuevamente.";
+					}
 				}else{
-					$warning = "El usuario ha sido creado pero no se ha podido enviar el correo activación. Por favor elimine al usuario e inténtelo nuevamente.";
+					$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
 				}
 			}else{
-				$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
+				$warning = "Ya existe un usuario registrado con el email '$data[email]'.";
 			}
 		}else{
-			$warning = "Ya existe un usuario registrado con el email '$data[email]'.";
-		}										
+			$warning = "La dirección de correo electrónico no es válida.";
+		}
 	}else{
 		$warning = "Por favor digite todos los datos obligatorios.";
 	}
@@ -719,24 +757,29 @@ function editUser($data){
 }
 
 function validateLogin($data){
-	if($data['email']!='' && $data['password']!=''){
-		$password = md5($data['password']);
-		$query = "select * from users where email='$data[email]' and password='$password'";
-		if($result = runQuery($query)){
-			if(mysql_num_rows($result) == 1){
-				$row = mysql_fetch_array($result);
-				$_SESSION['dms_authorized'] = true;
-				$_SESSION['dms_id'] = $row['id'];
-				
-				header('Location: index.php');
+
+	if(checkmail($data['email']) or $data['email']==''){
+		if($data['email']!='' && $data['password']!=''){
+			$password = md5($data['password']);
+			$query = "select * from users where email='$data[email]' and password='$password'";
+			if($result = runQuery($query)){
+				if(mysql_num_rows($result) == 1){
+					$row = mysql_fetch_array($result);
+					$_SESSION['dms_authorized'] = true;
+					$_SESSION['dms_id'] = $row['id'];
+					
+					header('Location: index.php');
+				}else{
+					$warning = "Nombre de usuario o contraseña incorrectos.";
+				}
 			}else{
 				$warning = "Nombre de usuario o contraseña incorrectos.";
 			}
 		}else{
-			$warning = "Nombre de usuario o contraseña incorrectos.";
+			$warning = "Por favor digite todos los datos.";
 		}
 	}else{
-		$warning = "Por favor digite todos los datos.";
+		$warning = "La dirección de correo electrónico no es válida.";
 	}
 	return $warning;
 }
@@ -766,7 +809,7 @@ function changePassword($data){
 }
 
 function resetPassword($data){
-	if($data['email']!=''){
+	if(checkmail($data['email']) or $data['email']==''){
 		if($id = exists("users","email='$data[email]'")){
 			$pass = substr(md5(rand(),0,8));
 			$encodedPass = md5($pass);
@@ -789,7 +832,7 @@ function resetPassword($data){
 			$warning = "La dirección de correo electrónico no está registrada. Por favor verifique los datos.";
 		}
 	}else{
-		$warning = "Por favor digite todos los datos obligatorios.";
+		$warning = "La dirección de correo electrónico no es válida.";
 	}
 	return array($warning, $success);
 }

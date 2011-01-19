@@ -411,7 +411,7 @@ CREATE TABLE `warehouses` (
   `faxNumber` varchar(45) default NULL,
   `towns_id` int(11) NOT NULL,
   `createdAt` timestamp NOT NULL default CURRENT_TIMESTAMP,
-  `deleteAt` datetime default NULL,
+  `deletedAt` datetime default NULL,
   `email` varchar(45) default NULL,
   `companies_id` double default NULL,
   PRIMARY KEY  (`id`),
@@ -423,7 +423,7 @@ CREATE TABLE `warehouses` (
 
 /*Data for the table `warehouses` */
 
-insert  into `warehouses`(`id`,`name`,`description`,`type`,`occupation`,`contactName`,`address`,`phoneNumber`,`cellphone`,`faxNumber`,`towns_id`,`createdAt`,`deleteAt`,`email`,`companies_id`) values (3,'GobernaciÃ³n','bodega',2,20,'Jorge Arango','Calle falsa 123','43243','432332','3423432',1,'0000-00-00 00:00:00',NULL,NULL,NULL),(7,'kjdfasj','jsjdfaskjdnajdn',1,20,'ns anmsd jsnda','sdsada','332432','324233','32432234',1,'0000-00-00 00:00:00',NULL,NULL,NULL);
+insert  into `warehouses`(`id`,`name`,`description`,`type`,`occupation`,`contactName`,`address`,`phoneNumber`,`cellphone`,`faxNumber`,`towns_id`,`createdAt`,`deletedAt`,`email`,`companies_id`) values (3,'GobernaciÃ³n','bodega',2,20,'Jorge Arango','Calle falsa 123','43243','432332','3423432',1,'0000-00-00 00:00:00',NULL,NULL,NULL),(7,'kjdfasj','jsjdfaskjdnajdn',1,20,'ns anmsd jsnda','sdsada','332432','324233','32432234',1,'0000-00-00 00:00:00',NULL,NULL,NULL);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
