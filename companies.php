@@ -5,7 +5,7 @@
 <?php if(isset($_POST['bt-edit'])) list($warning, $success) = editCompany($_POST);?>
 <?php if(isset($_POST['bt-delete'])) list($warning, $success) = delete($_POST);?>
 			<h2>Entidades</h2>
-            <?php if(isSupervisor($_SESSION['dms_id'])){?>
+            <?php if(isSupervisor($_SESSION['dms_id']) or isAdmin($_SESSION['dms_id'])){?>
 			<ul class="toolbar">
             	<li><a href="includes/forms/companiesAdd.php" class="btn colorbox">Nueva Entidad</a></li>
             </ul>

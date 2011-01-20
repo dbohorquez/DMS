@@ -372,22 +372,37 @@ function transferProducts ($data){
 		if($warehouse){
 			$sw=false;
 			foreach($data as $key => $value){
+			//se busca si el usuario eljio productos
 				if(substr($key,0,5) == 'hitem'){
-					$sw=true;
+					if(sw==false){
+						$sw=true;
+						// si hay productos se ingresa la tranferencia a la que s ele van asociar los productos
+						$datos = array(starting_warehouse => $data['warehouse'], state => $data['state'], description => $data['description'],state => 1,flagkit => 0);
+						$idtranfer=dbInsert("transfers",$datos);
+						if($idtranfer){
+							$success = "La transferencia fue  exitosa.";
+						}else{
+							$warning = "No agregó ningun producto para tranferir. Por favor inténtelo nuevamente.";
+							return array($warning, $success);
+						}
+					}
 					$qtyname = 'citem' . substr($key,-7);
 					$qty = $data[$qtyname];
+					//se busca el producto con el nombre
 					$idp = findRow('products','name',"'".$value."'",'id');
-					$query = "select * from products_donations where products_id=$idp and state in (1) order by expirationDate limit $qty";
+					//se agregan los productos a la donacion
+					$datos = array(product_donation_id => $idp, tranfer_id => $idtranfer, quantity => $qty);
+					$idtranfer=dbInsert("products_donations_tranfers",$datos);
+					//se buscan los productos que se van a tranferir con fecha de expracion mas proxima
+					$query = "select * from products_donations where products_id=$idp and state in (2) order by expirationDate limit $qty";
 					$result= runQuery($query);
 					while($row = mysql_fetch_array($result)){
-						$update=dbUpdate(products_donations,array(state => 2, warehouses_id => $warehouse),"id=$row[id]");
+						// se actualiza la bodega del producto
+						$update=dbUpdate(products_donations,array(warehouses_id => $warehouse),"id=$row[id]");
+						// se ingresa el cambio de estado del producto
+						addStatesChanges ($row[id],1,$_SESSION['dms_id'],$reason = 'Tranferencia desde la bodega $data[warehouse]');
 					}	
 				}
-			}
-			if($sw){
-				$success = "La traferencia fue  exitosa.";
-			}else{
-				$warning = "No agregó ningun producto para tranferir. Por favor inténtelo nuevamente.";
 			}
 		}else{
 			$warning = "Hay datos que no existen, por favor verifique.";
@@ -852,7 +867,7 @@ function addDistribution($data){
 							$qtyname = 'citem' . substr($key,-7);
 							$qty = $data[$qtyname];
 							$idp = findRow('products','name',"'".$value."'",'id');
-							$query = "select * from products_donations where products_id=$idp and state in (2) order by expirationDate limit $qty";
+							$query = "select * from products_donations where products_id=$idp and state in (1) order by expirationDate limit $qty";
 							$result= runQuery($query);
 							while($result and $row = mysql_fetch_array($result)){
 								$datos = array(products_donations_id => $row['id'], distributions_id =>$id);
@@ -900,7 +915,7 @@ if($data['warehouse'] != "" and $data['company'] != "" and $data['deliveryDate']
 									$qtyname = 'citem' . substr($key,-7);
 									$qty = $data[$qtyname];
 									$idp = findRow('products','name',"'".$value."'",'id');
-									$query = "select * from products_donations where products_id=$idp and state in (2) order by expirationDate limit $qty";
+									$query = "select * from products_donations where products_id=$idp and state in (1) order by expirationDate limit $qty";
 									$result= runQuery($query);
 									while($result and $row = mysql_fetch_array($result)){
 										$datos = array(products_donations_id => $row['id'], distributions_id =>$data[id]);
