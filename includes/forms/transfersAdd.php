@@ -19,8 +19,8 @@
 		?>
         <div class="column c50p">
             <fieldset>
-                <label for="warehouse">Bodega: <span class="required">*</span></label>
-                <select name="warehouse" id="warehouse">
+                <label for="warehousefrom">Bodega Origen: <span class="required">*</span></label>
+                <select name="warehousefrom" id="warehousefrom">
                 <?php
                     $warehouses = getTable('warehouses','','name asc');
                     while($warehouse = mysql_fetch_array($warehouses)){
@@ -29,31 +29,37 @@
                 <?php } ?>
                 </select>
             </fieldset>
-            <fieldset>
-                <label for="company">Canal de Distribución: <span class="required">*</span></label>
-                <select name="company" id="company">
+                        <fieldset>
+                <label for="warehouseto">Bodega Destino: <span class="required">*</span></label>
+                <select name="warehouseto" id="warehouseto">
                 <?php
-                    $companies = getTable('companies','type = 2','name asc');
-                    while($company = mysql_fetch_array($companies)){
+                    $warehouses = getTable('warehouses','type=1','name asc');
+                    while($warehouse = mysql_fetch_array($warehouses)){
                 ?>
-                    <option value="<?php echo $company['id']; ?>"><?php echo $company['name']; ?></option>
+                    <option value="<?php echo $warehouse['id']; ?>"><?php echo $warehouse['name']; ?></option>
                 <?php } ?>
                 </select>
             </fieldset>
+
+            
         </div>
         <div class="column c50p last">
-            <fieldset>
-                <label for="deliveryDate">Fecha de Entrega: <span class="required">*</span></label>
-                <input type="text" class="text datepicker" size="20" name="deliveryDate" id="deliveryDate" />
-            </fieldset>
-            <fieldset>
-                <label for="state">Estado: <span class="required">*</span></label>
-                <select name="state" id="state">
-                    <option value="1">Programada</option>
-                    <option value="2">Entregada</option>
-                    <option value="3">Pendiente</option>
+        <fieldset>
+                <label for="shelter">Beneficiarios: <span class="required">*</span></label>
+                <select name="shelter" id="shelter">
+                <?php
+                    $shelters = getTable('shelters','','name asc');
+                    while($shelter = mysql_fetch_array($shelters)){
+                ?>
+                    <option value="<?php echo $shelter['id']; ?>"><?php echo $shelter['name']; ?></option>
+                <?php } ?>
                 </select>
             </fieldset>
+        <fieldset>
+            	<label for="notes">Comentarios:</label>
+                <textarea class="text" cols="44" rows="6" name="notes" id="notes"></textarea>
+        </fieldset>
+
         </div>
         <h4>Productos <span class="required">*</span></h4>
         <fieldset>

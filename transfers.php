@@ -1,7 +1,7 @@
 <?php $section = 'warehouses'; ?>
 <?php include('includes/header.php'); ?>
 
-<?php if(isset($_POST['bt-transfer'])) list($warning, $success) = transferAdd($_POST);?>
+<?php if(isset($_POST['bt-transfer'])) list($warning, $success) = transferProducts($_POST);?>
 <?php if(isset($_POST['bt-delete'])) list($warning, $success) = delete($_POST);?>
 			<h2>Transferencias</h2>
 			<ul class="toolbar">
@@ -45,7 +45,6 @@
                     </td>
                     <td>
                     	<ul class="table-actions">
-                        	<li><a href="includes/forms/warehousesEdit.php?e=<?php echo $warehouse['id']; ?>" class="icon edit colorbox" title="Editar"><span>Editar</span></a></li>
                             <li><a href="includes/forms/delete.php?t=warehouses&d=<?php echo $warehouse['id']; ?>" class="icon delete colorbox" title="Eliminar"><span>Eliminar</span></a></li>
                         </ul>
                     </td>

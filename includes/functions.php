@@ -89,35 +89,26 @@ function importTowns($data,$file){
 							}
 	return array($warning, $success);
 }
-function isAdmin($user){
-	$query = "select * from users where id=$user and profile='Administrador'";
+function isAnyRol($user){
+	$query = "select * from users where id=$user";
+	$result=runQuery($query);
 	$nums_row=runQuery($query,2);
 	
 	if($nums_row>0)
-		return true;
+		$row = mysql_fetch_array($result);
+		if($row['profile']=='Administrador')
+		{
+		return 1;
+		}
+		if($row['profile']=='Operador')
+		{
+		return 2;
+		}
+		
 	else
-		return false;
+		return 0;
 }
 
-function isSupervisor($user){
-	$query = "select * from users where id=$user and profile='Supervisor'";
-	$nums_row=runQuery($query,2);
-	
-	if($nums_row>0)
-		return true;
-	else
-		return false;
-}
-
-function isGestor($user){
-	$query = "select * from users where id=$user and profile='Gestor'";
-	$nums_row=runQuery($query,2);
-	
-	if($nums_row>0)
-		return true;
-	else
-		return false;
-}
 
 
 /* Warehouses 
@@ -367,8 +358,8 @@ function editProduct($data){
 }
 
 function transferProducts ($data){
-	if($data['warehouse'] != "" ){
-		$warehouse = exists("warehouses","id='$data[warehouse]'");	
+	if($data['warehouseto'] != "" ){
+		$warehouse = exists("warehouses","id='$data[warehouseto]'");	
 		if($warehouse){
 			$sw=false;
 			foreach($data as $key => $value){
@@ -377,7 +368,7 @@ function transferProducts ($data){
 					if(sw==false){
 						$sw=true;
 						// si hay productos se ingresa la tranferencia a la que s ele van asociar los productos
-						$datos = array(starting_warehouse => $data['warehouse'], state => $data['state'], description => $data['description'],state => 1,flagkit => 0);
+						$datos = array(starting_warehouse => $data['warehousefrom'], destination_warehouse => $data['warehouseto'], notes => $data['notes'],state => 1, shelter_id => $data['shelter']);
 						$idtranfer=dbInsert("transfers",$datos);
 						if($idtranfer){
 							$success = "La transferencia fue  exitosa.";
@@ -1011,6 +1002,77 @@ function editCategory($data){
 	}
 	return array($warning, $success);
 } 
+
+/* Shelters
+============================================================ */
+function addShelter($data){	
+	if($data['name'] != ""){
+		if(checkmail($data['email']) or $data['email']==''){
+		//if(is_numeric($data['phonenumber']) and is_numeric($data['fax'])){
+			if(!exists("shelters","name='$data[name]'")){
+				$currentdate = date("Y-m-d");									
+				$datos = array(name => $data['name'], contactName => $data['contactname'], address => $data['address'], phonenumber => $data['phonenumber'], fax => $data['fax'], email => $data['email'], town_id =>$data['town'], createdAt => $currentdate);
+				$fields  = "";
+				$values = "";
+			
+				foreach ($datos as $f => $v){
+					$fields  .= "$f,";
+					$values .= (is_numeric($v) && (intval($v) == $v)) ? $v."," : "'$v',";
+				}
+			
+				//Eliminar las "," sobrantes
+				$fields = substr($fields, 0, -1);
+				$values = substr($values, 0, -1);
+			
+				$query = "insert into shelters ({$fields}) values({$values})";
+				$value = runQuery($query,4);
+				if($value != ''){
+					$success = "El beneficiario fue agregado exitosamente.";
+				}else{
+					$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
+				}
+			}else{
+				$warning = "Ya existe un beneficiario registrado con el id '$data[identification]'.";
+			}
+		}else{
+			$warning = "La dirección de correo electrónico no es válida.";
+		}
+		/*}else{
+			$warning = "Los números telefónicos no pueden contener letras o símbolos";
+		}*/											
+	}else{
+		$warning = "Por favor digite todos los datos obligatorios.";
+	}
+	return array($warning, $success);
+	
+} 
+
+function editShelter($data){	
+	if($data['name'] != ""){
+		if(checkmail($data['email']) or $data['email']==''){
+	//	if(is_numeric($data['phonenumber']) and is_numeric($data['fax'])){
+			if((!exists("shelters","name='$data[name]' ")) or (exists("shelters","name='$data[name]'")==$data['id'])){										
+				$datos = array(name => $data['name'], contactName => $data['contactname'], type => $data['type'], address => $data['address'], phonenumber => $data['phonenumber'], fax => $data['fax'], email => $data['email'], town_id =>$data['town']);
+				if(dbUpdate("shelters",$datos,"id= $data[id]")){
+					$success = "El beneficiario fue editado exitosamente.";
+				}else{
+					$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
+				}
+			}else{
+				$warning = "Ya existe un beneficiario registrado con el id '$data[identification]'.";
+			}
+		}else{
+			$warning = "La dirección de correo electrónico no es válida.";
+		}
+		/*}else{
+			$warning = "Los números telefónicos no pueden contener letras o símbolos";
+		}*/											
+	}else{
+		$warning = "Por favor digite todos los datos obligatorios.";
+	}
+	return array($warning, $success);
+} 
+
 
 
 ?>
