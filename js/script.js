@@ -46,7 +46,8 @@ function removeProduct(product){
 }
 
 
-// Form validations 
+/* Form Validation
+============================================================ */
 
 var reEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 var reFloat = /^((\d+(\.\d*)?)|((\d*\.)?\d+))$/;
@@ -78,4 +79,37 @@ function atLeastOne(elem) {
 
 function isPercentage(elem) {
 	return isFloat(elem) && parseInt(elem.val()) > 0 && parseInt(elem.val()) < 100
+}
+
+function validateWarehouseForm(){
+		valid = true
+	  $("form input, form select").removeClass("error")
+		if (isNil($("#name")))
+		{ valid= false; $("#name").addClass("error") }
+		if (!isSelected($("#town")))
+		{ valid= false; $("#town").addClass("error") }
+		if ( !isNil($("#occupation")) && !isPercentage($("#occupation")) )
+		{ valid= false; $("#occupation").addClass("error") }
+		
+		if (!valid){	
+			$("#errorMessage").html("Por favor digite todos los campos obligatorios (<span class=\"required\">*</span>).");
+			$("#errorMessage").show();
+			$.colorbox.resize();
+		}
+    return valid;
+}
+
+function validateTransferForm(){
+		valid = true
+	  $("form input").removeClass("error")
+	
+		if (!atLeastOne($(".product-list.text")))
+		{ valid= false; $(".product-list.text").addClass("error") }
+		
+		if (!valid){
+			$("#errorMessage").html("Por favor digite todos los campos obligatorios (<span class=\"required\">*</span>).");
+			$("#errorMessage").show();
+			$.colorbox.resize();
+		}
+    return valid;
 }

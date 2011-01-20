@@ -180,8 +180,8 @@ ol.list{
 	margin-bottom:10px;
 }
 
-.error,
-.success{
+div.error,
+div.success{
 	background:#FCC;
 	-moz-border-radius:4px;
 	-webkit-border-radius:4px;
@@ -192,10 +192,12 @@ ol.list{
 	padding:4px 8px;
 }
 
-.success{
+div.success{
 	background:#CFC;
 	color:#060;
 }
+
+#errorMessage{display:none;}
 
 .full,
 .required{
@@ -337,6 +339,13 @@ label.inline{
 }
 
 .text + .btn{margin-top:-2px;}
+
+input.error,
+textarea.error,
+select.error{
+	background:#FFF6F6;
+	border:1px solid #C66;
+}
 
 /* Tables
 ============================================================ */

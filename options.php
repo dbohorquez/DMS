@@ -11,7 +11,7 @@
             <?php if($warning != ''){ echo '<div class="error">' . $warning . '</div>'; } ?>
             <div class="column c66p">
             	<h3>Usuarios</h3>
-                <?php if(isSupervisor($_SESSION['dms_id'])){?>
+                <?php if(isSupervisor($_SESSION['dms_id']) || isAdmin($_SESSION['dms_id'])){?>
 				<ul class="toolbar">
                     <li><a href="includes/forms/usersAdd.php" class="btn colorbox">Agregar Usuario</a></li>
                 </ul>

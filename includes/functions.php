@@ -728,7 +728,7 @@ function addUser($data){
 	if($data['name'] != "" && $data['email'] != ''){
 		if(checkmail($data['email']) or $data['email']==''){
 			if(!exists("users","email='$data[email]'")){
-				$pass = substr(md5(rand(),0,8));
+				$pass = substr(md5(rand()),0,8);
 				$encodedPass = md5($pass);
 				$date = date('Y-m-d');
 				$datos = array(name => $data['name'], password => $encodedPass, phoneNumber => $data['phonenumber'], email => $data['email'], profile => $data['profile']);
@@ -826,7 +826,7 @@ function changePassword($data){
 function resetPassword($data){
 	if(checkmail($data['email']) or $data['email']==''){
 		if($id = exists("users","email='$data[email]'")){
-			$pass = substr(md5(rand(),0,8));
+			$pass = substr(md5(rand()),0,8);
 			$encodedPass = md5($pass);
 			$query = "update users set password = '$encodedPass' where id = '$id'";
 			if(runQuery($query)){
