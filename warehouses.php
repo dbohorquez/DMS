@@ -74,37 +74,3 @@
                 </li>
             </ul>
 <?php include('includes/footer.php'); ?>
-<script type="text/javascript">
-
-function validateWarehouseForm(){
-		valid = true
-	  $("form input, form select").removeClass("error")
-		if (isNil($("#name")))
-		{ valid= false; $("#name").addClass("error") }
-		if (!isSelected($("#town")))
-		{ valid= false; $("#town").addClass("error") }
-		if ( !isNil($("#occupation")) && !isPercentage($("#occupation")) )
-		{ valid= false; $("#occupation").addClass("error") }
-		
-		if (!valid)
-		{	jQuery("#errorMessage").html("Falta llenar algunos campos obligatorios(<span class=\"required\">*</span>).");
-			jQuery.colorbox.resize();
-		}
-    return valid;
-}
-
-function validateTransferForm(){
-		valid = true
-	  $("form input").removeClass("error")
-	
-		if (!atLeastOne($(".product-list.text")))
-		{ valid= false; $(".product-list.text").addClass("error") }
-		
-		if (!valid)
-		{	jQuery("#errorMessage").html("Falta llenar algunos campos obligatorios(<span class=\"required\">*</span>).");
-			jQuery.colorbox.resize();
-		}
-    return valid;
-}
-
-</script>

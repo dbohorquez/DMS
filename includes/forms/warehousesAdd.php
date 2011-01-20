@@ -3,7 +3,7 @@
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
     <form action="warehouses.php" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateWarehouseForm();">
     <?php include('../functions.php'); ?>
-        	<div id="errorMessage"> </div>
+        	<div id="errorMessage" class="error"> </div>
 					<div class="column c50p">
 					  <fieldset>
                 <label for="name">Nombre: <span class="required">*</span></label>
