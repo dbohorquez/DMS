@@ -18,11 +18,18 @@
             <label for="profile">Perfil:</label>
             <select name="profile" id="profile">
                 <option value="Administrador">Administrador</option>
-                <option value="Operador">Operador</option>
-            </select>
+                <option value="Supervisor">Supervisor</option>
+                <option value="Gestor">Gestor</option>
+                <option value="Operador de Distribución">Operador de Distribución</option>
+                <option value="Operador de Bodega">Operador de Bodega</option>
+                <option value="Operador Comercial">Operador Comercial</option>
+           </select>
         </fieldset>
         <fieldset class="clear">
-	        <input type="submit" class="btn" value="Agregar" name="bt-add" /><span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
+                <?php if(isAnyRol($_SESSION['dms_id'])== 1){?>
+                 <input type="submit" class="btn" value="Agregar" name="bt-add" />
+				<?php } ?>
+	        <span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
         </fieldset>
     </form>
 </div>

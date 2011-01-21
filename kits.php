@@ -6,7 +6,9 @@
 <?php if(isset($_POST['bt-delete'])) list($warning, $success) = delete($_POST);?>
 			<h2>Kits</h2>
 			<ul class="toolbar">
+                 <?php if(isAnyRol($_SESSION['dms_id'])== 1 || isAnyRol($_SESSION['dms_id'])== 3){?>
             	<li><a href="includes/forms/kitsAdd.php" class="btn colorbox">Agregar Kit</a></li>
+          		<?php } ?>
             </ul>
             <?php if($success != ''){ echo '<div class="success">' . $success . '</div>'; } ?>
 			<?php if($warning != ''){ echo '<div class="error">' . $warning . '</div>'; } ?>
@@ -33,10 +35,13 @@
 						?>
                     </ul></td>
                     <td>
-                    	<ul class="table-actions">
+                    <?php if(isAnyRol($_SESSION['dms_id'])== 1 || isAnyRol($_SESSION['dms_id'])== 3){?>
+		        	<ul class="table-actions">
                         	<li><a href="includes/forms/kitsEdit.php?e=<?php echo $kit['id']; ?>" class="icon edit colorbox" title="Editar"><span>Editar</span></a></li>
                             <li><a href="includes/forms/delete.php?t=kits&d=<?php echo $kit['id']; ?>" class="icon delete colorbox" title="Eliminar"><span>Eliminar</span></a></li>
                         </ul>
+	          		<?php } ?>
+            
                     </td>
                 </tr>
                 <?php

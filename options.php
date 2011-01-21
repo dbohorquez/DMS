@@ -11,7 +11,7 @@
             <?php if($warning != ''){ echo '<div class="error">' . $warning . '</div>'; } ?>
             <div class="column c66p">
             	<h3>Usuarios</h3>
-                <?php if(isAnyRol($_SESSION['dms_id'])== 1 || isAnyRol($_SESSION['dms_id'])== 2){?>
+                <?php if(isAnyRol($_SESSION['dms_id'])== 1){?>
 				<ul class="toolbar">
                     <li><a href="includes/forms/usersAdd.php" class="btn colorbox">Agregar Usuario</a></li>
                 </ul>
@@ -35,10 +35,12 @@
                         <td><?php echo $user['email']; ?></td>
                         <td><?php echo $user['profile']; ?></td>
                         <td>
+                        <?php if(isAnyRol($_SESSION['dms_id'])== 1){?>
                             <ul class="table-actions">
                                 <li><a href="includes/forms/usersEdit.php?e=<?php echo $user['id']; ?>" class="icon edit colorbox" title="Editar"><span>Editar</span></a></li>
                                 <li><a href="includes/forms/delete.php?t=users&d=<?php echo $user['id']; ?>" class="icon delete colorbox" title="Eliminar"><span>Eliminar</span></a></li>
                             </ul>
+                        <?php } ?>
                         </td>
                     </tr>
                     <?php
@@ -70,10 +72,10 @@
                     </fieldset>
                 </form>
             	<h3 class="floatleft">Municipios</h3>
-                <?php if(isSupervisor($_SESSION['dms_id'])){?>
-			      <a href="includes/forms/townsImport.php" class="btn floatright colorbox">Importar Municipios</a>
+                <?php if(isAnyRol($_SESSION['dms_id'])== 1){?>
+                <a href="includes/forms/townsImport.php" class="btn floatright colorbox">Importar Municipios</a>
 				<?php } ?>
-                <ul class="toolbar">
+				<ul class="toolbar">
                     <li>
                     	<select name="province" id="province" onchange="document.location.href='options.php?p=' + this.value;">
                         	<option value="">-- Seleccione un Departamento --</option>

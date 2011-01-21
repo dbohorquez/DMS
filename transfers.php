@@ -5,10 +5,9 @@
 <?php if(isset($_POST['bt-delete'])) list($warning, $success) = delete($_POST);?>
 			<h2>Transferencias</h2>
 			<ul class="toolbar">
-            <?php //if(isSupervisor($_SESSION['dms_id']) or isAdmin($_SESSION['dms_id']) ){?>
+            <?php if(isAnyRol($_SESSION['dms_id'])== 1 || isAnyRol($_SESSION['dms_id'])== 2){?>
             <li><a href="includes/forms/transfersAdd.php" class="btn colorbox">Nueva Transferencia</a></li>
-			<?php //} ?>
-            
+	        <?php } ?>          
             </ul>
             <?php if($success != ''){ echo '<div class="success">' . $success . '</div>'; } ?>
 			<?php if($warning != ''){ echo '<div class="error">' . $warning . '</div>'; } ?>
@@ -44,9 +43,12 @@
                         <?php echo utf8_encode($location['town'] . ', ' . $location['province']); ?>
                     </td>
                     <td>
+                    <?php if(isAnyRol($_SESSION['dms_id'])== 1 || isAnyRol($_SESSION['dms_id'])== 2){?>
                     	<ul class="table-actions">
-                            <li><a href="includes/forms/delete.php?t=warehouses&d=<?php echo $warehouse['id']; ?>" class="icon delete colorbox" title="Eliminar"><span>Eliminar</span></a></li>
+                        <li><a href="includes/forms/delete.php?t=warehouses&d=<?php echo $warehouse['id']; ?>" class="icon delete colorbox" title="Eliminar"><span>Eliminar</span></a></li>
                         </ul>
+			        <?php } ?>          
+        
                     </td>
                 </tr>
                 <?php

@@ -24,7 +24,10 @@
             <input type="text" class="text autocomplete" size="48" name="category" id="category" />
         </fieldset>
         <fieldset class="clear">
-	        <input type="submit" class="btn" value="Agregar" name="bt-add" /><span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
+	        <?php if(isAnyRol($_SESSION['dms_id'])== 1 || isAnyRol($_SESSION['dms_id'])== 3){?>
+               <input type="submit" class="btn" value="Agregar" name="bt-add" />
+            <?php } ?>
+	        <span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
         </fieldset>
     </form> 
     <script type="text/javascript">

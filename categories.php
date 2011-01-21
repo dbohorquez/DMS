@@ -6,7 +6,9 @@
 <?php if(isset($_POST['bt-delete'])) list($warning, $success) = delete($_POST);?>
 			<h2>Categorias</h2>
 			<ul class="toolbar">
+            <?php if(isAnyRol($_SESSION['dms_id'])== 1){?>
             	<li><a href="includes/forms/categoriesAdd.php" class="btn colorbox">Agregar Categoria</a></li>
+			<?php } ?>
             </ul>
             <?php if($success != ''){ echo '<div class="success">' . $success . '</div>'; } ?>
 			<?php if($warning != ''){ echo '<div class="error">' . $warning . '</div>'; } ?>

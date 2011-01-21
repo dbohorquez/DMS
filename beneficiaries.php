@@ -5,8 +5,12 @@
 <?php if(isset($_POST['bt-edit'])) list($warning, $success) = editShelter($_POST);?>
 <?php if(isset($_POST['bt-delete'])) list($warning, $success) = delete($_POST);?>
 			<h2>Beneficiarios</h2>
+            
             <ul class="toolbar">
-                <li><a href="includes/forms/sheltersAdd.php" class="btn colorbox">Agregar Beneficiario</a></li>
+            <?php if(isAnyRol($_SESSION['dms_id'])== 1){?>
+			<li><a href="includes/forms/sheltersAdd.php" class="btn colorbox">Agregar Beneficiario</a></li>
+			<?php } ?>
+                
             </ul>
             <?php if($success != ''){ echo '<div class="success">' . $success . '</div>'; } ?>
 			<?php if($warning != ''){ echo '<div class="error">' . $warning . '</div>'; } ?>

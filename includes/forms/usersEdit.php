@@ -23,12 +23,19 @@
         <fieldset>
             <label for="profile">Perfil:</label>
             <select name="profile" id="profile">
-                <option value="Administrador"<?php if($user['profile'] == 'Administrador'){ ?> selected="selected"<?php } ?>>Administrador</option>
-                <option value="Operador"<?php if($user['profile'] == 'Operador'){ ?> selected="selected"<?php } ?>>Operador</option>
+                <option value="Administrador" <?php if($user['profile'] == 'Administrador'){ ?> selected="selected"<?php } ?>>Administrador</option>
+                <option value="Supervisor" <?php if($user['profile'] == 'Supervisor'){ ?> selected="selected"<?php } ?>>Supervisor</option>
+                <option value="Gestor" <?php if($user['profile'] == 'Gestor'){ ?> selected="selected"<?php } ?>>Gestor</option>
+                <option value="Operador de Distribución" <?php if($user['profile'] == 'Operador de Distribución'){ ?> selected="selected"<?php } ?>>Operador de Distribución</option>
+                <option value="Operador de Bodega" <?php if($user['profile'] == 'Operador de Bodega'){ ?> selected="selected"<?php } ?>>Operador de Bodega</option>
+                <option value="Operador Comercial" <?php if($user['profile'] == 'Operador Comercial'){ ?> selected="selected"<?php } ?>>Operador Comercial</option>
             </select>
         </fieldset>
         <fieldset class="clear">
-	        <input type="submit" class="btn" value="Guardar Cambios" name="bt-edit" /><span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
+                <?php if(isAnyRol($_SESSION['dms_id'])== 1){?>
+                 <input type="submit" class="btn" value="Guardar Cambios" name="bt-edit" />
+				<?php } ?>
+	       <span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
         </fieldset>
     </form>
 </div>

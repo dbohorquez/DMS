@@ -6,7 +6,9 @@
 <?php if(isset($_POST['bt-delete'])) list($warning, $success) = delete($_POST);?>
 			<h2>Donantes</h2>
             <ul class="toolbar">
+                <?php if(isAnyRol($_SESSION['dms_id'])== 1 || isAnyRol($_SESSION['dms_id'])== 3){?>
                 <li><a href="includes/forms/donorsAdd.php" class="btn colorbox">Agregar Donante</a></li>
+          		<?php } ?>
             </ul>
             <?php if($success != ''){ echo '<div class="success">' . $success . '</div>'; } ?>
 			<?php if($warning != ''){ echo '<div class="error">' . $warning . '</div>'; } ?>

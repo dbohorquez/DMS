@@ -31,7 +31,10 @@
 						}  ?>" />
         </fieldset>
        <fieldset class="clear">
-	        <input type="submit" class="btn clear" value="Guardar Cambios" name="bt-edit" /><span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
+          <?php if(isAnyRol($_SESSION['dms_id'])== 1 || isAnyRol($_SESSION['dms_id'])== 3){?>
+          	<input type="submit" class="btn clear" value="Guardar Cambios" name="bt-edit" />
+          <?php } ?>
+	        <span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
         </fieldset>
     </form>
     <script type="text/javascript">

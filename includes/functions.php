@@ -7,8 +7,47 @@ function delete($data){
 	//if(dbDelete($data['table'],"id = $data[id]")){
 	$currentdate = date("Y-m-d H:i");										
 	$datos = array(deletedAt=> $currentdate);
-	if(dbUpdate($data['table'],$datos,"id= $data[id]")){	
+	$id = "id";
+	$children = "";
+	if($data['table']=='donations')
+		{
+			$id = "sequence";
+			$children = "products_donations";
+		}
+		
+	if(dbUpdate($data['table'],$datos,"$id= $data[id]")){	
+
+		if($data['table']=='kits')
+		{
+			$children = "kits_products";
+			}
+		
+		if($data['table']=='transfers')
+		{
+			$children = "products_donations_transfers";
+			}			
+		if($data['table']=='distributions')
+		{
+			$children = "products_donations_distributions";
+			}			
+		if($children!='')
+		{
+			$childrendata = getTable($children,'deletedAt IS NULL and '.$data['table']."_id= $data[id]",'');
+			$numRows = mysql_num_rows($childrendata);
+			if($numRows > 0){
+				while($childdata = mysql_fetch_array($childrendata)){
+					
+					$id = dbUpdate($children,$datos,$data['table']."_id= $data[id]");
+					if($data['table']=='donations')
+					{
+						addStatesChanges ($childdata['products_id'],6,$_SESSION['dms_id'],$reason = 'Eliminado por el usuario '.$_SESSION['dms_id']);
+					}
+					
+				}
+			}
+		}
 		$success = "El elemento fue eliminado.";
+		
 	}else{
 		$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
 	}
@@ -95,16 +134,33 @@ function isAnyRol($user){
 	$nums_row=runQuery($query,2);
 	
 	if($nums_row>0)
+	{
 		$row = mysql_fetch_array($result);
 		if($row['profile']=='Administrador')
 		{
 		return 1;
 		}
-		if($row['profile']=='Operador')
+		if($row['profile']=='Supervisor')
 		{
 		return 2;
 		}
-		
+		if($row['profile']=='Gestor')
+		{
+		return 3;
+		}
+		if($row['profile']=='Operador de Distribución')
+		{
+		return 4;
+		}
+		if($row['profile']=='Operador de Bodega')
+		{
+		return 5;
+		}
+		if($row['profile']=='Operador Comercial')
+		{
+		return 6;
+		}	
+	}
 	else
 		return 0;
 }
@@ -383,7 +439,7 @@ function transferProducts ($data){
 					$idp = findRow('products','name',"'".$value."'",'id');
 					//se agregan los productos a la donacion
 					$datos = array(product_donation_id => $idp, tranfer_id => $idtranfer, quantity => $qty);
-					$idtranfer=dbInsert("products_donations_tranfers",$datos);
+					$idtranfer=dbInsert("products_donations_transfers",$datos);
 					//se buscan los productos que se van a tranferir con fecha de expracion mas proxima
 					$query = "select * from products_donations where products_id=$idp and state in (2) order by expirationDate limit $qty";
 					$result= runQuery($query);

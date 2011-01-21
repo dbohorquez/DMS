@@ -3,18 +3,22 @@
 
 <?php if(isset($_POST['bt-add'])) list($warning, $success) = addDonation($_POST);?>
 <?php if(isset($_POST['bt-edit'])) list($warning, $success) = editDonation($_POST);?>
-<?php if(isset($_POST['bt-delete'])) list($warning, $success) = deleteDonation($_POST);?>
+<?php if(isset($_POST['bt-delete'])) list($warning, $success) = delete($_POST);?>
 			<h2>Donaciones</h2>
             <div class="column c50p">
                 <ul class="toolbar">
-                    <li><label for="donorId">Número de Identificación:</label><input type="text" class="text autocomplete" id="donorId" />
+                	<?php if(isAnyRol($_SESSION['dms_id'])== 1){?>
+		            <li><label for="donorId">Número de Identificación:</label><input type="text" class="text autocomplete" id="donorId" />
                     <a href="javascript:void(0);" class="btn" onclick="var href = 'includes/forms/donationsAdd.php?d=' + $('#donorId').attr('value'); $.colorbox({href:href});">Agregar Donación</a></li>
+					<?php } ?>
                 </ul>
             </div>
             <div class="column c50p last">
                 <ul class="toolbar">
+                    <?php if(isAnyRol($_SESSION['dms_id'])== 1){?>
                     <li><label for="sequence">Número de Consecutivo:</label><input type="text" class="text autocomplete" id="sequence" />
                     <a href="javascript:void(0);" class="btn" onclick="var href = 'includes/forms/donationsEdit.php?e=' + $('#sequence').attr('value'); $.colorbox({href:href});">Editar Donación</a></li>
+					<?php } ?>
                 </ul>
             </div>
             <?php if($success != ''){ echo '<div class="success">' . $success . '</div>'; } ?>
