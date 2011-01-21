@@ -78,7 +78,7 @@
                     $data .= '"' . $donor['id'] . '",';
 				}
             ?>
-            <script type="text/javascript">
+ <script type="text/javascript">
 				var data = [<?php echo $data; ?>];
 				var ddata = [<?php echo $ddata; ?>];
 				$('#donorId').autocomplete({

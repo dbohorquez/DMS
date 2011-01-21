@@ -62,17 +62,17 @@
             <fieldset>
                 <label for="expirationDate">Fecha de Vencimiento:</label>
                 <input type="text" class="text datepicker" size="20" name="expirationDate" id="expirationDate" />
-                <a href="javascript:void(0);" class="btn" onclick="addProduct('#product',$('#quantity').attr('value'),'#expirationDate','.product-list',this);" id="add">Añadir</a>
+                <a href="javascript:void(0);" class="btn" onclick="addProductAjax('#product',$('#quantity'),'#expirationDate','.product-list',this, <?php echo $id; ?>, $('#warehouse').val() );" id="add">Añadir</a>
             </fieldset>
             <label>Productos seleccionados:</label>
             <ul class="product-list text">
                 <?php
                     $products = getDonationProducts($id);
                     while($product = mysql_fetch_array($products)){
-                        $rand = rand(1,10000000);
-						$quantity = getProductQuantity($product['name'],$id);
+                        //$rand = rand(1,10000000);
+												$quantity = getProductQuantity($product['name'],$id);
                 ?>
-                        <li id="item<?php echo $rand ; ?>"><a href="javascript:void(0);" onclick="removeProduct($(this).parent());" class="icon delete" title="Remover Producto"><span>Remover Producto</span></a><span class="product-name"><?php echo $product['name']; ?></span><span class="product-quantity">x<?php echo  $quantity; ?></span><input type="hidden" id="hitem<?php echo $rand ; ?>" name="hitem<?php echo $rand ; ?>" value="<?php echo $product['name'] ; ?>" /><input type="hidden" id="citem<?php echo $rand ; ?>" name="citem<?php echo $rand ; ?>" value="<?php echo $quantity; ?>" /><input type="hidden" id="ditem<?php echo $rand ; ?>" name="ditem<?php echo $rand ; ?>" value="<?php echo $product['expirationDate']; ?>" /></li>
+                        <li id="<?php echo $product['id']; ?>"><a href="javascript:void(0);" onclick="removeProductAjax($(this).parent(), <?php echo $id; ?> );" class="icon delete" title="Remover Producto"><span>Remover Producto</span></a><span class="product-name"><?php echo $product['name']; ?></span><span class="product-quantity">x<?php echo  $quantity; ?></span><!--input type="hidden" id="hitem<?php echo $rand ; ?>" name="hitem<?php echo $rand ; ?>" value="<?php echo $product['name'] ; ?>" /><input type="hidden" id="citem<?php echo $rand ; ?>" name="citem<?php echo $rand ; ?>" value="<?php echo $quantity; ?>" /><input type="hidden" id="ditem<?php echo $rand ; ?>" name="ditem<?php echo $rand ; ?>" value="<?php echo $product['expirationDate']; ?>" /--></li>
                 <?php
                     }
                 ?>
