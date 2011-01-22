@@ -6,7 +6,9 @@
 <?php if(isset($_POST['bt-delete'])) list($warning, $success) = delete($_POST);?>
 			<h2>Donantes</h2>
             <ul class="toolbar">
-                <?php if(isAnyRol($_SESSION['dms_id'])== 1 || isAnyRol($_SESSION['dms_id'])== 3){?>
+                <?php 
+				$rol=isAnyRol($_SESSION['dms_id']);
+				if($rol== 1 || $rol== 3 || $rol== 5 || $rol== 6){?>
                 <li><a href="includes/forms/donorsAdd.php" class="btn colorbox">Agregar Donante</a></li>
           		<?php } ?>
             </ul>
@@ -42,10 +44,12 @@
                     </td>
                     <td><?php echo $donor['email']; ?></td>
                     <td>
-                    	<ul class="table-actions">
+                    <?php if($rol== 1 || $rol== 3 || $rol== 5 || $rol== 6){?>
+			     	<ul class="table-actions">
                         	<li><a href="includes/forms/donorsEdit.php?e=<?php echo $donor['id']; ?>" class="icon edit colorbox" title="Editar"><span>Editar</span></a></li>
                             <li><a href="includes/forms/delete.php?t=donors&d=<?php echo $donor['id']; ?>" class="icon delete colorbox" title="Eliminar"><span>Eliminar</span></a></li>
-                        </ul>
+                    </ul>	
+              		<?php } ?>   
                     </td>
                 </tr>
                 <?php

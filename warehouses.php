@@ -7,7 +7,9 @@
 <?php if(isset($_POST['bt-delete'])) list($warning, $success) = delete($_POST);?>
 			<h2>Bodegas</h2>
 			<ul class="toolbar">
-            <?php if(isAnyRol($_SESSION['dms_id'])== 1 || isAnyRol($_SESSION['dms_id'])== 2){?>
+            <?php 
+			$rol=isAnyRol($_SESSION['dms_id']);
+			if($rol== 1 || $rol== 2){?>
 			<li><a href="includes/forms/warehousesAdd.php" class="btn colorbox">Nueva Bodega</a></li>
 			<?php } ?>
             
@@ -48,10 +50,15 @@
                     </td>
                     <td><?php echo $warehouse['description']; ?></td>
                     <td>
+                    <?php 
+					$rol=isAnyRol($_SESSION['dms_id']);
+					if($rol== 1 || $rol== 2){?>
                     	<ul class="table-actions">
                         	<li><a href="includes/forms/warehousesEdit.php?e=<?php echo $warehouse['id']; ?>" class="icon edit colorbox" title="Editar"><span>Editar</span></a></li>
                             <li><a href="includes/forms/delete.php?t=warehouses&d=<?php echo $warehouse['id']; ?>" class="icon delete colorbox" title="Eliminar"><span>Eliminar</span></a></li>
                         </ul>
+
+					<?php } ?>
                     </td>
                 </tr>
                 <?php

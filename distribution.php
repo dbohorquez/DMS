@@ -7,7 +7,9 @@
 			<h2>Distribución</h2>
     
 			<ul class="toolbar">
-	            <?php if(isAnyRol($_SESSION['dms_id'])== 1 || isAnyRol($_SESSION['dms_id'])== 2){?>
+	            <?php 
+				$rol=isAnyRol($_SESSION['dms_id']);
+				if($rol== 1 || $rol== 2){?>
                 <li><a href="includes/forms/distributionsAdd.php" class="btn colorbox">Nueva Distribución</a></li>
 				<?php } ?>
             </ul>			
@@ -42,7 +44,7 @@
 						?>
                     </ul></td>
                     <td>
-                    <?php if(isAnyRol($_SESSION['dms_id'])== 1 || isAnyRol($_SESSION['dms_id'])== 2){?>
+                    <?php if($rol== 1 || $rol== 2){?>
                     	<ul class="table-actions">
                         	<li><a href="includes/forms/distributionsEdit.php?e=<?php echo $distribution['id']; ?>" class="icon edit colorbox" title="Editar"><span>Editar</span></a></li>
                             <li><a href="includes/forms/delete.php?t=distributions&d=<?php echo $distribution['id']; ?>" class="icon delete colorbox" title="Eliminar"><span>Eliminar</span></a></li>

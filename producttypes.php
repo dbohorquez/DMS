@@ -6,7 +6,9 @@
 <?php if(isset($_POST['bt-delete'])) list($warning, $success) = delete($_POST);?>
 			<h2>Tipos de Productos</h2>
 			<ul class="toolbar">
-            	<?php if(isAnyRol($_SESSION['dms_id'])== 1 || isAnyRol($_SESSION['dms_id'])== 3){?>
+            	<?php 
+				$rol=isAnyRol($_SESSION['dms_id']);
+				if($rol== 1 || $rol== 3 || $rol== 5 || $rol== 6){?>
                 <li><a href="includes/forms/productTypesAdd.php" class="btn colorbox">Agregar Tipo</a></li>
 	            <?php } ?>
     
@@ -33,7 +35,7 @@
 						echo findRow('categories','id',$producttype['categories_id'],'name');							
 					?></td>
                     <td>
-                    <?php if(isAnyRol($_SESSION['dms_id'])== 1 || isAnyRol($_SESSION['dms_id'])== 3){?>
+                    <?php if($rol== 1 || $rol== 3 || $rol== 5 || $rol== 6){?>
 	            	<ul class="table-actions">
                         	<li><a href="includes/forms/productTypesEdit.php?e=<?php echo $producttype['id']; ?>" class="icon edit colorbox" title="Editar"><span>Editar</span></a></li>
                             <li><a href="includes/forms/delete.php?t=producttypes&d=<?php echo $producttype['id']; ?>" class="icon delete colorbox" title="Eliminar"><span>Eliminar</span></a></li>

@@ -7,7 +7,9 @@
 			<h2>Donaciones</h2>
             <div class="column c50p">
                 <ul class="toolbar">
-                	<?php if(isAnyRol($_SESSION['dms_id'])== 1){?>
+                	<?php 
+					$rol=isAnyRol($_SESSION['dms_id']);
+					if($rol== 1){?>
 		            <li><label for="donorId">Número de Identificación:</label><input type="text" class="text autocomplete" id="donorId" />
                     <a href="javascript:void(0);" class="btn" onclick="var href = 'includes/forms/donationsAdd.php?d=' + $('#donorId').attr('value'); $.colorbox({href:href});">Agregar Donación</a></li>
 					<?php } ?>
@@ -15,7 +17,7 @@
             </div>
             <div class="column c50p last">
                 <ul class="toolbar">
-                    <?php if(isAnyRol($_SESSION['dms_id'])== 1){?>
+                    <?php if($rol== 1){?>
                     <li><label for="sequence">Número de Consecutivo:</label><input type="text" class="text autocomplete" id="sequence" />
                     <a href="javascript:void(0);" class="btn" onclick="var href = 'includes/forms/donationsEdit.php?e=' + $('#sequence').attr('value'); $.colorbox({href:href});">Editar Donación</a></li>
 					<?php } ?>
@@ -50,10 +52,16 @@
 					<?php echo formatDate($donation['date']); ?></td>
                     <td><?php echo $donation['bill'] != '' ? '<strong>Factura:</strong> ' . $donation['bill'] . '<br />' : ''; ?><?php echo $donation['detail']; ?></td>
                     <td>
-                    	<ul class="table-actions">
+                                    	<?php 
+					$rol=isAnyRol($_SESSION['dms_id']);
+					if($rol== 1){?>
+                   	<ul class="table-actions">
                         	<li><a href="includes/forms/donationsEdit.php?e=<?php echo $donation['sequence']; ?>" class="icon edit colorbox" title="Editar"><span>Editar</span></a></li>
                             <li><a href="includes/forms/delete.php?t=donations&d=<?php echo $donation['sequence']; ?>" class="icon delete colorbox" title="Eliminar"><span>Eliminar</span></a></li>
                         </ul>
+
+					<?php } ?>
+
                     </td>
                 </tr>
                 <?php

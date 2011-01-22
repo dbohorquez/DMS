@@ -26,7 +26,9 @@
            </select>
         </fieldset>
         <fieldset class="clear">
-                <?php if(isAnyRol($_SESSION['dms_id'])== 1){?>
+                <?php 
+				$rol=isAnyRol($_SESSION['dms_id']);
+				if($rol== 1){?>
                  <input type="submit" class="btn" value="Agregar" name="bt-add" />
 				<?php } ?>
 	        <span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>

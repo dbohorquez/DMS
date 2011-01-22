@@ -7,7 +7,9 @@
 			<h2>Entidades</h2>
             
 			<ul class="toolbar">
-            	 <?php if(isAnyRol($_SESSION['dms_id'])== 1){?>
+            	 <?php 
+				 $rol=isAnyRol($_SESSION['dms_id']);
+				 if($rol== 1){?>
                 <li><a href="includes/forms/companiesAdd.php" class="btn colorbox">Nueva Entidad</a></li>
 				<?php } ?>
             </ul>
@@ -57,10 +59,16 @@
                     </td>
                     <td><?php echo $company['email']; ?></td>
                     <td>
+                    	 <?php 
+						 $rol=isAnyRol($_SESSION['dms_id']);
+						 if($rol== 1){?>
                     	<ul class="table-actions">
                         	<li><a href="includes/forms/companiesEdit.php?e=<?php echo $company['id']; ?>" class="icon edit colorbox" title="Editar"><span>Editar</span></a></li>
                             <li><a href="includes/forms/delete.php?t=companies&d=<?php echo $company['id']; ?>" class="icon delete colorbox" title="Eliminar"><span>Eliminar</span></a></li>
                         </ul>
+
+						<?php } ?>
+
                     </td>
                 </tr>
                 <?php

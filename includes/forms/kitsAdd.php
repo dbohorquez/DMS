@@ -29,7 +29,9 @@
         <label>Productos seleccionados:</label>
         <ul class="product-list text"></ul>
         <fieldset class="clear">
-         <?php if(isAnyRol($_SESSION['dms_id'])== 1 || isAnyRol($_SESSION['dms_id'])== 3){?>
+         <?php 
+		 $rol=isAnyRol($_SESSION['dms_id']);
+		 if($rol== 1 || $rol== 3 || $rol== 5 || $rol== 6){?>
           	<input type="submit" class="btn clear" value="Guardar Kit" name="bt-add" />
    		<?php } ?>
 	        <span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
