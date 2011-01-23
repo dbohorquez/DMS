@@ -45,7 +45,7 @@ function removeProduct(product){
 	$(dateId).remove();
 }
 
-function addProductAjax(field,quantityField,expDate,container,trigger, donationId, warehouseId){
+function addProductAjax(field,quantityField,expDate,container,trigger, donationId, warehouseId, donationType){
 	if(quantity < 1) quantity = 1;
 	var rand = Math.floor(Math.random()*10000000);
 	
@@ -57,7 +57,7 @@ function addProductAjax(field,quantityField,expDate,container,trigger, donationI
 			type	 : 'POST', 
 			url      : "includes/data/addDonationProduct.php",
 			dataType : "text",
-			data     : { product_name : product , product_quantity : quantity, product_date : xDate, donation_id : donationId, warehouse_id : warehouseId },
+			data     : { product_name : product , product_quantity : quantity, product_date : xDate, donation_id : donationId, warehouse_id : warehouseId, donation_type : donationType },
 			success  : function(msg){
 				if (msg != "error")
 				  $(container).append('<li id="'+msg+'"><a href="javascript:void(0);" onclick="removeProductAjax($(this).parent(),'+donationId+');" class="icon delete" title="Remover Producto"><span>Remover Producto</span></a><span class="product-name">' + product + '</span><span class="product-quantity">x' + quantity + '</span></li>');

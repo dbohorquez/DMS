@@ -1,0 +1,19 @@
+Los tipos de donaciones son:
+1 fisicas
+2 virtual
+3 promesas
+
+
+Los tipos de bodegas son:
+1 fisicas
+2 virtual
+3 promesas
+
+
+los estados de los productos son:
+Estado      Descripción
+    1          En bodega Física
+    2          En bodega Virtual
+    3          Donación Anulada
+    4          En canal de distribución
+    5          Eliminado
