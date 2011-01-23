@@ -34,7 +34,7 @@
                     <th width="50">&nbsp;</th>
                 </tr></thead><tbody>
                 <?php
-					$donations = getTable('donations','deletedAt IS NULL','sequence asc');
+					$donations = getTable('donations','deletedAt IS NULL and type=1','sequence asc');
 					$numRows = mysql_num_rows($donations);
 					$ddata = '';
 					if($numRows > 0){

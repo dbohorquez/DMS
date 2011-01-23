@@ -15,7 +15,7 @@
 	?>
 	<h3>Editar Donación #<?php echo $donation['sequence']; ?></h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
-    <form action="donations.php" enctype="application/x-www-form-urlencoded" method="post">
+    <form action="virtual-receptions.php" enctype="application/x-www-form-urlencoded" method="post">
         <input type="hidden" id="id" name="id" value="<?php echo $id; ?>" />
         <div class="column c50p">
             <fieldset>
@@ -34,10 +34,10 @@
         </div>
         <div class="column c50p last">
             <fieldset>
-                <label for="warehouse">Bodega:</label>
-                <select name="warehouse" id="warehouse">
+                <label for="company">Operador:</label>
+                <select name="company" id="company">
                 <?php
-                    $warehouses = getTable('warehouses','','name asc');
+                    $warehouses = getTable('companies','','name asc');
                     while($warehouse = mysql_fetch_array($warehouses)){
                 ?>
                     <option value="<?php echo $warehouse['id']; ?>"<?php if($donation['warehouses_id'] == $warehouse['id']){ ?> selected="selected"<?php } ?>><?php echo $warehouse['name']; ?></option>
@@ -62,7 +62,7 @@
             <fieldset>
                 <label for="expirationDate">Fecha de Vencimiento:</label>
                 <input type="text" class="text datepicker" size="20" name="expirationDate" id="expirationDate" />
-                <a href="javascript:void(0);" class="btn" onclick="addProductAjax('#product',$('#quantity'),'#expirationDate','.product-list',this, <?php echo $id; ?>, $('#warehouse').val(), 1 );" id="add">Añadir</a>
+                <a href="javascript:void(0);" class="btn" onclick="addProductAjax('#product',$('#quantity'),'#expirationDate','.product-list',this, <?php echo $id; ?>, $('#warehouse').val(), 2 );" id="add">Añadir</a>
             </fieldset>
             <label>Productos seleccionados:</label>
             <ul class="product-list text">

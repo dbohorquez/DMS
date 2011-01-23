@@ -630,32 +630,30 @@ function addDonation($data){
 		if($data['name'] != "" and $data['identification'] != ""){
 		//	if(is_numeric($data['phonenumber']) and is_numeric($data['fax'])){
 				if(!exists("donors","id='$data[identification]'")){
-					if(validateExistenceProduct($data)){
-						$currentdate = date("Y-m-d");									
-						$datos = array(id => $data['identification'], name => $data['name'], type => $data['type'], address => $data['address'], phonenumber => $data['phonenumber'], faxnumber => $data['fax'], email => $data['email'], towns_id =>$data['town'], creationDate => $currentdate);
-						$fields  = "";
-						$values = "";
-					
-						foreach ($datos as $f => $v){
-							$fields  .= "$f,";
-							$values .= (is_numeric($v) && (intval($v) == $v)) ? $v."," : "'$v',";
-						}
-					
-						//Eliminar las "," sobrantes
-						$fields = substr($fields, 0, -1);
-						$values = substr($values, 0, -1);
-					
-						$query = "insert into donors ({$fields}) values({$values})";
-						
-						$value = runQuery($query,4);
-						if($value != ''){
-							$success = "El donante fue agregado exitosamente. <br />";
-						}else{
-							$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
-						}
-					}else{
-						$warning ="Se debe elegir por lo menos un producto, por favor verifique."; 
+
+					$currentdate = date("Y-m-d");									
+					$datos = array(id => $data['identification'], name => $data['name'], type => $data['type'], address => $data['address'], phonenumber => $data['phonenumber'], faxnumber => $data['fax'], email => $data['email'], towns_id =>$data['town'], creationDate => $currentdate);
+					$fields  = "";
+					$values = "";
+				
+					foreach ($datos as $f => $v){
+						$fields  .= "$f,";
+						$values .= (is_numeric($v) && (intval($v) == $v)) ? $v."," : "'$v',";
 					}
+				
+					//Eliminar las "," sobrantes
+					$fields = substr($fields, 0, -1);
+					$values = substr($values, 0, -1);
+				
+					$query = "insert into donors ({$fields}) values({$values})";
+					
+					$value = runQuery($query,4);
+					if($value != ''){
+						$success = "El donante fue agregado exitosamente. <br />";
+					}else{
+						$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
+					}
+
 				}else{
 					$warning = "Ya existe un donante registrado con el id '$data[identification]'.";
 				}
@@ -667,7 +665,7 @@ function addDonation($data){
 		}
 	}
 	$currentdate = date("Y-m-d");
-	$datos = array(donors_id =>$data['identification'],users_id => 1,warehouses_id => $data['warehouse'], date => $currentdate);
+	$datos = array(donors_id =>$data['identification'],users_id => 1,warehouses_id => $data['warehouse'], date => $currentdate, type => 1);
 	$id = dbInsert("donations",$datos);
 	if($id != ''){
 		$success = $success."La donación fue ingresada exitosamente. El consecutivo asignado es ".$id;
@@ -1116,6 +1114,66 @@ function editShelter($data){
 	return array($warning, $success);
 } 
 
-
-
+function addvirtualDonation($data){	
+	if($data['exists']=='false'){
+		if($data['name'] != "" and $data['identification'] != ""){
+		//	if(is_numeric($data['phonenumber']) and is_numeric($data['fax'])){
+				if(!exists("donors","id='$data[identification]'")){
+					$currentdate = date("Y-m-d");									
+					$datos = array(id => $data['identification'], name => $data['name'], type => $data['type'], address => $data['address'], phonenumber => $data['phonenumber'], faxnumber => $data['fax'], email => $data['email'], towns_id =>$data['town'], creationDate => $currentdate);
+					$fields  = "";
+					$values = "";
+				
+					foreach ($datos as $f => $v){
+						$fields  .= "$f,";
+						$values .= (is_numeric($v) && (intval($v) == $v)) ? $v."," : "'$v',";
+					}
+				
+					//Eliminar las "," sobrantes
+					$fields = substr($fields, 0, -1);
+					$values = substr($values, 0, -1);
+				
+					$query = "insert into donors ({$fields}) values({$values})";
+					$value = runQuery($query,4);
+					if($value != ''){
+						$success = "El donante fue agregado exitosamente. <br />";
+					}else{
+						$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
+					}
+				}else{
+					$warning = "Ya existe un donante registrado con el id '$data[identification]'.";
+				}
+			/*}else{
+				$warning = "Los números telefónicos no pueden contener letras o símbolos";
+			}	*/										
+		}else{
+			$warning = "Por favor digite todos los datos obligatorios.";
+		}
+	}
+	$currentdate = date("Y-m-d");
+	$datos = array(donors_id =>$data['identification'],users_id => 1,type => 2,companies_id => $data['company'], date => $currentdate);
+	$id = dbInsert("donations",$datos);
+	if($id != ''){
+		$success = $success."La donación fue ingresada exitosamente. El consecutivo asignado es ".$id;
+	}else{
+		$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
+	}
+	return array($warning, $success);
+} 
+function editvirtualDonation($data){
+	/*$query = "select id from products_donations where donations_id=$data[id] and deleted_at is null";
+	$result = runQuery($query,2);
+	if($result > 0){*/
+		$datos = array(detail =>$data['detail'],companies_id => $data['company'], bill => $data['bill']);
+		if(dbUpdate("donations",$datos,"sequence= $data[id]")){
+			$success = "La donación fue editada exitosamente.";
+		}else{
+			$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
+		}	
+/*	}else{
+		$warning ="Se debe elegir por lo menos un producto, por favor verifique."; 
+	}*/
+			
+	return array($warning, $success);
+}
 ?>
