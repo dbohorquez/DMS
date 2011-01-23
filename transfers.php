@@ -1,14 +1,15 @@
 <?php $section = 'warehouses'; ?>
 <?php include('includes/header.php'); ?>
 
-<?php if(isset($_POST['bt-transfer'])) list($warning, $success) = transferAdd($_POST);?>
+<?php if(isset($_POST['bt-transfer'])) list($warning, $success) = transferProducts($_POST);?>
 <?php if(isset($_POST['bt-delete'])) list($warning, $success) = delete($_POST);?>
 			<h2>Transferencias</h2>
 			<ul class="toolbar">
-            <?php //if(isSupervisor($_SESSION['dms_id']) or isAdmin($_SESSION['dms_id']) ){?>
+            <?php 
+			$rol=isAnyRol($_SESSION['dms_id']);
+			if($rol== 1 || $rol== 2){?>
             <li><a href="includes/forms/transfersAdd.php" class="btn colorbox">Nueva Transferencia</a></li>
-			<?php //} ?>
-            
+	        <?php } ?>          
             </ul>
             <?php if($success != ''){ echo '<div class="success">' . $success . '</div>'; } ?>
 			<?php if($warning != ''){ echo '<div class="error">' . $warning . '</div>'; } ?>
@@ -44,10 +45,12 @@
                         <?php echo utf8_encode($location['town'] . ', ' . $location['province']); ?>
                     </td>
                     <td>
+                    <?php if($rol== 1 || $rol== 2){?>
                     	<ul class="table-actions">
-                        	<li><a href="includes/forms/warehousesEdit.php?e=<?php echo $warehouse['id']; ?>" class="icon edit colorbox" title="Editar"><span>Editar</span></a></li>
-                            <li><a href="includes/forms/delete.php?t=warehouses&d=<?php echo $warehouse['id']; ?>" class="icon delete colorbox" title="Eliminar"><span>Eliminar</span></a></li>
+                        <li><a href="includes/forms/delete.php?t=warehouses&d=<?php echo $warehouse['id']; ?>" class="icon delete colorbox" title="Eliminar"><span>Eliminar</span></a></li>
                         </ul>
+			        <?php } ?>          
+        
                     </td>
                 </tr>
                 <?php

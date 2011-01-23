@@ -47,7 +47,6 @@ function dbUpdate($table,$changes,$condition){
 
 	//Eliminar las "," sobrantes
 	$query = substr($query, 0, -1);
-	
 	if($condition != '') $query .= " where " . $condition;
 	return runQuery($query);
 }

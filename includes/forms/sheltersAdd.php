@@ -1,24 +1,16 @@
 <div class="medium">
 	<?php include('../functions.php'); ?>
-	<h3>Agregar Donante</h3>
+	<h3>Agregar Beneficiario</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
-    <form action="donors.php" enctype="application/x-www-form-urlencoded" method="post">
+    <form action="beneficiaries.php" enctype="application/x-www-form-urlencoded" method="post">
         <div class="column c50p">
             <fieldset>
                 <label for="name">Nombre: <span class="required">*</span></label>
                 <input type="text" class="text" size="48" name="name" id="name" />
             </fieldset>
             <fieldset>
-            	<label for="type">Tipo de Identificación:</label>
-                <select name="type" id="type">
-                	<option value="1">Cédula de Ciudadanía</option>
-                    <option value="2">Cédula de Extranjería</option>
-                    <option value="3">NIT</option>
-                </select>
-            </fieldset>
-            <fieldset>
-                <label for="identification">Identificación: <span class="required">*</span></label>
-                <input type="text" class="text" size="48" name="identification" id="identification" />
+                <label for="contactname">Contacto: <span class="required">*</span></label>
+                <input type="text" class="text" size="48" name="contactname" id="contactname" />
             </fieldset>
             <fieldset>
             	<label for="province">Departamento: <span class="required">*</span></label>
@@ -57,12 +49,7 @@
             </fieldset>
         </div>
         <fieldset class="clear">
-            <?php 
-			$rol=isAnyRol($_SESSION['dms_id']);
-			if($rol== 1 || $rol== 3 || $rol== 5 || $rol== 6){?>
-			<input type="submit" class="btn" value="Agregar" name="bt-add" />
-            <?php } ?>
-            <span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
+	        <input type="submit" class="btn" value="Agregar" name="bt-add" /><span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
         </fieldset>
     </form>
 </div>

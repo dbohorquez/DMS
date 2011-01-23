@@ -74,7 +74,12 @@
         <label>Productos seleccionados:</label>
         <ul class="product-list text"></ul>
         <fieldset class="clear">
-	        <input type="submit" class="btn clear" value="Agregar" name="bt-add" /><span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
+        <?php 
+		$rol=isAnyRol($_SESSION['dms_id']);
+		if($rol== 1 || $rol== 2){?>
+  	    <input type="submit" class="btn clear" value="Agregar" name="bt-add" />
+        <?php } ?>
+		<span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
         </fieldset>
     </form>
     <script type="text/javascript">

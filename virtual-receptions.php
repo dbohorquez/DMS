@@ -7,7 +7,12 @@
 			<h2>Donaciones Virtuales</h2>
             <div class="column c50p">
                 <ul class="toolbar">
+                <?php 
+				$rol=isAnyRol($_SESSION['dms_id']);
+				if($rol== 1){?>
                 <li><a href="includes/forms/virtualreceptionAdd.php" class="btn colorbox">Nueva donación virtual</a></li>    
+				<?php } ?>
+
                 </ul>
             </div>
             <?php if($success != ''){ echo '<div class="success">' . $success . '</div>'; } ?>

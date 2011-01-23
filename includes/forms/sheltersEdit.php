@@ -2,29 +2,21 @@
 	<?php 
 		include('../functions.php');
 		$id = $_GET['e']; 
-		$donor = getTable('donors',"id = $id",'',1);
-		$location = getItemLocation('donors',$id);
+		$shelter = getTable('shelters',"id = $id",'',1);
+		$location = getItemLocation('shelters',$id);
 	?>
-	<h3>Editar Donante</h3>
+	<h3>Editar Beneficiario</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
     <form action="donors.php" enctype="application/x-www-form-urlencoded" method="post">
     	<input type="hidden" id="id" name="id" value="<?php echo $id; ?>" />
         <div class="column c50p">
             <fieldset>
                 <label for="name">Nombre: <span class="required">*</span></label>
-                <input type="text" class="text" size="48" name="name" id="name" value="<?php echo $donor['name']; ?>" />
+                <input type="text" class="text" size="48" name="name" id="name" value="<?php echo $shelter['name']; ?>" />
             </fieldset>
             <fieldset>
-            	<label for="type">Tipo de Identificación:</label>
-                <select name="type" id="type">
-                	<option value="1"<?php if($donor['type'] == 1){ ?> selected="selected"<?php } ?>>Cédula de Ciudadanía</option>
-                    <option value="2"<?php if($donor['type'] == 2){ ?> selected="selected"<?php } ?>>Cédula de Extranjería</option>
-                    <option value="3"<?php if($donor['type'] == 3){ ?> selected="selected"<?php } ?>>NIT</option>
-                </select>
-            </fieldset>
-            <fieldset>
-                <label for="identification">Identificación: <span class="required">*</span></label>
-                <input type="text" class="text" size="48" name="identification" id="identification" value="<?php echo $donor['id']; ?>" />
+                <label for="contactname">Contacto: <span class="required">*</span></label>
+                <input type="text" class="text" size="48" name="contactname" id="contactname" value="<?php echo $shelter['contactName']; ?>" />
             </fieldset>
             <fieldset>
             	<label for="province">Departamento: <span class="required">*</span></label>
@@ -52,28 +44,23 @@
         <div class="column c50p last">
         	<fieldset>
             	<label for="address">Dirección:</label>
-                <input type="text" class="text" size="48" name="address" id="address" value="<?php echo $donor['address']; ?>" />
+                <input type="text" class="text" size="48" name="address" id="address" value="<?php echo $shelter['address']; ?>" />
             </fieldset>
             <fieldset>
             	<label for="phonenumber">Teléfono:</label>
-                <input type="text" class="text" size="48" name="phonenumber" id="phonenumber" value="<?php echo $donor['phoneNumber']; ?>" />
+                <input type="text" class="text" size="48" name="phonenumber" id="phonenumber" value="<?php echo $shelter['phoneNumber']; ?>" />
             </fieldset>
             <fieldset>
             	<label for="fax">Fax:</label>
-                <input type="text" class="text" size="48" name="fax" id="fax" value="<?php echo $donor['faxNumber']; ?>" />
+                <input type="text" class="text" size="48" name="fax" id="fax" value="<?php echo $shelter['faxNumber']; ?>" />
             </fieldset>
            <fieldset>
             	<label for="email">Correo electrónico:</label>
-                <input type="text" class="text" size="48" name="email" id="email" value="<?php echo $donor['email']; ?>" />
+                <input type="text" class="text" size="48" name="email" id="email" value="<?php echo $shelter['email']; ?>" />
             </fieldset>
         </div>
         <fieldset class="clear">
-            <?php 
-			$rol=isAnyRol($_SESSION['dms_id']);
-			if($rol== 1 || $rol== 3 || $rol== 5 || $rol== 6){?>
-			<input type="submit" class="btn" value="Guardar Cambios" name="bt-edit" />
-            <?php } ?>
-            <span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
+	        <input type="submit" class="btn" value="Guardar Cambios" name="bt-edit" /><span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
         </fieldset>
     </form>
 </div>

@@ -7,8 +7,47 @@ function delete($data){
 	//if(dbDelete($data['table'],"id = $data[id]")){
 	$currentdate = date("Y-m-d H:i");										
 	$datos = array(deletedAt=> $currentdate);
-	if(dbUpdate($data['table'],$datos,"id= $data[id]")){	
+	$id = "id";
+	$children = "";
+	if($data['table']=='donations')
+		{
+			$id = "sequence";
+			$children = "products_donations";
+		}
+		
+	if(dbUpdate($data['table'],$datos,"$id= $data[id]")){	
+
+		if($data['table']=='kits')
+		{
+			$children = "kits_products";
+			}
+		
+		if($data['table']=='transfers')
+		{
+			$children = "products_donations_transfers";
+			}			
+		if($data['table']=='distributions')
+		{
+			$children = "products_donations_distributions";
+			}			
+		if($children!='')
+		{
+			$childrendata = getTable($children,'deletedAt IS NULL and '.$data['table']."_id= $data[id]",'');
+			$numRows = mysql_num_rows($childrendata);
+			if($numRows > 0){
+				while($childdata = mysql_fetch_array($childrendata)){
+					
+					$id = dbUpdate($children,$datos,$data['table']."_id= $data[id]");
+					if($data['table']=='donations')
+					{
+						addStatesChanges ($childdata['products_id'],6,$_SESSION['dms_id'],$reason = 'Eliminado por el usuario '.$_SESSION['dms_id']);
+					}
+					
+				}
+			}
+		}
 		$success = "El elemento fue eliminado.";
+		
 	}else{
 		$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
 	}
@@ -26,13 +65,13 @@ function checkMail($mail){
 	}
 }
 function getDonationProducts($id){
-	$query = "select p.*, pd.*, d.* from donations d, products_donations pd, products p where d.sequence = pd.donations_id and pd.products_id = p.id and d.sequence = $id group by p.id order by p.name asc";
+	$query = "select p.*, pd.*, d.* from donations d, products_donations pd, products p where pd.deletedAt is null and d.sequence = pd.donations_id and pd.products_id = p.id and d.sequence = $id group by p.id order by p.name asc";
 	$products = runQuery($query);
 	return $products;
 }
 
 function getDistributionProducts($id){
-	$query = "select p.*, pd.*, pdd.*, d.*, count(p.id) quantity from distributions d, products_donations_distributions pdd, products_donations pd, products p where d.id = pdd.distributions_id and pdd.products_donations_id = pd.id and pd.products_id = p.id and d.id = $id group by p.id order by p.name asc";
+	$query = "select p.*, pd.*, pdd.*, d.*, count(p.id) quantity from  distributions d, products_donations_distributions pdd, products_donations pd, products p where pd.deletedAt is null and d.id = pdd.distributions_id and pdd.products_donations_id = pd.id and pd.products_id = p.id and d.id = $id group by p.id order by p.name asc";
 	$products = runQuery($query);
 	return $products;
 }
@@ -89,35 +128,43 @@ function importTowns($data,$file){
 							}
 	return array($warning, $success);
 }
-function isAdmin($user){
-	$query = "select * from users where id=$user and profile='Administrador'";
+function isAnyRol($user){
+	$query = "select * from users where id=$user";
+	$result=runQuery($query);
 	$nums_row=runQuery($query,2);
 	
 	if($nums_row>0)
-		return true;
+	{
+		$row = mysql_fetch_array($result);
+		if($row['profile']=='Administrador')
+		{
+		return 1;
+		}
+		if($row['profile']=='Supervisor')
+		{
+		return 2;
+		}
+		if($row['profile']=='Gestor')
+		{
+		return 3;
+		}
+		if($row['profile']=='Operador de Distribución')
+		{
+		return 4;
+		}
+		if($row['profile']=='Operador de Bodega')
+		{
+		return 5;
+		}
+		if($row['profile']=='Operador Comercial')
+		{
+		return 6;
+		}	
+	}
 	else
-		return false;
+		return 0;
 }
 
-function isSupervisor($user){
-	$query = "select * from users where id=$user and profile='Supervisor'";
-	$nums_row=runQuery($query,2);
-	
-	if($nums_row>0)
-		return true;
-	else
-		return false;
-}
-
-function isGestor($user){
-	$query = "select * from users where id=$user and profile='Gestor'";
-	$nums_row=runQuery($query,2);
-	
-	if($nums_row>0)
-		return true;
-	else
-		return false;
-}
 
 
 /* Warehouses 
@@ -367,8 +414,8 @@ function editProduct($data){
 }
 
 function transferProducts ($data){
-	if($data['warehouse'] != "" ){
-		$warehouse = exists("warehouses","id='$data[warehouse]'");	
+	if($data['warehouseto'] != "" ){
+		$warehouse = exists("warehouses","id='$data[warehouseto]'");	
 		if($warehouse){
 			$sw=false;
 			foreach($data as $key => $value){
@@ -376,8 +423,8 @@ function transferProducts ($data){
 				if(substr($key,0,5) == 'hitem'){
 					if(sw==false){
 						$sw=true;
-						// si hay productos se ingresa la tranferencia a la que s ele van asociar los productos
-						$datos = array(starting_warehouse => $data['warehouse'], state => $data['state'], description => $data['description'],state => 1,flagkit => 0);
+						// si hay productos se ingresa la tranferencia a la que se le van asociar los productos
+						$datos = array(starting_warehouse => $data['warehousefrom'], destination_warehouse => $data['warehouseto'], notes => $data['notes'],state => 1, shelter_id => $data['shelter']);
 						$idtranfer=dbInsert("transfers",$datos);
 						if($idtranfer){
 							$success = "La transferencia fue  exitosa.";
@@ -392,7 +439,7 @@ function transferProducts ($data){
 					$idp = findRow('products','name',"'".$value."'",'id');
 					//se agregan los productos a la donacion
 					$datos = array(product_donation_id => $idp, tranfer_id => $idtranfer, quantity => $qty);
-					$idtranfer=dbInsert("products_donations_tranfers",$datos);
+					$idtranfer=dbInsert("products_donations_transfers",$datos);
 					//se buscan los productos que se van a tranferir con fecha de expracion mas proxima
 					$query = "select * from products_donations where products_id=$idp and state in (2) order by expirationDate limit $qty";
 					$result= runQuery($query);
@@ -494,7 +541,7 @@ function validateExistenceKitProducts($data){
 			$sw++;
 			$qtyname = 'citem' . substr($key,-7);
 			$qty = $data[$qtyname];
-			echo $qty;
+			//echo $qty;
 			if($qty>1){
 				$sw++;
 			}	
@@ -631,32 +678,18 @@ function addDonation($data){
 } 
 
 function editDonation($data){
-	if(validateExistenceProduct($data)){
+	/*$query = "select id from products_donations where donations_id=$data[id] and deleted_at is null";
+	$result = runQuery($query,2);
+	if($result > 0){*/
 		$datos = array(detail =>$data['detail'],warehouses_id => $data['warehouse'], bill => $data['bill']);
 		if(dbUpdate("donations",$datos,"sequence= $data[id]")){
 			$success = "La donación fue editada exitosamente.";
 		}else{
 			$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
-		}
-			foreach($data as $key => $value){
-				if(substr($key,0,5) == 'hitem'){
-					$qtyname = 'citem' . substr($key,-7);
-					$edname = 'ditem' . substr($key,-7);
-					$qty = $data[$qtyname];
-					$expd = $data[$edname];
-					$idp = findRow('products','name',"'".$value."'",'id');
-					$query = "delete from products_donations where products_id=$idp";
-					$result = runQuery($query);	
-					
-					for ($init = 0; $init <$qty ; $init++){
-						$datos = array(donations_id => $data['id'], products_id =>$idp, state => 1, expirationDate => $expd,warehouses_id => $data['warehouse']);
-						$idlist = dbInsert("products_donations",$datos);
-					}
-				}
-			}
-		}else{
-			$warning ="Se debe elegir por lo menos un producto, por favor verifique."; 
-		}
+		}	
+/*	}else{
+		$warning ="Se debe elegir por lo menos un producto, por favor verifique."; 
+	}*/
 			
 	return array($warning, $success);
 }
@@ -680,12 +713,12 @@ function getProductQuantity($product,$donation = '',$state=''){
 	
 	if($donation != ''){
 		$idp = findRow('products','name',"'".$product."'",'id');
-		$query = "SELECT COUNT(*) AS cont FROM products_donations WHERE donations_id=$donation AND products_id=$idp".$state;	
+		$query = "SELECT COUNT(*) AS cont FROM products_donations WHERE donations_id=$donation AND products_id=$idp AND deletedAt IS NULL".$state;	
 		$row = runQuery($query,1);
 		return $row['cont'];
 	}else{
 		$idp = findRow('products','name',"'".$product."'",'id');
-		$query = "SELECT COUNT(*) AS cont FROM products_donations WHERE products_id=$idp".$state;	
+		$query = "SELECT COUNT(*) AS cont FROM products_donations WHERE products_id=$idp AND deletedAt IS NULL".$state;	
 		$row = runQuery($query,1);
 		return $row['cont'];
 	}
@@ -695,9 +728,9 @@ function addStatesChanges ($products_donations,$newState,$user,$reason = '' ,$no
 	if(exists("products_donations","id=$products_donations") and exists("users","id=$user")){
 		$currentState=getCurrentState ($products_donations);
 		$datos = array(products_donations_id => $products_donations, previousState => $currentState, currentState => $newState,users_id => $user,reason => $reason);
-		if(dbInsert("products",$datos)){
+		if(dbInsert("statechanges",$datos)){
 			$datos = array(state => $newState);
-			if(dbUpdate("id",$datos,"id = $products_donations")){
+			if(dbUpdate("products_donations",$datos,"id = $products_donations")){
 				return 0;
 			}else{
 				return "Error en el cambio de estado del producto $products_donations. Por favor verifique.";
@@ -711,6 +744,7 @@ function addStatesChanges ($products_donations,$newState,$user,$reason = '' ,$no
 }
 
 function getCurrentState ($products_donations){
+	
 		$query="Select state from products_donations where id=$products_donations";
 		$result= runQuery($query);
 		if($row = mysql_fetch_array($result)){
@@ -1011,6 +1045,77 @@ function editCategory($data){
 	}
 	return array($warning, $success);
 } 
+
+/* Shelters
+============================================================ */
+function addShelter($data){	
+	if($data['name'] != ""){
+		if(checkmail($data['email']) or $data['email']==''){
+		//if(is_numeric($data['phonenumber']) and is_numeric($data['fax'])){
+			if(!exists("shelters","name='$data[name]'")){
+				$currentdate = date("Y-m-d");									
+				$datos = array(name => $data['name'], contactName => $data['contactname'], address => $data['address'], phonenumber => $data['phonenumber'], fax => $data['fax'], email => $data['email'], town_id =>$data['town'], createdAt => $currentdate);
+				$fields  = "";
+				$values = "";
+			
+				foreach ($datos as $f => $v){
+					$fields  .= "$f,";
+					$values .= (is_numeric($v) && (intval($v) == $v)) ? $v."," : "'$v',";
+				}
+			
+				//Eliminar las "," sobrantes
+				$fields = substr($fields, 0, -1);
+				$values = substr($values, 0, -1);
+			
+				$query = "insert into shelters ({$fields}) values({$values})";
+				$value = runQuery($query,4);
+				if($value != ''){
+					$success = "El beneficiario fue agregado exitosamente.";
+				}else{
+					$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
+				}
+			}else{
+				$warning = "Ya existe un beneficiario registrado con el id '$data[identification]'.";
+			}
+		}else{
+			$warning = "La dirección de correo electrónico no es válida.";
+		}
+		/*}else{
+			$warning = "Los números telefónicos no pueden contener letras o símbolos";
+		}*/											
+	}else{
+		$warning = "Por favor digite todos los datos obligatorios.";
+	}
+	return array($warning, $success);
+	
+} 
+
+function editShelter($data){	
+	if($data['name'] != ""){
+		if(checkmail($data['email']) or $data['email']==''){
+	//	if(is_numeric($data['phonenumber']) and is_numeric($data['fax'])){
+			if((!exists("shelters","name='$data[name]' ")) or (exists("shelters","name='$data[name]'")==$data['id'])){										
+				$datos = array(name => $data['name'], contactName => $data['contactname'], type => $data['type'], address => $data['address'], phonenumber => $data['phonenumber'], fax => $data['fax'], email => $data['email'], town_id =>$data['town']);
+				if(dbUpdate("shelters",$datos,"id= $data[id]")){
+					$success = "El beneficiario fue editado exitosamente.";
+				}else{
+					$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
+				}
+			}else{
+				$warning = "Ya existe un beneficiario registrado con el id '$data[identification]'.";
+			}
+		}else{
+			$warning = "La dirección de correo electrónico no es válida.";
+		}
+		/*}else{
+			$warning = "Los números telefónicos no pueden contener letras o símbolos";
+		}*/											
+	}else{
+		$warning = "Por favor digite todos los datos obligatorios.";
+	}
+	return array($warning, $success);
+} 
+
 
 
 ?>
