@@ -9,7 +9,7 @@
                 <?php 
 				$rol=isAnyRol($_SESSION['dms_id']);
 				if($rol== 1 || $rol== 3 || $rol== 5 || $rol== 6){?>
-                <li><a href="includes/forms/donorsAdd.php" class="btn colorbox">Agregar Donante</a></li>
+                <li><a href="includes/forms/donorsAdd.php?us=<?php echo $_SESSION['dms_id']?>" class="btn colorbox">Agregar Donante</a></li>
           		<?php } ?>
             </ul>
             <?php if($success != ''){ echo '<div class="success">' . $success . '</div>'; } ?>
@@ -46,7 +46,7 @@
                     <td>
                     <?php if($rol== 1 || $rol== 3 || $rol== 5 || $rol== 6){?>
 			     	<ul class="table-actions">
-                        	<li><a href="includes/forms/donorsEdit.php?e=<?php echo $donor['id']; ?>" class="icon edit colorbox" title="Editar"><span>Editar</span></a></li>
+                        	<li><a href="includes/forms/donorsEdit.php?e=<?php echo $donor['id']; ?>&us=<?php echo $_SESSION['dms_id']?>" class="icon edit colorbox" title="Editar"><span>Editar</span></a></li>
                             <li><a href="includes/forms/delete.php?t=donors&d=<?php echo $donor['id']; ?>" class="icon delete colorbox" title="Eliminar"><span>Eliminar</span></a></li>
                     </ul>	
               		<?php } ?>   

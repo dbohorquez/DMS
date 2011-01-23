@@ -13,6 +13,7 @@
 				ORDER BY products.name";
 			$products = runQuery($query);
 			$data = '';
+			$userid = $_GET['us']; 
 			while($product = mysql_fetch_array($products)){
 				$data .= '"' . $product['name'] . '",';
 			}
@@ -81,7 +82,7 @@
         <ul class="product-list text"></ul>
         <fieldset class="clear">
         <?php 
-		$rol=isAnyRol($_SESSION['dms_id']);
+		$rol=isAnyRol($userid);
 		if($rol== 1 || $rol== 2){?>
   	    <input type="submit" class="btn clear" value="Agregar" name="bt-add" />
         <?php } ?>

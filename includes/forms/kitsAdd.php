@@ -4,6 +4,7 @@
     <form action="kits.php" enctype="application/x-www-form-urlencoded" method="post">
     	<?php
 			include('../functions.php');
+			$userid = $_GET['us']; 
 			$products = getTable('products','','name asc');
 			$data = '';
 			while($product = mysql_fetch_array($products)){
@@ -30,7 +31,7 @@
         <ul class="product-list text"></ul>
         <fieldset class="clear">
          <?php 
-		 $rol=isAnyRol($_SESSION['dms_id']);
+		 $rol=isAnyRol($userid);
 		 if($rol== 1 || $rol== 3 || $rol== 5 || $rol== 6){?>
           	<input type="submit" class="btn clear" value="Guardar Kit" name="bt-add" />
    		<?php } ?>

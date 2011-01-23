@@ -1,4 +1,4 @@
-<div class="">
+<div class="medium">
 	<h3>Agregar Producto</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
     <form action="products.php" enctype="application/x-www-form-urlencoded" method="post">
@@ -6,6 +6,7 @@
 			include('../functions.php');
 			$types = getTable('producttypes','deletedAt IS NULL','name asc');
 			$data = '';
+			$userid = $_GET['us']; 
 			while($type = mysql_fetch_array($types)){
 				$data .= '"' . $type['name'] . '",';
 			}
@@ -20,7 +21,7 @@
         </fieldset>
         <fieldset class="clear">
          <?php 
-		 $rol=isAnyRol($_SESSION['dms_id']);
+		 $rol=isAnyRol($userid);
 		 if($rol== 1 || $rol== 3 || $rol== 5 || $rol== 6){?>
           	<input type="submit" class="btn clear" value="Agregar" name="bt-add" />
           <?php } ?>

@@ -4,6 +4,7 @@
     <form action="producttypes.php" enctype="application/x-www-form-urlencoded" method="post">
         	<?php
 			include('../functions.php');
+			$userid = $_GET['us']; 
 			$categories = getTable('categories','deletedAt IS NULL','name asc');
 			$data = '';
 			while($category = mysql_fetch_array($categories)){
@@ -25,7 +26,7 @@
         </fieldset>
         <fieldset class="clear">
 	        <?php 
-			$rol=isAnyRol($_SESSION['dms_id']);
+			$rol=isAnyRol($userid);
 			if($rol== 1 || $rol== 3 || $rol== 5 || $rol== 6){?>
                <input type="submit" class="btn" value="Agregar" name="bt-add" />
             <?php } ?>

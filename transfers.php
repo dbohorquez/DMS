@@ -8,7 +8,7 @@
             <?php 
 			$rol=isAnyRol($_SESSION['dms_id']);
 			if($rol== 1 || $rol== 2){?>
-            <li><a href="includes/forms/transfersAdd.php" class="btn colorbox">Nueva Transferencia</a></li>
+            <li><a href="includes/forms/transfersAdd.php?us=<?php echo $_SESSION['dms_id']?>" class="btn colorbox">Nueva Transferencia</a></li>
 	        <?php } ?>          
             </ul>
             <?php if($success != ''){ echo '<div class="success">' . $success . '</div>'; } ?>

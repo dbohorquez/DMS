@@ -9,7 +9,7 @@
                  <?php 
 				 $rol=isAnyRol($_SESSION['dms_id']);
 				 if($rol== 1 || $rol== 3 || $rol== 5 || $rol== 6){?>
-            	<li><a href="includes/forms/kitsAdd.php" class="btn colorbox">Agregar Kit</a></li>
+            	<li><a href="includes/forms/kitsAdd.php?us=<?php echo $_SESSION['dms_id']?>" class="btn colorbox">Agregar Kit</a></li>
           		<?php } ?>
             </ul>
             <?php if($success != ''){ echo '<div class="success">' . $success . '</div>'; } ?>
@@ -39,7 +39,7 @@
                     <td>
                     <?php if($rol== 1 || $rol== 3 || $rol== 5 || $rol== 6){?>
 		        	<ul class="table-actions">
-                        	<li><a href="includes/forms/kitsEdit.php?e=<?php echo $kit['id']; ?>" class="icon edit colorbox" title="Editar"><span>Editar</span></a></li>
+                        	<li><a href="includes/forms/kitsEdit.php?e=<?php echo $kit['id']; ?>&us=<?php echo $_SESSION['dms_id']?>" class="icon edit colorbox" title="Editar"><span>Editar</span></a></li>
                             <li><a href="includes/forms/delete.php?t=kits&d=<?php echo $kit['id']; ?>" class="icon delete colorbox" title="Eliminar"><span>Eliminar</span></a></li>
                         </ul>
 	          		<?php } ?>

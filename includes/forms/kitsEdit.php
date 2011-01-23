@@ -4,6 +4,7 @@
     <form action="kits.php" enctype="application/x-www-form-urlencoded" method="post">
     	<?php
 			include('../functions.php');
+			$userid = $_GET['us']; 
 			$id = $_GET['e']; 
 			$kit = getTable('kits',"id = $id",'',1);
 			$products = getTable('products','','name asc');
@@ -43,7 +44,7 @@
         </ul>
         <fieldset class="clear">
          <?php 
-		 $rol=isAnyRol($_SESSION['dms_id']);
+		 $rol=isAnyRol($userid);
 		 if($rol== 1 || $rol== 3 || $rol== 5 || $rol== 6){?>
           	<input type="submit" class="btn" value="Guardar Cambios" name="bt-edit" />
    		<?php } ?>

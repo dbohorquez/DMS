@@ -765,7 +765,7 @@ function addUser($data){
 				$pass = substr(md5(rand()),0,8);
 				$encodedPass = md5($pass);
 				$date = date('Y-m-d');
-				$datos = array(name => $data['name'], password => $encodedPass, phoneNumber => $data['phonenumber'], email => $data['email'], profile => $data['profile']);
+				$datos = array(name => $data['name'], password => $encodedPass, phoneNumber => $data['phonenumber'], email => $data['email'], profile => $data['profile'],companies_id => $data['company']);
 				if(dbInsert("users",$datos)){
 					$to      = $data['email'];
 					$subject    = 'Bienvenido a Sahana Caribe';
@@ -793,7 +793,7 @@ function addUser($data){
 
 function editUser($data){
 	if($data['name'] != ""){
-		$datos = array(name => $data['name'], phoneNumber => $data['phonenumber'], profile => $data['profile']);
+		$datos = array(name => $data['name'], phoneNumber => $data['phonenumber'], profile => $data['profile'],companies_id => $data['company']);
 		if(dbUpdate("users",$datos,"id = $data[id]")){
 			$success = "El usuario ha sido agregado exitosamente.";
 		}else{
