@@ -252,6 +252,25 @@ CREATE TABLE `products` (
 
 insert  into `products`(`id`,`name`,`description`,`state`,`productTypes_id`,`flagkit`,`createdAt`,`deletedAt`) values (2,'Aceite Vivi de 2 litros','',1,1,0,'2011-01-16 19:33:40',NULL),(3,'Colchon sencillo','',1,4,0,'2011-01-16 19:33:40',NULL),(4,'Mesa pequeÃ±a','',1,3,0,'2011-01-16 19:33:40',NULL),(5,'Aceite Girasol 1 litro','',1,1,0,'2011-01-16 19:33:40',NULL),(7,'werwer','',1,5,0,'2011-01-16 19:33:40',NULL),(8,'ALGO',NULL,1,5,0,'2011-01-16 19:22:14',NULL),(9,'Re Prueba',NULL,1,1,0,'2011-01-16 19:23:47',NULL),(10,'REPRUEBA','',1,5,0,'2011-01-16 19:24:38',NULL);
 
+/*Table structure for table `products_checkpoint` */
+
+DROP TABLE IF EXISTS `products_checkpoint`;
+
+CREATE TABLE `products_checkpoint` (
+  `id` int(11) NOT NULL auto_increment,
+  `quantity` int(11) default NULL,
+  `product_id` int(11) default NULL,
+  `deletedAt` datetime default NULL,
+  `createdAt` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  PRIMARY KEY  (`id`),
+  KEY `FK_products_checkpoint` (`product_id`),
+  CONSTRAINT `FK_products_checkpoint` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*Data for the table `products_checkpoint` */
+
+insert  into `products_checkpoint`(`id`,`quantity`,`product_id`,`deletedAt`,`createdAt`) values (1,5,2,NULL,'0000-00-00 00:00:00'),(2,434,3,NULL,'0000-00-00 00:00:00');
+
 /*Table structure for table `products_donations` */
 
 DROP TABLE IF EXISTS `products_donations`;
