@@ -763,7 +763,7 @@ function addUser($data){
 				$pass = substr(md5(rand()),0,8);
 				$encodedPass = md5($pass);
 				$date = date('Y-m-d');
-				$datos = array(name => $data['name'], password => $encodedPass, phoneNumber => $data['phonenumber'], email => $data['email'], profile => $data['profile']);
+				$datos = array(name => $data['name'], password => $encodedPass, phoneNumber => $data['phonenumber'], email => $data['email'], profile => $data['profile'],companies_id => $data['company']);
 				if(dbInsert("users",$datos)){
 					$to      = $data['email'];
 					$subject    = 'Bienvenido a Sahana Caribe';
@@ -791,7 +791,7 @@ function addUser($data){
 
 function editUser($data){
 	if($data['name'] != ""){
-		$datos = array(name => $data['name'], phoneNumber => $data['phonenumber'], profile => $data['profile']);
+		$datos = array(name => $data['name'], phoneNumber => $data['phonenumber'], profile => $data['profile'],companies_id => $data['company']);
 		if(dbUpdate("users",$datos,"id = $data[id]")){
 			$success = "El usuario ha sido agregado exitosamente.";
 		}else{
@@ -1293,5 +1293,27 @@ function receiveDonationPromise($data){
 		return array($warning, $success);
 }
 
+
+/* Kits 
+============================================================ */
+function addCheckpoint($data){	
+	if($data['product'] != ""){
+		if(exists("products","name='$data[product]'")){
+		
+				$datos = array(quantity => $data['quantity'],product_id => exists("products","name='$data[product]'"));
+
+				if(dbInsert("products_checkpoint",$datos)){
+					$success = "El punto de reorden fue agregado exitosamente.";
+				}else{
+					$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
+				}
+		}else{
+			$warning = "El producto registrado con el nombre '$data[product]' no existe.";
+		}
+	}else{
+		$warning = "Por favor digite todos los datos obligatorios.";
+	}
+	return array($warning, $success);
+} 
 
 ?>

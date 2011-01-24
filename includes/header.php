@@ -39,6 +39,7 @@ if($section != 'login' && !isset($_SESSION['dms_authorized'])){ header('Location
                 <li<?php if($section == 'warehouses'){ ?> class="active"<?php } ?>><a href="warehouses.php">Bodegas</a>
 	                <ul>
                     	<li><a href="transfers.php">Transferencias</a></li>
+                        <li><a href="products_checkpoint.php">Puntos de reorden</a></li>
                     </ul>
                 </li>
                 <li<?php if($section == 'products'){ ?> class="active"<?php } ?>><a href="products.php">Productos</a>

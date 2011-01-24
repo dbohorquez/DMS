@@ -1,5 +1,5 @@
 <div class="medium">
-	<h3>Agregar Entidad</h3>
+	<h3>Agregar Operador</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
     <form action="companies.php" enctype="application/x-www-form-urlencoded" method="post">
     <?php include('../functions.php'); ?>

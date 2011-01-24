@@ -4,6 +4,7 @@
     <form action="distribution.php" enctype="application/x-www-form-urlencoded" method="post">
     	<?php
 			include('../functions.php');
+			$userid = $_GET['us']; 
 			$id = $_GET['e']; 
 			$distribution = getTable('distributions',"id = $id",'',1);
 			$query = "SELECT  products.id, products.name, COUNT(products_donations.id)
@@ -87,7 +88,7 @@
         </ul>
         <fieldset class="clear">
         <?php 
-		$rol=isAnyRol($_SESSION['dms_id']);
+		$rol=isAnyRol($userid);
 		if($rol== 1 || $rol== 2){?>
   	    <input type="submit" class="btn clear" value="Guardar Cambios" name="bt-edit" />
         <?php } ?>

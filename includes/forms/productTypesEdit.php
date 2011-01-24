@@ -1,7 +1,8 @@
 <div class="">
 	<?php 
 		include('../functions.php');
-		$id = $_GET['e']; 
+		$id = $_GET['e'];
+		$userid = $_GET['us'];  
 		$type = getTable('producttypes',"id = $id",'',1);
 
 			$categories = getTable('categories','deletedAt IS NULL','name asc');
@@ -38,7 +39,7 @@
         </fieldset>
         <fieldset class="clear">
   	        <?php 
-			$rol=isAnyRol($_SESSION['dms_id']);
+			$rol=isAnyRol($userid);
 			if($rol== 1 || $rol== 3 || $rol== 5 || $rol== 6){?>
 			<input type="submit" class="btn" value="Guardar Cambios" name="bt-edit" />
             <?php } ?>

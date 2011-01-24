@@ -1,5 +1,9 @@
-<div class="">
+<div class="medium">
 	<h3>Agregar Usuario</h3>
+    <?php 
+		include('../functions.php');
+		$userid = $_GET['us']; 
+	?>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
     <form action="options.php" enctype="application/x-www-form-urlencoded" method="post">
         <fieldset>
@@ -25,9 +29,21 @@
                 <option value="Operador Comercial">Operador Comercial</option>
            </select>
         </fieldset>
+        <fieldset>
+                <label for="company">Operador Asociado: <span class="required">*</span></label>
+                <select name="company" id="company">
+                <?php
+                    $companies = getTable('companies','','name asc');
+                    while($company = mysql_fetch_array($companies)){
+                ?>
+                    <option value="<?php echo $company['id']; ?>"><?php echo $company['name']; ?></option>
+                <?php } ?>
+                </select>
+            </fieldset>
+
         <fieldset class="clear">
                 <?php 
-				$rol=isAnyRol($_SESSION['dms_id']);
+				$rol=isAnyRol($userid);
 				if($rol== 1){?>
                  <input type="submit" class="btn" value="Agregar" name="bt-add" />
 				<?php } ?>

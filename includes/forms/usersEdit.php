@@ -1,8 +1,9 @@
-<div class="">
+<div class="medium">
 	<?php 
 		include('../functions.php');
 		$id = $_GET['e']; 
 		$user = getTable('users',"id = $id",'',1);
+		$userid = $_GET['us']; 
 	?>
 	<h3>Editar Usuario</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
@@ -31,9 +32,21 @@
                 <option value="Operador Comercial" <?php if($user['profile'] == 'Operador Comercial'){ ?> selected="selected"<?php } ?>>Operador Comercial</option>
             </select>
         </fieldset>
+       <fieldset>
+                <label for="company">Operador: <span class="required">*</span></label>
+                <select name="company" id="company">
+                <?php
+                    $companies = getTable('companies','','name asc');
+                    while($company = mysql_fetch_array($companies)){
+                ?>
+                    <option value="<?php echo $company['id']; ?>"<?php if($user['companies_id'] == $company['id']){ ?> selected="selected"<?php } ?>><?php echo $company['name']; ?></option>
+                <?php } ?>
+                </select>
+            </fieldset>
+
         <fieldset class="clear">
                 <?php 
-				$rol=isAnyRol($_SESSION['dms_id']);
+				$rol=isAnyRol($userid);
 				if($rol== 1){?>
                  <input type="submit" class="btn" value="Guardar Cambios" name="bt-edit" />
 				<?php } ?>

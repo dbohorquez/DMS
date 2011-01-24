@@ -4,13 +4,13 @@
 <?php if(isset($_POST['bt-add'])) list($warning, $success) = addCompany($_POST);?>
 <?php if(isset($_POST['bt-edit'])) list($warning, $success) = editCompany($_POST);?>
 <?php if(isset($_POST['bt-delete'])) list($warning, $success) = delete($_POST);?>
-			<h2>Entidades</h2>
+			<h2>Operadores</h2>
             
 			<ul class="toolbar">
             	 <?php 
 				 $rol=isAnyRol($_SESSION['dms_id']);
 				 if($rol== 1){?>
-                <li><a href="includes/forms/companiesAdd.php" class="btn colorbox">Nueva Entidad</a></li>
+                <li><a href="includes/forms/companiesAdd.php" class="btn colorbox">Nuevo Operador</a></li>
 				<?php } ?>
             </ul>
             <?php if($success != ''){ echo '<div class="success">' . $success . '</div>'; } ?>

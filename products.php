@@ -9,7 +9,7 @@
             <?php 
 			$rol=isAnyRol($_SESSION['dms_id']);
 			if($rol== 1 || $rol== 3 || $rol== 5 || $rol== 6){?>
-            	<li><a href="includes/forms/productsAdd.php" class="btn colorbox">Agregar Producto</a></li>
+            	<li><a href="includes/forms/productsAdd.php?us=<?php echo $_SESSION['dms_id']?>" class="btn colorbox">Agregar Producto</a></li>
             <?php } ?>
             </ul>
             <?php if($success != ''){ echo '<div class="success">' . $success . '</div>'; } ?>
@@ -34,7 +34,7 @@
                     <td>
                     <?php if($rol== 1 || $rol== 3 || $rol== 5 || $rol== 6){?>
 	            	<ul class="table-actions">
-                        	<li><a href="includes/forms/productsEdit.php?e=<?php echo $product['id']; ?>" class="icon edit colorbox" title="Editar"><span>Editar</span></a></li>
+                        	<li><a href="includes/forms/productsEdit.php?e=<?php echo $product['id']; ?>&us=<?php echo $_SESSION['dms_id']?>" class="icon edit colorbox" title="Editar"><span>Editar</span></a></li>
                             <li><a href="includes/forms/delete.php?t=products&d=<?php echo $product['id']; ?>" class="icon delete colorbox" title="Eliminar"><span>Eliminar</span></a></li>
                         </ul>
     		        <?php } ?>

@@ -9,7 +9,7 @@
             <?php 
 			$rol=isAnyRol($_SESSION['dms_id']);
 			if($rol== 1 || $rol== 3 || $rol== 5 || $rol== 6){?>
-            	<li><a href="includes/forms/categoriesAdd.php" class="btn colorbox">Agregar Categoria</a></li>
+            	<li><a href="includes/forms/categoriesAdd.php?us=<?php echo $_SESSION['dms_id']?>" class="btn colorbox">Agregar Categoria</a></li>
 			<?php } ?>
             </ul>
             <?php if($success != ''){ echo '<div class="success">' . $success . '</div>'; } ?>
@@ -32,7 +32,7 @@
                     <td>
                      <?php if($rol== 1 || $rol== 3 || $rol== 5 || $rol== 6){?>
                     	<ul class="table-actions">
-                        	<li><a href="includes/forms/categoriesEdit.php?e=<?php echo $category['id']; ?>" class="icon edit colorbox" title="Editar"><span>Editar</span></a></li>
+                        	<li><a href="includes/forms/categoriesEdit.php?e=<?php echo $category['id']; ?>&us=<?php echo $_SESSION['dms_id']?>" class="icon edit colorbox" title="Editar"><span>Editar</span></a></li>
                             <li><a href="includes/forms/delete.php?t=categories&d=<?php echo $category['id']; ?>" class="icon delete colorbox" title="Eliminar"><span>Eliminar</span></a></li>
                         </ul>
 					<?php } ?>

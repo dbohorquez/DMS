@@ -5,7 +5,7 @@
 		$company = getTable('companies',"id = $id",'',1);
 		$location = getItemLocation('companies',$id);
 	?>
-	<h3>Editar Entidad</h3>
+	<h3>Editar Operador</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
     <form action="companies.php" enctype="application/x-www-form-urlencoded" method="post">
         <div class="column c50p">

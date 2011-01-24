@@ -12,7 +12,9 @@
         </fieldset>
         <fieldset class="clear">
             <?php 
-			$rol=isAnyRol($_SESSION['dms_id']);
+			include('../functions.php');
+			$userid = $_GET['us']; 
+			$rol=isAnyRol($userid);
 			if($rol== 1 || $rol== 3 || $rol== 5 || $rol== 6){?>
 			<input type="submit" class="btn" value="Agregar" name="bt-add" />
 			<?php } ?>

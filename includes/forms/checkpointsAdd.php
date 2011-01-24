@@ -1,10 +1,10 @@
 <div class="medium">
-	<h3>Agregar Producto</h3>
+	<h3>Agregar Punto de Reorden</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
-    <form action="products.php" enctype="application/x-www-form-urlencoded" method="post">
+    <form action="products_checkpoint.php" enctype="application/x-www-form-urlencoded" method="post">
     	<?php
 			include('../functions.php');
-			$types = getTable('producttypes','deletedAt IS NULL','name asc');
+			$types = getTable('products','deletedAt IS NULL','name asc');
 			$data = '';
 			$userid = $_GET['us']; 
 			while($type = mysql_fetch_array($types)){
@@ -12,13 +12,14 @@
 			}
 		?>
         <fieldset>
-            <label for="name">Nombre: <span class="required">*</span></label>
-            <input type="text" class="text" size="48" name="name" id="name" />
+            <label for="product">Producto: <span class="required">*</span></label>
+            <input type="text" class="text autocomplete" size="48" name="product" id="product" />
         </fieldset>
         <fieldset>
-            <label for="type">Tipo de Producto: <span class="required">*</span></label>
-            <input type="text" class="text autocomplete" size="48" name="type" id="type" />
+            <label for="quantity">Cantidad: <span class="required">*</span></label>
+            <input type="text" class="text" size="48" name="quantity" id="quantity" />
         </fieldset>
+
         <fieldset class="clear">
          <?php 
 		 $rol=isAnyRol($userid);
@@ -30,7 +31,7 @@
     </form>
     <script type="text/javascript">
 		var data = [<?php echo $data; ?>];
-		$('#type').autocomplete({
+		$('#product').autocomplete({
 			source: data
 		});
 	</script>

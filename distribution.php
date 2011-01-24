@@ -10,7 +10,7 @@
 	            <?php 
 				$rol=isAnyRol($_SESSION['dms_id']);
 				if($rol== 1 || $rol== 2){?>
-                <li><a href="includes/forms/distributionsAdd.php" class="btn colorbox">Nueva Distribución</a></li>
+                <li><a href="includes/forms/distributionsAdd.php?us=<?php echo $_SESSION['dms_id']?>" class="btn colorbox">Nueva Distribución</a></li>
 				<?php } ?>
             </ul>			
             <?php if($success != ''){ echo '<div class="success">' . $success . '</div>'; } ?>
@@ -46,7 +46,7 @@
                     <td>
                     <?php if($rol== 1 || $rol== 2){?>
                     	<ul class="table-actions">
-                        	<li><a href="includes/forms/distributionsEdit.php?e=<?php echo $distribution['id']; ?>" class="icon edit colorbox" title="Editar"><span>Editar</span></a></li>
+                        	<li><a href="includes/forms/distributionsEdit.php?e=<?php echo $distribution['id']; ?>&us=<?php echo $_SESSION['dms_id']?>" class="icon edit colorbox" title="Editar"><span>Editar</span></a></li>
                             <li><a href="includes/forms/delete.php?t=distributions&d=<?php echo $distribution['id']; ?>" class="icon delete colorbox" title="Eliminar"><span>Eliminar</span></a></li>
                         </ul>
 

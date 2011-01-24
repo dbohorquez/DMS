@@ -1,5 +1,8 @@
 <div class="medium">
-	<?php include('../functions.php'); ?>
+	<?php 
+	include('../functions.php'); 
+	$userid = $_GET['us']; 
+	?>
 	<h3>Agregar Donante</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
     <form action="donors.php" enctype="application/x-www-form-urlencoded" method="post">
@@ -58,7 +61,7 @@
         </div>
         <fieldset class="clear">
             <?php 
-			$rol=isAnyRol($_SESSION['dms_id']);
+			$rol=isAnyRol($userid);
 			if($rol== 1 || $rol== 3 || $rol== 5 || $rol== 6){?>
 			<input type="submit" class="btn" value="Agregar" name="bt-add" />
             <?php } ?>
