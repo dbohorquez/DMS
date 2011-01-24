@@ -205,6 +205,8 @@ div.success{
 	font-weight:bold;
 }
 
+th .required{color:#FFF;}
+
 .available{
 	color:#090;
 	font-weight:bold;
