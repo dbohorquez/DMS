@@ -476,6 +476,7 @@ CREATE TABLE `vouchers` (
   `deletedAt` datetime default NULL,
   `state` int(11) NOT NULL,
   `company_id` double NOT NULL,
+  `date` datetime NOT NULL,
   PRIMARY KEY  (`id`),
   KEY `FK_vouchers` (`donors_id`),
   KEY `FK_vouchers2` (`company_id`),
