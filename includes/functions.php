@@ -989,12 +989,9 @@ if($data['warehouse'] != "" and $data['company'] != "" and $data['deliveryDate']
 
 function sendNotification($data){
 	
-   
-   ini_set(sendmail_from,"example@gobernacion.com");
-   
-	if(mail("example@gobernacion.com",$data['subject'],$data['body'])){
+    $headers = 'From: Sahana Caribe <admin@sahanacaribe.com>' . "\r\n" .'Fecha: '.$date. "\r\n";
+	if(mail($data['email'],$data['subject'],$data['body'],$headers)){
       $success = "Mensaje Enviado con exito.";
-	  
 	  $datos = array(subject => $data['subject'], from  => $data['from'] , to => $data['to'],body => $data['body'], type => $data['type'], users_id => $data['user']);
 		if(dbInsert("notifications",$datos)){
 			
@@ -1006,8 +1003,6 @@ function sendNotification($data){
    }else{
       $warning = "El mensaje no ha podido ser enviado";
    }
-	
-	
 	return array($warning, $success);
 }
 
