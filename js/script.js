@@ -60,7 +60,7 @@ function addProductAjax(field,quantityField,expDate,container,trigger, donationI
 			data     : { product_name : product , product_quantity : quantity, product_date : xDate, donation_id : donationId, warehouse_id : warehouseId, donation_type : donationType },
 			success  : function(msg){
 				if (msg != "error")
-				  $(container).append('<li id="'+msg+'"><a href="javascript:void(0);" onclick="removeProductAjax($(this).parent(),'+donationId+');" class="icon delete" title="Remover Producto"><span>Remover Producto</span></a><span class="product-name">' + product + '</span><span class="product-quantity">x' + quantity + '</span></li>');
+				  $(container).append('<li id="'+msg+'"><a href="javascript:void(0);" onclick="removeProductAjax($(this).parent(),'+donationId+','+donationType+');" class="icon delete" title="Remover Producto"><span>Remover Producto</span></a><span class="product-name">' + product + '</span><span class="product-quantity">x' + quantity + '</span></li>');
 			}
 		})
 	}
@@ -71,14 +71,14 @@ function addProductAjax(field,quantityField,expDate,container,trigger, donationI
 	$(trigger).hide();
 }
 
-function removeProductAjax(product, donationId){
+function removeProductAjax(product, donationId, donationType){
 	product_id =  product.attr('id');
 	product_name = product.find(".product-name").html()
 	jQuery.ajax({
 		type	 : 'POST', 
 		url      : "includes/data/removeDonationProduct.php",
 		dataType : "text",
-		data     : { product_id : product.attr('id'), product_name : product_name, donation_id : donationId },
+		data     : { product_id : product.attr('id'), product_name : product_name, donation_id : donationId, donation_type : donationType },
 		success  : function(msg){
 			if (msg != "error"){
 				msg =  msg.split("_")

@@ -13,9 +13,9 @@
 				$data .= '"' . $product['name'] . '",';
 			}
 	?>
-	<h3>Editar Donación Virtual #<?php echo $donation['sequence']; ?></h3>
+	<h3>Editar Promesa de Donación #<?php echo $donation['sequence']; ?></h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
-    <form action="virtual-receptions.php" enctype="application/x-www-form-urlencoded" method="post">
+    <form action="donations-promises.php" enctype="application/x-www-form-urlencoded" method="post">
         <input type="hidden" id="id" name="id" value="<?php echo $id; ?>" />
         <div class="column c50p">
             <fieldset>
@@ -33,21 +33,6 @@
             </fieldset>
         </div>
         <div class="column c50p last">
-            <fieldset>
-                <label for="company">Operador:</label>
-                <select name="company" id="company">
-                <?php
-                    $companies = getTable('companies','','name asc');
-                    while($company = mysql_fetch_array($companies)){
-                ?>
-                    <option value="<?php echo $company['id']; ?>"<?php if($donation['companies_id'] == $company['id']){ ?> selected="selected"<?php } ?>><?php echo $company['name']; ?></option>
-                <?php } ?>
-                </select>
-            </fieldset>
-            <fieldset>
-                <label for="bill">Número de Factura:</label>
-                <input type="text" class="text" size="48" name="bill" id="bill" value="<?php echo $donation['bill']; ?>" />
-            </fieldset>
             <h4>Productos <span class="required">*</span></h4>
             <fieldset>
                 <div class="column c50p">
@@ -60,9 +45,7 @@
                 </div>
             </fieldset>
             <fieldset>
-                <label for="expirationDate">Fecha de Vencimiento:</label>
-                <input type="text" class="text datepicker" size="20" name="expirationDate" id="expirationDate" />
-                <a href="javascript:void(0);" class="btn" onclick="addProductAjax('#product',$('#quantity'),'#expirationDate','.product-list',this, <?php echo $id; ?>, $('#warehouse').val(), 2 );" id="add">Añadir</a>
+                <a href="javascript:void(0);" class="btn" onclick="addProductAjax('#product',$('#quantity'),'#expirationDate','.product-list',this, <?php echo $id; ?>, $('#warehouse').val(), 3 );" id="add">Añadir</a>
             </fieldset>
             <label>Productos seleccionados:</label>
             <ul class="product-list text">
@@ -72,7 +55,7 @@
                         //$rand = rand(1,10000000);
 												$quantity = getProductQuantity($product['name'],$id);
                 ?>
-                        <li id="<?php echo $product['id']; ?>"><a href="javascript:void(0);" onclick="removeProductAjax($(this).parent(), <?php echo $id; ?>, 2 );" class="icon delete" title="Remover Producto"><span>Remover Producto</span></a><span class="product-name"><?php echo $product['name']; ?></span><span class="product-quantity">x<?php echo  $quantity; ?></span><!--input type="hidden" id="hitem<?php echo $rand ; ?>" name="hitem<?php echo $rand ; ?>" value="<?php echo $product['name'] ; ?>" /><input type="hidden" id="citem<?php echo $rand ; ?>" name="citem<?php echo $rand ; ?>" value="<?php echo $quantity; ?>" /><input type="hidden" id="ditem<?php echo $rand ; ?>" name="ditem<?php echo $rand ; ?>" value="<?php echo $product['expirationDate']; ?>" /--></li>
+                        <li id="<?php echo $product['id']; ?>"><a href="javascript:void(0);" onclick="removeProductAjax($(this).parent(), <?php echo $id; ?>, 3 );" class="icon delete" title="Remover Producto"><span>Remover Producto</span></a><span class="product-name"><?php echo $product['name']; ?></span><span class="product-quantity">x<?php echo  $quantity; ?></span><!--input type="hidden" id="hitem<?php echo $rand ; ?>" name="hitem<?php echo $rand ; ?>" value="<?php echo $product['name'] ; ?>" /><input type="hidden" id="citem<?php echo $rand ; ?>" name="citem<?php echo $rand ; ?>" value="<?php echo $quantity; ?>" /><input type="hidden" id="ditem<?php echo $rand ; ?>" name="ditem<?php echo $rand ; ?>" value="<?php echo $product['expirationDate']; ?>" /--></li>
                 <?php
                     }
                 ?>

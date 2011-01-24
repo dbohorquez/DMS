@@ -72,7 +72,7 @@
                         //$rand = rand(1,10000000);
 												$quantity = getProductQuantity($product['name'],$id);
                 ?>
-                        <li id="<?php echo $product['id']; ?>"><a href="javascript:void(0);" onclick="removeProductAjax($(this).parent(), <?php echo $id; ?> );" class="icon delete" title="Remover Producto"><span>Remover Producto</span></a><span class="product-name"><?php echo $product['name']; ?></span><span class="product-quantity">x<?php echo  $quantity; ?></span><!--input type="hidden" id="hitem<?php echo $rand ; ?>" name="hitem<?php echo $rand ; ?>" value="<?php echo $product['name'] ; ?>" /><input type="hidden" id="citem<?php echo $rand ; ?>" name="citem<?php echo $rand ; ?>" value="<?php echo $quantity; ?>" /><input type="hidden" id="ditem<?php echo $rand ; ?>" name="ditem<?php echo $rand ; ?>" value="<?php echo $product['expirationDate']; ?>" /--></li>
+                        <li id="<?php echo $product['id']; ?>"><a href="javascript:void(0);" onclick="removeProductAjax($(this).parent(), <?php echo $id; ?>, 1 );" class="icon delete" title="Remover Producto"><span>Remover Producto</span></a><span class="product-name"><?php echo $product['name']; ?></span><span class="product-quantity">x<?php echo  $quantity; ?></span><!--input type="hidden" id="hitem<?php echo $rand ; ?>" name="hitem<?php echo $rand ; ?>" value="<?php echo $product['name'] ; ?>" /><input type="hidden" id="citem<?php echo $rand ; ?>" name="citem<?php echo $rand ; ?>" value="<?php echo $quantity; ?>" /><input type="hidden" id="ditem<?php echo $rand ; ?>" name="ditem<?php echo $rand ; ?>" value="<?php echo $product['expirationDate']; ?>" /--></li>
                 <?php
                     }
                 ?>

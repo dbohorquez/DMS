@@ -17,3 +17,11 @@ Estado      Descripción
     3          Donación Anulada
     4          En canal de distribución
     5          Eliminado
+
+
+los estados de los comprobantes son:
+Estado      Descripción
+  1          Completo
+  2          Incompleto
+  3          No encontrado
+
