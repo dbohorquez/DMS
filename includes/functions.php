@@ -1410,4 +1410,29 @@ function verifyDonationPromise($data){
 	}		
 	return array($warning, $success);
 }
+
+function sendMailPromise($donation_id){
+	
+	$donation = getTable('donations d','d.deletedAt IS NULL and d.type=3 and id = $donation_id','sequence asc');
+	$donor = getTable('donors',"id = $donation[donors_id]",'',1);
+	
+    $headers = 'From: Sahana Caribe <admin@sahanacaribe.com>' . "\r\n" .'Fecha: '.$date. "\r\n";
+	$subject = 'Recordatorio de Promesa de Donacion"\r\n"';
+	$body = 'Le recordamos que el dia donation[createdAt]';
+	if(mail($donor['email'],$subject,$body,$headers)){
+      $success = "Mensaje Enviado con exito.";
+	  $datos = array(subject => $subject, from  => 'admin@sahanacaribe.com' , to => $donor['email'],body => $body, type => $data['type'], users_id => $data['user']);
+		if(dbInsert("notifications",$datos)){
+			
+		}
+		else
+		{
+			$warning = "El mensaje ha sido enviado, pero no ha podido guardarse en la base de datos. Por favor consulte al Administrador.";
+			}
+   }else{
+      $warning = "El mensaje no ha podido ser enviado";
+   }
+	return array($warning, $success);
+}
+
 ?>

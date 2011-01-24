@@ -5,7 +5,7 @@
 <?php if(isset($_POST['bt-edit'])) list($warning, $success) = editDonationPromise($_POST);?>
 <?php if(isset($_POST['bt-receive'])) list($warning, $success) = receiveDonationPromise($_POST);?>
 <?php if(isset($_POST['bt-delete'])) list($warning, $success) = delete($_POST);?>
-
+<?php if($_GET['em']) list($warning, $success) = sendMailPromise($_GET['em']);?>
 			<h2>Promesas de donaciones</h2>
 			
 			  <div class="column c50p">
@@ -55,6 +55,7 @@
                     <td><?php echo $donation['detail']; ?></td>
                     <td>
                     	<ul class="table-actions">
+                        <li><a href="donation-promises.php?em=<?php echo $donation['sequence']; ?>" class="icon check colorbox" title="Recordatorio"><span>Enviar Recordatorio</span></a></li>
 	                        <li><a href="includes/forms/donationpromiseReceive.php?r=<?php echo $donation['sequence']; ?>" class="icon check colorbox" title="Recibir"><span>Recibir</span></a></li>
                         	<li><a href="includes/forms/donationpromiseEdit.php?e=<?php echo $donation['sequence']; ?>" class="icon edit colorbox" title="Editar"><span>Editar</span></a></li>
                             <li><a href="includes/forms/delete.php?t=donations-promises&d=<?php echo $donation['sequence']; ?>" class="icon delete colorbox" title="Eliminar"><span>Eliminar</span></a></li>
