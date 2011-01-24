@@ -34,7 +34,7 @@
                     <td>
                     <?php if($rol== 1){?>
 		        	<ul class="table-actions">
-                        	<li><a href="includes/forms/checkpointEdit.php?e=<?php echo $checkpoint['id']; ?>&us=<?php echo $_SESSION['dms_id']?>" class="icon edit colorbox" title="Editar"><span>Editar</span></a></li>
+                        	<li><a href="includes/forms/checkpointsEdit.php?e=<?php echo $checkpoint['id']; ?>&us=<?php echo $_SESSION['dms_id']?>" class="icon edit colorbox" title="Editar"><span>Editar</span></a></li>
                             <li><a href="includes/forms/delete.php?t=products_checkpoint&d=<?php echo $checkpoint['id']; ?>" class="icon delete colorbox" title="Eliminar"><span>Eliminar</span></a></li>
                         </ul>
 	          		<?php } ?>

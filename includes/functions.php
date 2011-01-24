@@ -1294,7 +1294,7 @@ function receiveDonationPromise($data){
 }
 
 
-/* Kits 
+/* Checkpoints 
 ============================================================ */
 function addCheckpoint($data){	
 	if($data['product'] != ""){
@@ -1304,6 +1304,26 @@ function addCheckpoint($data){
 
 				if(dbInsert("products_checkpoint",$datos)){
 					$success = "El punto de reorden fue agregado exitosamente.";
+				}else{
+					$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
+				}
+		}else{
+			$warning = "El producto registrado con el nombre '$data[product]' no existe.";
+		}
+	}else{
+		$warning = "Por favor digite todos los datos obligatorios.";
+	}
+	return array($warning, $success);
+} 
+
+function editCheckpoint($data){	
+	if($data['product'] != ""){
+		if(exists("products","name='$data[product]'")){
+		
+				$datos = array(quantity => $data['quantity'],product_id => exists("products","name='$data[product]'"));
+
+				if(dbUpdate("products_checkpoint",$datos,"id= $data[id]")){	
+					$success = "El punto de reorden fue editado exitosamente.";
 				}else{
 					$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
 				}
