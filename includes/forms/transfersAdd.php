@@ -22,6 +22,7 @@
             <fieldset>
                 <label for="warehousefrom">Bodega Origen: <span class="required">*</span></label>
                 <select name="warehousefrom" id="warehousefrom">
+										<option value="-1">Bodega Virtual</option>
                 <?php
                     $warehouses = getTable('warehouses','','name asc');
                     while($warehouse = mysql_fetch_array($warehouses)){

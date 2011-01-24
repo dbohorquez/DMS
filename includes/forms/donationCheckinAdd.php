@@ -1,7 +1,7 @@
 <div class="medium">
 	<h3>Agregar Comprobante de Donación</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
-    <form action="donations.php" enctype="application/x-www-form-urlencoded" method="post">
+    <form action="donation-checkin.php" enctype="application/x-www-form-urlencoded" method="post">
     	<?php
 			include('../functions.php');
 			$donorId = $_GET['d'];
@@ -56,16 +56,16 @@
                 <?php } ?>
                 </select>
             </fieldset>
-        </div>
+	        	<fieldset>
+	            	<label for="address">Dirección:</label>
+	                <input type="text" class="text" size="48" name="address" id="address" value="<?php echo $donor['address']; ?>" />
+	            </fieldset>
+					  	<fieldset>
+		            	<label for="phonenumber">Teléfono:</label>
+		                <input type="text" class="text" size="48" name="phonenumber" id="phonenumber" value="<?php echo $donor['phoneNumber']; ?>" />
+	           </fieldset>
+	        </div>
         <div class="column c50p last">
-        	<fieldset>
-            	<label for="address">Dirección:</label>
-                <input type="text" class="text" size="48" name="address" id="address" value="<?php echo $donor['address']; ?>" />
-            </fieldset>
-            <fieldset>
-            	<label for="phonenumber">Teléfono:</label>
-                <input type="text" class="text" size="48" name="phonenumber" id="phonenumber" value="<?php echo $donor['phoneNumber']; ?>" />
-            </fieldset>
             <fieldset>
             	<label for="fax">Fax:</label>
                 <input type="text" class="text" size="48" name="fax" id="fax" value="<?php echo $donor['faxNumber']; ?>" />
@@ -74,13 +74,40 @@
             	<label for="email">Correo electrónico:</label>
                 <input type="text" class="text" size="48" name="email" id="email" value="<?php echo $donor['email']; ?>" />
             </fieldset>
+	        	<h4>Detalle de Factura:</h4>
+						<fieldset>
+               <label for="company_id">Operador: <span class="required">*</span></label>
+               <select name="company_id" id="company_id">
+               <?php
+                   $companies = getTable('companies','','name asc');
+                   while($company = mysql_fetch_array($companies)){
+               ?>
+                   <option value="<?php echo $company['id']; ?>"<?php if($donation['companies_id'] == $company['id']){ ?> selected="selected"<?php } ?>><?php echo $company['name']; ?></option>
+               <?php } ?>
+              </select>
+           </fieldset>
+						<fieldset>
+               <label for="bill">Número de Factura: <span class="required">*</span></label>
+               <input type="text" class="text" size="48" name="bill" id="bill" value="<?php echo $donation['bill']; ?>" />
+           </fieldset>
+					 <fieldset>
+                <label for="date">Fecha de recibo: <span class="required">*</span></label>
+                <input type="text" class="text datepicker" size="20" name="date" id="date" />
+            </fieldset>
         </div>
+
         <fieldset class="clear">
 	        <input type="submit" class="btn" value="Agregar" name="bt-add" /><span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
         </fieldset>
-        	<?php }else{ ?>
-            	<div class="error">Debe escribir un número de identificación</div>
-                <p><a href="javascript:void(0);" class="btn" onClick="$.colorbox.close()">Volver</a></p>
-            <?php } ?>
-    </form>
+	    </form>
+	    <script type="text/javascript">
+					$('.datepicker').datepicker($.datepicker.regional[ "es" ],{
+						inline: true
+					});	
+					$('.datepicker').datepicker("option", "dateFormat", 'yy-mm-dd');
+		</script>
+     		<?php }else{ ?>
+          	<div class="error">Debe escribir un número de identificación</div>
+              <p><a href="javascript:void(0);" class="btn" onClick="$.colorbox.close()">Volver</a></p>
+          <?php } ?>
 </div>

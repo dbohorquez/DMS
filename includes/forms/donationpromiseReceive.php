@@ -69,11 +69,12 @@
 										<input type="hidden" id="hitem<?php echo $rand ; ?>" name="hitem<?php echo $rand ; ?>" value="<?php echo $product['name'] ; ?>" />
 								</td>
 								<td><input type="text" style="width:50px" value="<?php echo $quantity; ?>" id="citem<?php echo $rand ; ?>" name="citem<?php echo $rand ; ?>" class="text"></td>
-								<td><input type="text readonly" id="ditem<?php echo $rand ; ?>" name="ditem<?php echo $rand ; ?>" class="text datepicker"></td>
+								<td><input type="text" id="ditem<?php echo $rand ; ?>" name="ditem<?php echo $rand ; ?>" class="text datepicker"></td>
 					</tr>
         <?php
             }
         ?>
+				 </tbody>
 				</table>
 				
 			</div>	

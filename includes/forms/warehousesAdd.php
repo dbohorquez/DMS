@@ -10,13 +10,6 @@
                 <input type="text" class="text" size="48" name="name" id="name" />
             </fieldset>
             <fieldset>
-            	<label for="type">Tipo de Bodega: <span class="required">*</span></label>
-                <select name="type" id="type">
-                	<option value="1">Física</option>
-                    <option value="2">Virtual</option>
-                </select>
-            </fieldset>
-            <fieldset>
             	<label for="description">Descripción:</label>
                 <textarea class="text" cols="44" rows="6" name="description" id="description"></textarea>
             </fieldset>
