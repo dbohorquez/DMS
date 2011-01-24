@@ -94,6 +94,7 @@ function removeProductAjax(product, donationId, donationType){
 		}
 	})
 }
+
 /* Form Validation
 ============================================================ */
 

@@ -3,7 +3,7 @@
 
 <?php if(isset($_POST['bt-add'])) list($warning, $success) = addDonationCheckin($_POST);?>
 <?php if(isset($_POST['bt-edit'])) list($warning, $success) = editDonationCheckin($_POST);?>
-<?php if(isset($_POST['bt-receive'])) list($warning, $success) = receiveDonationPromise($_POST);?>
+<?php if(isset($_POST['bt-verify'])) list($warning, $success) = verifyDonationPromise($_POST);?>
 <?php if(isset($_POST['bt-delete'])) list($warning, $success) = delete($_POST);?>
 
 			<h2>Comprobante de Donación Virtual</h2>
@@ -32,32 +32,36 @@
             	<tr>
                 	<th>Consecutivo</th>
                 	<th>Donante</th>
-                    <th>Operadores</th>
-                    <th>Detalles</th>
-                    <th width="60">&nbsp;</th>
+                  <th>Factura</th>
+                  <th>Operadores</th>
+									<th>Fecha Recibo</th>
+									<th>Detalles</th>
+                  <th width="60">&nbsp;</th>
                 </tr></thead><tbody>
                 <?php
-					$donations = getTable('donations d','d.deletedAt IS NULL and d.type=3','sequence asc');
-					$numRows = mysql_num_rows($donations);
-					$ddata = '';
-					if($numRows > 0){
-						while($donation = mysql_fetch_array($donations)){
-							$ddata .= '"' . $donation['sequence'] . '",';
-							$donor = getTable('donors',"id = $donation[donors_id]",'',1);
-							$location = getItemLocation('donors',$donor['id']);
-							$types = array("","C.C.","C.E.","NIT");
-							$company = getTable('companies',"id = $donation[companies_id]",'',1);
-				?>
+									$donations = getTable('vouchers','deletedAt IS NULL and state=0','id asc');
+									$numRows = mysql_num_rows($donations);
+									$ddata = '';
+									if($numRows > 0){
+										while($voucher = mysql_fetch_array($donations)){
+											$ddata .= '"' . $voucher['id'] . '",';
+											$donor = getTable('donors',"id = $voucher[donors_id]",'',1);
+											$location = getItemLocation('donors',$donor['id']);
+											$types = array("","C.C.","C.E.","NIT");
+											$company = getTable('companies',"id = $voucher[company_id]",'',1);
+								?>
                 <tr>
-                	<td><?php echo $donation['sequence']; ?></td>
+                		<td><?php echo $voucher['id']; ?></td>
                     <td><?php echo $donor['name']; ?> (<?php echo $types[$donor['type']] . ': ' . $donor['id']; ?>)</td>
-                    <td><?php echo formatDate($donation['date']); ?></td>
-                    <td><?php echo $donation['detail']; ?></td>
+                    <td><?php echo $voucher['bill']; ?></td>
+										<td><?php echo $company['name']; ?></td>
+										<td><?php echo formatDate($voucher['date']); ?></td>
+										<td><?php echo $voucher['detail']; ?></td>
                     <td>
                     	<ul class="table-actions">
-	                        <li><a href="includes/forms/donationpromiseReceive.php?r=<?php echo $donation['sequence']; ?>" class="icon check colorbox" title="Recibir"><span>Recibir</span></a></li>
-                        	<li><a href="includes/forms/donationpromiseEdit.php?e=<?php echo $donation['sequence']; ?>" class="icon edit colorbox" title="Editar"><span>Editar</span></a></li>
-                            <li><a href="includes/forms/delete.php?t=donations-promises&d=<?php echo $donation['sequence']; ?>" class="icon delete colorbox" title="Eliminar"><span>Eliminar</span></a></li>
+	                        <li><a href="includes/forms/donationCheckinReceive.php?r=<?php echo $voucher['id']; ?>" class="icon check colorbox" title="Recibir"><span>Recibir</span></a></li>
+                        	<li><a href="includes/forms/donationCheckinEdit.php?e=<?php echo $voucher['id']; ?>" class="icon edit colorbox" title="Editar"><span>Editar</span></a></li>
+                            <li><a href="includes/forms/delete.php?t=donation-checkin&d=<?php echo $voucher['id']; ?>" class="icon delete colorbox" title="Eliminar"><span>Eliminar</span></a></li>
                         </ul>
                     </td>
                 </tr>

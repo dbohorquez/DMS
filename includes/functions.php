@@ -178,7 +178,7 @@ function addWarehouse($data){
 				if($data['occupation'] <= 100 and $data['occupation']>=0){ 	
 					if(!exists("warehouses","name='$data[name]'")){
 															
-						$datos = array(name => $data['name'], type => $data['type'], description => $data['description'], address => $data['address'],occupation => $data['occupation'], contactName => $data['contactname'], phoneNumber => $data['phonenumber'], faxNumber => $data['fax'],cellphone => $data['cellphone'], towns_id =>$data['town'],email => $data['email']);
+						$datos = array(name => $data['name'], description => $data['description'], address => $data['address'],occupation => $data['occupation'], contactName => $data['contactname'], phoneNumber => $data['phonenumber'], faxNumber => $data['fax'],cellphone => $data['cellphone'], towns_id =>$data['town'],email => $data['email']);
 						if(dbInsert("warehouses",$datos)){
 							$success = "La bodega fue agregada exitosamente.";
 						}else{
@@ -212,7 +212,7 @@ function editWarehouse($data){
 			if(is_numeric($data['occupation'])){ 
 				if($data['occupation'] <= 100 and $data['occupation']>=0){ 	
 					if((!exists("warehouses","name='$data[name]' ")) or (exists("warehouses","name='$data[name]'")==$data[id])){										
-						$datos = array(name => $data['name'], type => $data['type'], description => $data['description'], address => $data['address'],occupation => $data['occupation'], contactname => $data['contactname'], phonenumber => $data['phonenumber'], faxnumber => $data['fax'],cellphone => $data['cellphone'], towns_id =>$data['town'],email => $data['email']);
+						$datos = array(name => $data['name'], description => $data['description'], address => $data['address'],occupation => $data['occupation'], contactname => $data['contactname'], phonenumber => $data['phonenumber'], faxnumber => $data['fax'],cellphone => $data['cellphone'], towns_id =>$data['town'],email => $data['email']);
 						if(dbUpdate("warehouses",$datos,"id= $data[id]")){
 							$success = "La bodega fue editada exitosamente.";
 						}else{
@@ -420,7 +420,7 @@ function transferProducts ($data){
 		if($warehouse){
 			$sw=false;
 			foreach($data as $key => $value){
-			//se busca si el usuario eljio productos
+			//se busca si el usuario elgio productos
 				if(substr($key,0,5) == 'hitem'){
 					if(sw==false){
 						$sw=true;
@@ -448,7 +448,12 @@ function transferProducts ($data){
 						// se actualiza la bodega del producto
 						$update=dbUpdate(products_donations,array(warehouses_id => $warehouse),"id=$row[id]");
 						// se ingresa el cambio de estado del producto
-						addStatesChanges ($row[id],1,$_SESSION['dms_id'],$reason = 'Tranferencia desde la bodega $data[warehouse]');
+						if($data[warehouse]!=-1){
+							addStatesChanges ($row[id],1,$_SESSION['dms_id'],$reason = 'Tranferencia desde la bodega $data[warehouse]');
+						}else{
+							addStatesChanges ($row[id],1,$_SESSION['dms_id'],$reason = 'Tranferencia desde la bodega virtual');
+						}
+						
 					}	
 				}
 			}
@@ -1316,4 +1321,75 @@ function addCheckpoint($data){
 	return array($warning, $success);
 } 
 
+
+function addDonationCheckin($data){	
+	if($data['bill']!='' and $data['company_id']!=''){
+		if($data['exists']=='false'){
+			if($data['name'] != "" and $data['identification'] != ""){
+			//	if(is_numeric($data['phonenumber']) and is_numeric($data['fax'])){
+					if(!exists("donors","id='$data[identification]'")){
+						$currentdate = date("Y-m-d H:i");									
+						$datos = array(id => $data['identification'], name => $data['name'], type => $data['type'], address => $data['address'], phonenumber => $data['phonenumber'], faxnumber => $data['fax'], email => $data['email'], towns_id =>$data['town'], creationDate => $currentdate);
+						$fields  = "";
+						$values = "";
+					
+						foreach ($datos as $f => $v){
+							$fields  .= "$f,";
+							$values .= (is_numeric($v) && (intval($v) == $v)) ? $v."," : "'$v',";
+						}
+					
+						//Eliminar las "," sobrantes
+						$fields = substr($fields, 0, -1);
+						$values = substr($values, 0, -1);
+					
+						$query = "insert into donors ({$fields}) values({$values})";
+						$value = runQuery($query,4);
+						if($value != ''){
+							$success = "El donante fue agregado exitosamente. <br />";
+						}else{
+							$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
+						}
+					}else{
+						$warning = "Ya existe un donante registrado con el id '$data[identification]'.";
+					}
+				/*}else{
+					$warning = "Los números telefónicos no pueden contener letras o símbolos";
+				}	*/										
+			}else{
+				$warning = "Por favor digite todos los datos obligatorios.";
+			}
+		}
+		$currentdate = date("Y-m-d H:i");
+		$datos = array(bill => $data['bill'],company_id => $data['company_id'], donors_id => $data['identification'],  date => $data['date']);
+		$id = dbInsert("vouchers",$datos);
+		if($id != ''){
+			$success = $success."Los datos para el comprobante fueron ingresados exitosamente.";
+		}else{
+			$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
+		}
+	}else{
+		$warning = "Por favor digite todos los datos obligatorios.";
+	}
+	return array($warning, $success);
+} 
+
+function editDonationCheckin($data){
+	$datos = array(bill => $data['bill'],company_id => $data['company_id'], donors_id => $data['identification'], date => $data['date']);
+	if(dbUpdate("vouchers",$datos,"id= $data[id]")){
+		$success = "El comprobante fue editado exitosamente.";
+	}else{
+		$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
+	}		
+	return array($warning, $success);
+}
+
+function verifyDonationPromise($data){
+	$datos = array(state => $data['state'],notes => $data['notes']);
+	if(dbUpdate("vouchers",$datos,"id= $data[id]")){
+		$success = "El comprobante fue editado exitosamente.";
+	}else{
+		$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
+	}		
+	return array($warning, $success);
+}
 ?>
