@@ -468,7 +468,7 @@ insert  into `users`(`id`,`name`,`email`,`phoneNumber`,`profile`,`password`,`cre
 DROP TABLE IF EXISTS `vouchers`;
 
 CREATE TABLE `vouchers` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL auto_increment,
   `bill` int(11) NOT NULL,
   `donors_id` double NOT NULL,
   `notes` varchar(511) default NULL,
