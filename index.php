@@ -4,7 +4,8 @@
    			<h2>Puntos de Reorden</h2>
             <table cellpadding="0" cellspacing="0"><thead>
             	<tr>
-                	<th>Nombre</th>
+                	<th>Producto</th>
+                    <th>Bodega</th>
                     <th>Punto de Reorden</th>
                     <th>Cantidad en Bodega</th>
                 </tr></thead><tbody>
@@ -18,17 +19,21 @@
 					if($numRows > 0){
 						while($checkpoint = mysql_fetch_array($checkpoints)){
 							
-							$query = "SELECT COUNT(*) as cont FROM products_donations WHERE products_id=$checkpoint[id] AND state=1";
+							$query = "SELECT COUNT(*) as cont, warehouses_id FROM products_donations WHERE products_id=$checkpoint[id] AND state=1 GROUP BY warehouses_id";
 							$count = runQuery($query);
-							$cont = mysql_fetch_array($count);
+							while($cont = mysql_fetch_array($count)){
 							if($cont['cont']<$checkpoint['quantity']){		
 				?>
                 <tr>
                 	<td><?php echo $checkpoint['name']; ?></td>
+                    <td><?php 
+					$warehouse = getTable('warehouses',"id = $cont[warehouses_id]",'',1);
+					echo $warehouse['name']; ?></td>
                     <td><?php echo $checkpoint['quantity']; ?></td>
                     <td><?php echo $cont['cont']; ?></td>
                 </tr>
                 <?php
+							}
 							}
 						}
 					}else{
