@@ -74,7 +74,7 @@ CREATE TABLE `companies` (
 
 /*Data for the table `companies` */
 
-insert  into `companies`(`id`,`name`,`contactName`,`phoneNumber`,`address`,`email`,`faxNumber`,`type`,`towns_id`,`createdA`,`deletedAt`) values (111,'Entidad 1','a','5','Right there','mi@mail.com','5',1,1,'0000-00-00 00:00:00',NULL),(555555,'ent','a','8','a','a','8',2,6,'0000-00-00 00:00:00',NULL),(44444444,'dafdasd','sadasdas','231231','fsfada','','21312',1,0,'0000-00-00 00:00:00',NULL);
+insert  into `companies`(`id`,`name`,`contactName`,`phoneNumber`,`address`,`email`,`faxNumber`,`type`,`towns_id`,`createdA`,`deletedAt`) values (111,'Entidad 1','a','5','Right \nthere','mi@mail.com','5',1,1,'0000-00-00 00:00:00',NULL),(555555,'ent','a','8','a','a','8',2,6,'0000-00-00 00:00:00',NULL),(44444444,'dafdasd','sadasdas','231231','fsfada','','21312',1,0,'0000-00-00 00:00:00',NULL);
 
 /*Table structure for table `distributions` */
 
@@ -96,7 +96,7 @@ CREATE TABLE `distributions` (
 
 /*Data for the table `distributions` */
 
-insert  into `distributions`(`id`,`deliveryDate`,`state`,`companies_id`,`warehouses_id`,`createdAt`,`deletedAt`) values (1,'2011-01-11',1,555555,1,'0000-00-00 00:00:00',NULL),(2,'2011-01-11',1,555555,1,'0000-00-00 00:00:00',NULL),(3,'2011-01-11',1,555555,1,'0000-00-00 00:00:00',NULL),(4,'2011-01-11',1,555555,1,'0000-00-00 00:00:00',NULL),(5,'2011-01-11',1,555555,1,'0000-00-00 00:00:00',NULL),(6,'2011-01-11',1,555555,1,'0000-00-00 00:00:00',NULL),(7,'2011-01-11',1,555555,1,'0000-00-00 00:00:00',NULL),(8,'2011-01-11',1,555555,1,'0000-00-00 00:00:00',NULL),(9,'2011-01-12',1,555555,1,'0000-00-00 00:00:00',NULL),(10,'2011-01-11',1,555555,1,'0000-00-00 00:00:00',NULL),(11,'2011-01-12',1,555555,1,'0000-00-00 00:00:00',NULL),(12,'2011-01-13',1,555555,1,'0000-00-00 00:00:00',NULL),(13,'2011-01-12',1,555555,1,'0000-00-00 00:00:00',NULL),(14,'2011-01-12',1,555555,1,'0000-00-00 00:00:00',NULL);
+insert  into `distributions`(`id`,`deliveryDate`,`state`,`companies_id`,`warehouses_id`,`createdAt`,`deletedAt`) values (1,'2011-01-11',1,555555,1,'0000-00-00 00:00:00',NULL),(2,'0000-00-00',1,555555,1,'0000-00-00 00:00:00',NULL),(3,'2011-01-11',1,555555,1,'0000-00-00 00:00:00',NULL),(4,'2011-01-11',1,555555,1,'0000-00-00 00:00:00',NULL),(5,'2011-01-11',1,555555,1,'0000-00-00 00:00:00',NULL),(6,'2011-01-11',1,555555,1,'0000-00-00 00:00:00',NULL),(7,'2011-01-11',1,555555,1,'0000-00-00 00:00:00',NULL),(8,'2011-01-11',1,555555,1,'0000-00-00 00:00:00',NULL),(9,'2011-01-12',1,555555,1,'0000-00-00 00:00:00',NULL),(10,'0000-00-00',1,555555,1,'0000-00-00 00:00:00',NULL),(11,'2011-01-12',1,555555,1,'0000-00-00 00:00:00',NULL),(12,'2011-01-13',1,555555,1,'0000-00-00 00:00:00',NULL),(13,'2011-01-12',1,555555,1,'0000-00-00 00:00:00',NULL),(14,'2011-01-12',1,555555,1,'0000-00-00 00:00:00',NULL);
 
 /*Table structure for table `donations` */
 
@@ -122,11 +122,11 @@ CREATE TABLE `donations` (
   CONSTRAINT `fk_donations_donors1` FOREIGN KEY (`donors_id`) REFERENCES `donors` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `fk_donations_users1` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `fk_donations_warehouses1` FOREIGN KEY (`warehouses_id`) REFERENCES `warehouses` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 /*Data for the table `donations` */
 
-insert  into `donations`(`sequence`,`detail`,`bill`,`users_id`,`donors_id`,`warehouses_id`,`companies_id`,`date`,`createdAt`,`deletedAt`,`type`) values (7,'',425874,1,111,1,NULL,'2011-01-11 00:00:00','0000-00-00 00:00:00',NULL,0),(8,'Se tranfirio de bodega de promesas por el usuario 1',0,1,111,2,0,'2011-01-23 15:50:00','2011-01-23 15:50:46',NULL,1),(9,'Se tranfirio de bodega de promesas por el usuario 1',0,1,1129574,2,0,'2011-01-23 16:07:00','2011-01-23 16:07:08',NULL,1),(10,'Se tranfirio de bodega de promesas por el usuario 1',0,1,1129574,2,0,'2011-01-23 16:45:00','2011-01-23 16:45:20',NULL,1),(11,'Se tranfirio de bodega de promesas por el usuario 1',8000,1,111,2,44444444,'2011-01-23 16:47:00','2011-01-23 16:47:12',NULL,1);
+insert  into `donations`(`sequence`,`detail`,`bill`,`users_id`,`donors_id`,`warehouses_id`,`companies_id`,`date`,`createdAt`,`deletedAt`,`type`) values (7,'',425874,1,111,1,NULL,'2011-01-11 00:00:00','0000-00-00 00:00:00',NULL,0);
 
 /*Table structure for table `donors` */
 
@@ -150,7 +150,7 @@ CREATE TABLE `donors` (
 
 /*Data for the table `donors` */
 
-insert  into `donors`(`id`,`name`,`type`,`address`,`email`,`phoneNumber`,`faxNumber`,`creationDate`,`towns_id`,`deletedAt`) values (111,'David',1,'a','a','8','8','2011-01-10 00:00:00',2,NULL),(2233,'Daniel Herrera',1,'Calle falsa 123','ing.donovan.delvalle@gmail.com','322','132342','2011-01-10 00:00:00',3,NULL),(3434,'Bodega GobernaciÃ³n',1,'Calle falsa 123','ing.donovan.delvalle@gmail.com','324','23432','2011-01-10 00:00:00',2,NULL),(4444,'Daniel Herrera',1,'Calle falsa 123','ing.donovan.delvalle@gmail.com','555','333','2011-01-10 00:00:00',2,NULL),(23232,'Donovan Del Valle',1,'Calle falsa 123','ing.donovan.delvalle@gmail.com','4444','3432423','2011-01-10 00:00:00',10,NULL),(1129574,'JORGE AFRICANO HAYDAR',1,'Calle falsa 123','jax698@gmail.com','3521485','','2011-01-19 00:00:00',1,NULL);
+insert  into `donors`(`id`,`name`,`type`,`address`,`email`,`phoneNumber`,`faxNumber`,`creationDate`,`towns_id`,`deletedAt`) values (111,'David',1,'a','a','8','8','2011-01-10 00:00:00',2,NULL),(2233,'Daniel Herrera',1,'Calle falsa 123','ing.donovan.delvalle@gmail.com','322','132342','2011-01-10 00:00:00',3,NULL),(3434,'Bodega \nGobernaciÃ³n',1,'Calle falsa 123','ing.donovan.delvalle@gmail.com','324','23432','2011-01-10 00:00:00',2,NULL),(4444,'Daniel Herrera',1,'Calle falsa \n123','ing.donovan.delvalle@gmail.com','555','333','2011-01-10 00:00:00',2,NULL),(23232,'Donovan Del Valle',1,'Calle falsa \n123','ing.donovan.delvalle@gmail.com','4444','3432423','2011-01-10 00:00:00',10,NULL),(1129574,'JORGE AFRICANO HAYDAR',1,'Calle falsa \n123','jax698@gmail.com','3521485','','2011-01-19 00:00:00',1,NULL);
 
 /*Table structure for table `kits` */
 
@@ -250,7 +250,23 @@ CREATE TABLE `products` (
 
 /*Data for the table `products` */
 
-insert  into `products`(`id`,`name`,`description`,`state`,`productTypes_id`,`flagkit`,`createdAt`,`deletedAt`) values (2,'Aceite Vivi de 2 litros','',1,1,0,'2011-01-16 19:33:40',NULL),(3,'Colchon sencillo','',1,4,0,'2011-01-16 19:33:40',NULL),(4,'Mesa pequeÃ±a','',1,3,0,'2011-01-16 19:33:40',NULL),(5,'Aceite Girasol 1 litro','',1,1,0,'2011-01-16 19:33:40',NULL),(7,'werwer','',1,5,0,'2011-01-16 19:33:40',NULL),(8,'ALGO',NULL,1,5,0,'2011-01-16 19:22:14',NULL),(9,'Re Prueba',NULL,1,1,0,'2011-01-16 19:23:47',NULL),(10,'REPRUEBA','',1,5,0,'2011-01-16 19:24:38',NULL);
+insert  into `products`(`id`,`name`,`description`,`state`,`productTypes_id`,`flagkit`,`createdAt`,`deletedAt`) values (2,'Aceite Vivi de 2 litros','',1,1,0,'2011-01-16 19:33:40',NULL),(3,'Colchon sencillo','',1,4,0,'2011-01-16 19:33:40',NULL),(4,'Mesa pequeÃ±a','',1,3,0,'2011-01-16 19:33:40',NULL),(5,'Aceite Girasol 1 \nlitro','',1,1,0,'2011-01-16 19:33:40',NULL),(7,'werwer','',1,5,0,'2011-01-16 19:33:40',NULL),(8,'ALGO',NULL,1,5,0,'2011-01-16 19:22:14',NULL),(9,'Re \nPrueba',NULL,1,1,0,'2011-01-16 19:23:47',NULL),(10,'REPRUEBA','',1,5,0,'2011-01-16 19:24:38',NULL);
+
+/*Table structure for table `products_checkpoint` */
+
+DROP TABLE IF EXISTS `products_checkpoint`;
+
+CREATE TABLE `products_checkpoint` (
+  `id` int(11) NOT NULL auto_increment,
+  `quantity` int(11) default NULL,
+  `product_id` int(11) default NULL,
+  `deletedAt` date default NULL,
+  PRIMARY KEY  (`id`),
+  KEY `FK_products_checkpoint` (`product_id`),
+  CONSTRAINT `FK_products_checkpoint` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*Data for the table `products_checkpoint` */
 
 /*Table structure for table `products_donations` */
 
@@ -270,11 +286,11 @@ CREATE TABLE `products_donations` (
   KEY `donation` (`donations_id`),
   KEY `fk_products_donations_warehouses1` (`warehouses_id`),
   CONSTRAINT `fk_products_donations_warehouses1` FOREIGN KEY (`warehouses_id`) REFERENCES `warehouses` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 /*Data for the table `products_donations` */
 
-insert  into `products_donations`(`products_id`,`donations_id`,`expirationDate`,`state`,`id`,`warehouses_id`,`createdAt`,`deletedAt`) values (5,1,'2011-01-05',1,2,2,'0000-00-00 00:00:00',NULL),(5,1,'2011-01-05',2,3,2,'0000-00-00 00:00:00',NULL),(5,1,'2011-01-05',1,4,2,'0000-00-00 00:00:00',NULL),(3,1,'2011-01-12',1,5,1,'0000-00-00 00:00:00',NULL),(2,1,'2011-01-25',4,6,2,'0000-00-00 00:00:00',NULL),(4,7,'2011-01-18',1,7,2,'0000-00-00 00:00:00',NULL),(4,8,'2011-01-18',3,8,2,'2011-01-23 15:50:55',NULL),(2,8,'2011-01-25',1,9,2,'2011-01-23 15:50:59',NULL),(4,8,'2011-01-18',1,10,2,'2011-01-23 15:56:58',NULL),(5,9,'2011-01-05',3,11,2,'2011-01-23 16:07:19',NULL),(5,9,'2011-01-05',3,12,2,'2011-01-23 16:07:19',NULL),(2,9,'2011-01-25',3,13,2,'2011-01-23 16:07:23',NULL),(9,9,'2011-01-26',3,14,2,'2011-01-23 16:07:28',NULL),(5,9,'2011-01-05',1,15,2,'2011-01-23 16:08:22',NULL),(5,9,'2011-01-05',1,16,2,'2011-01-23 16:08:22',NULL),(2,9,'2011-01-25',1,17,2,'2011-01-23 16:08:23',NULL),(9,9,'2011-01-26',1,18,2,'2011-01-23 16:08:23',NULL),(5,9,'2011-01-05',1,19,2,'2011-01-23 16:18:49',NULL),(5,9,'2011-01-05',1,20,2,'2011-01-23 16:18:49',NULL),(2,9,'2011-01-25',1,21,2,'2011-01-23 16:18:49',NULL),(9,9,'2011-01-26',1,22,2,'2011-01-23 16:18:49',NULL),(5,9,'2011-01-05',1,23,2,'2011-01-23 16:19:49',NULL),(5,9,'2011-01-05',1,24,2,'2011-01-23 16:19:49',NULL),(2,9,'2011-01-25',1,25,2,'2011-01-23 16:19:49',NULL),(9,9,'2011-01-26',1,26,2,'2011-01-23 16:19:50',NULL),(5,9,'2011-01-05',1,27,2,'2011-01-23 16:32:49',NULL),(5,9,'2011-01-05',1,28,2,'2011-01-23 16:32:49',NULL),(2,9,'2011-01-25',1,29,2,'2011-01-23 16:32:49',NULL),(9,9,'2011-01-26',1,30,2,'2011-01-23 16:32:50',NULL),(5,9,'2011-01-05',1,31,2,'2011-01-23 16:34:41',NULL),(5,9,'2011-01-05',1,32,2,'2011-01-23 16:34:41',NULL),(2,9,'2011-01-25',1,33,2,'2011-01-23 16:34:42',NULL),(9,9,'2011-01-26',1,34,2,'2011-01-23 16:34:42',NULL),(5,9,'2011-01-05',1,35,2,'2011-01-23 16:37:24',NULL),(5,9,'2011-01-05',1,36,2,'2011-01-23 16:37:24',NULL),(2,9,'2011-01-25',1,37,2,'2011-01-23 16:37:24',NULL),(9,9,'2011-01-26',1,38,2,'2011-01-23 16:37:25',NULL),(5,9,'2011-01-05',1,39,2,'2011-01-23 16:41:04',NULL),(5,9,'2011-01-05',1,40,2,'2011-01-23 16:41:04',NULL),(2,9,'2011-01-25',1,41,2,'2011-01-23 16:41:04',NULL),(9,9,'2011-01-26',1,42,2,'2011-01-23 16:41:04',NULL),(5,9,'2011-01-05',1,43,2,'2011-01-23 16:41:49',NULL),(5,9,'2011-01-05',1,44,2,'2011-01-23 16:41:49',NULL),(2,9,'2011-01-25',1,45,2,'2011-01-23 16:41:49',NULL),(9,9,'2011-01-26',1,46,2,'2011-01-23 16:41:49',NULL),(5,9,'2011-01-05',1,47,2,'2011-01-23 16:42:48',NULL),(5,9,'2011-01-05',1,48,2,'2011-01-23 16:42:48',NULL),(2,9,'2011-01-25',1,49,2,'2011-01-23 16:42:48',NULL),(9,9,'2011-01-26',1,50,2,'2011-01-23 16:42:49',NULL),(5,10,'2011-01-05',3,51,2,'2011-01-23 16:45:34',NULL),(5,10,'2011-01-05',3,52,2,'2011-01-23 16:45:34',NULL),(2,10,'2011-01-25',3,53,2,'2011-01-23 16:45:38',NULL),(5,11,'2011-01-05',3,54,2,'2011-01-23 16:47:19',NULL),(8,11,'2011-01-12',6,55,2,'2011-01-23 16:47:32','2011-01-23 16:53:00'),(8,11,'2011-01-12',3,56,2,'2011-01-23 16:47:32',NULL),(9,11,'2011-01-26',6,57,2,'2011-01-23 16:47:38','2011-01-23 16:52:00'),(9,11,'2011-01-26',6,58,2,'2011-01-23 16:47:38','2011-01-23 16:53:00'),(9,11,'2011-01-26',3,59,2,'2011-01-23 16:47:38',NULL),(8,11,'2011-01-12',1,60,2,'2011-01-23 16:48:22',NULL),(8,11,'2011-01-12',1,61,2,'2011-01-23 16:48:22',NULL);
+insert  into `products_donations`(`products_id`,`donations_id`,`expirationDate`,`state`,`id`,`warehouses_id`,`createdAt`,`deletedAt`) values (5,1,'2011-01-12',4,2,2,'0000-00-00 00:00:00',NULL),(5,1,'2011-01-12',2,3,1,'0000-00-00 00:00:00',NULL),(5,1,'2011-01-12',2,4,1,'0000-00-00 00:00:00',NULL),(3,1,'2011-01-12',2,5,1,'0000-00-00 00:00:00',NULL),(2,1,'2011-01-12',4,6,2,'0000-00-00 00:00:00',NULL),(4,7,'2011-01-25',1,7,1,'0000-00-00 00:00:00',NULL);
 
 /*Table structure for table `products_donations_distributions` */
 
@@ -392,11 +408,9 @@ CREATE TABLE `statechanges` (
   KEY `FK_statechanges_product_donation` (`products_donations_id`),
   CONSTRAINT `FK_statechanges` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `FK_statechanges_product_donation` FOREIGN KEY (`products_donations_id`) REFERENCES `products_donations` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 /*Data for the table `statechanges` */
-
-insert  into `statechanges`(`reason`,`notes`,`previousState`,`currentState`,`users_id`,`products_donations_id`,`createdAt`,`deletedAt`,`id`) values ('Ingreso a la bodega de promesas',NULL,0,3,1,8,'2011-01-23 15:50:55',NULL,1),('Ingreso a la bodega de promesas',NULL,0,3,1,9,'2011-01-23 15:50:59',NULL,2),('Se tranfirio a la bodega 2',NULL,4,1,1,2,'2011-01-23 15:56:58',NULL,3),('Se tranfirio a la bodega 2',NULL,2,1,1,4,'2011-01-23 15:56:58',NULL,4),('Se ingreso por una promesa a la bodega 2',NULL,0,1,1,10,'2011-01-23 15:56:58',NULL,5),('Ingreso a la bodega de promesas',NULL,0,3,1,11,'2011-01-23 16:07:19',NULL,6),('Ingreso a la bodega de promesas',NULL,0,3,1,12,'2011-01-23 16:07:19',NULL,7),('Ingreso a la bodega de promesas',NULL,0,3,1,13,'2011-01-23 16:07:23',NULL,8),('Ingreso a la bodega de promesas',NULL,0,3,1,14,'2011-01-23 16:07:28',NULL,9),('Se tranfirio a la bodega 2',NULL,2,1,1,5,'2011-01-23 16:08:22',NULL,10),('Se ingreso por una promesa a la bodega 2',NULL,0,1,1,15,'2011-01-23 16:08:22',NULL,11),('Se ingreso por una promesa a la bodega 2',NULL,0,1,1,16,'2011-01-23 16:08:22',NULL,12),('Se tranfirio a la bodega 2',NULL,1,1,1,2,'2011-01-23 16:08:23',NULL,13),('Se ingreso por una promesa a la bodega 2',NULL,0,1,1,17,'2011-01-23 16:08:23',NULL,14),('Se tranfirio a la bodega 2',NULL,3,1,1,9,'2011-01-23 16:08:23',NULL,15),('Se ingreso por una promesa a la bodega 2',NULL,0,1,1,18,'2011-01-23 16:08:23',NULL,16),('Se tranfirio a la bodega 2',NULL,1,1,1,5,'2011-01-23 16:18:49',NULL,17),('Se ingreso por una promesa a la bodega 2',NULL,0,1,1,19,'2011-01-23 16:18:49',NULL,18),('Se ingreso por una promesa a la bodega 2',NULL,0,1,1,20,'2011-01-23 16:18:49',NULL,19),('Se tranfirio a la bodega 2',NULL,1,1,1,2,'2011-01-23 16:18:49',NULL,20),('Se ingreso por una promesa a la bodega 2',NULL,0,1,1,21,'2011-01-23 16:18:49',NULL,21),('Se tranfirio a la bodega 2',NULL,1,1,1,9,'2011-01-23 16:18:49',NULL,22),('Se ingreso por una promesa a la bodega 2',NULL,0,1,1,22,'2011-01-23 16:18:49',NULL,23),('Se tranfirio a la bodega 2',NULL,1,1,1,5,'2011-01-23 16:19:49',NULL,24),('Se ingreso por una promesa a la bodega 2',NULL,0,1,1,23,'2011-01-23 16:19:49',NULL,25),('Se ingreso por una promesa a la bodega 2',NULL,0,1,1,24,'2011-01-23 16:19:49',NULL,26),('Se tranfirio a la bodega 2',NULL,1,1,1,2,'2011-01-23 16:19:49',NULL,27),('Se ingreso por una promesa a la bodega 2',NULL,0,1,1,25,'2011-01-23 16:19:49',NULL,28),('Se tranfirio a la bodega 2',NULL,1,1,1,9,'2011-01-23 16:19:50',NULL,29),('Se ingreso por una promesa a la bodega 2',NULL,0,1,1,26,'2011-01-23 16:19:50',NULL,30),('Se ingreso por una promesa a la bodega 2',NULL,0,1,1,27,'2011-01-23 16:32:49',NULL,31),('Se ingreso por una promesa a la bodega 2',NULL,0,1,1,28,'2011-01-23 16:32:49',NULL,32),('Se ingreso por una promesa a la bodega 2',NULL,0,1,1,29,'2011-01-23 16:32:49',NULL,33),('Se ingreso por una promesa a la bodega 2',NULL,0,1,1,30,'2011-01-23 16:32:50',NULL,34),('Se ingreso por una promesa a la bodega 2',NULL,0,1,1,31,'2011-01-23 16:34:41',NULL,35),('Se ingreso por una promesa a la bodega 2',NULL,0,1,1,32,'2011-01-23 16:34:42',NULL,36),('Se ingreso por una promesa a la bodega 2',NULL,0,1,1,33,'2011-01-23 16:34:42',NULL,37),('Se ingreso por una promesa a la bodega 2',NULL,0,1,1,34,'2011-01-23 16:34:42',NULL,38),('Se ingreso por una promesa a la bodega 2',NULL,0,1,1,35,'2011-01-23 16:37:24',NULL,39),('Se ingreso por una promesa a la bodega 2',NULL,0,1,1,36,'2011-01-23 16:37:24',NULL,40),('Se ingreso por una promesa a la bodega 2',NULL,0,1,1,37,'2011-01-23 16:37:24',NULL,41),('Se ingreso por una promesa a la bodega 2',NULL,0,1,1,38,'2011-01-23 16:37:25',NULL,42),('Se ingreso por una promesa a la bodega 2',NULL,0,1,1,39,'2011-01-23 16:41:04',NULL,43),('Se ingreso por una promesa a la bodega 2',NULL,0,1,1,40,'2011-01-23 16:41:04',NULL,44),('Se ingreso por una promesa a la bodega 2',NULL,0,1,1,41,'2011-01-23 16:41:04',NULL,45),('Se ingreso por una promesa a la bodega 2',NULL,0,1,1,42,'2011-01-23 16:41:04',NULL,46),('Se ingreso por una promesa a la bodega 2',NULL,0,1,1,43,'2011-01-23 16:41:49',NULL,47),('Se ingreso por una promesa a la bodega 2',NULL,0,1,1,44,'2011-01-23 16:41:49',NULL,48),('Se ingreso por una promesa a la bodega 2',NULL,0,1,1,45,'2011-01-23 16:41:49',NULL,49),('Se ingreso por una promesa a la bodega 2',NULL,0,1,1,46,'2011-01-23 16:41:49',NULL,50),('Se ingreso por una promesa a la bodega 2',NULL,0,1,1,47,'2011-01-23 16:42:48',NULL,51),('Se ingreso por una promesa a la bodega 2',NULL,0,1,1,48,'2011-01-23 16:42:48',NULL,52),('Se ingreso por una promesa a la bodega 2',NULL,0,1,1,49,'2011-01-23 16:42:48',NULL,53),('Se ingreso por una promesa a la bodega 2',NULL,0,1,1,50,'2011-01-23 16:42:49',NULL,54),('Ingreso a la bodega de promesas',NULL,0,3,1,51,'2011-01-23 16:45:34',NULL,55),('Ingreso a la bodega de promesas',NULL,0,3,1,52,'2011-01-23 16:45:34',NULL,56),('Ingreso a la bodega de promesas',NULL,0,3,1,53,'2011-01-23 16:45:38',NULL,57),('Ingreso a la bodega de promesas',NULL,0,3,1,54,'2011-01-23 16:47:19',NULL,58),('Ingreso a la bodega de promesas',NULL,0,3,1,55,'2011-01-23 16:47:32',NULL,59),('Ingreso a la bodega de promesas',NULL,0,3,1,56,'2011-01-23 16:47:32',NULL,60),('Ingreso a la bodega de promesas',NULL,0,3,1,57,'2011-01-23 16:47:38',NULL,61),('Ingreso a la bodega de promesas',NULL,0,3,1,58,'2011-01-23 16:47:38',NULL,62),('Ingreso a la bodega de promesas',NULL,0,3,1,59,'2011-01-23 16:47:38',NULL,63),('Se ingreso por una promesa a la bodega 2',NULL,0,1,1,60,'2011-01-23 16:48:22',NULL,64),('Se ingreso por una promesa a la bodega 2',NULL,0,1,1,61,'2011-01-23 16:48:22',NULL,65),('Eliminado por el usuario 1',NULL,3,6,1,57,'2011-01-23 16:52:43',NULL,66),('Eliminado por el usuario 1',NULL,3,6,1,55,'2011-01-23 16:53:06',NULL,67),('Eliminado por el usuario 1',NULL,3,6,1,58,'2011-01-23 16:53:10',NULL,68);
 
 /*Table structure for table `towns` */
 
@@ -414,7 +428,7 @@ CREATE TABLE `towns` (
 
 /*Data for the table `towns` */
 
-insert  into `towns`(`id`,`name`,`provinces_id`,`createdAt`,`deletedAt`) values (1,'Barranquilla',4,'0000-00-00 00:00:00',NULL),(2,'Baranoa',4,'0000-00-00 00:00:00',NULL),(3,'Campo de la Cruz',4,'0000-00-00 00:00:00',NULL),(4,'Candelaria',4,'0000-00-00 00:00:00',NULL),(5,'Galapa',4,'0000-00-00 00:00:00',NULL),(6,'Juan de Acosta',4,'0000-00-00 00:00:00',NULL),(7,'Luruaco',4,'0000-00-00 00:00:00',NULL),(8,'Malambo',4,'0000-00-00 00:00:00',NULL),(9,'Manatí',4,'0000-00-00 00:00:00',NULL),(10,'Palmar de Varela',4,'0000-00-00 00:00:00',NULL),(11,'Piojó',4,'0000-00-00 00:00:00',NULL),(12,'Polonuevo',4,'0000-00-00 00:00:00',NULL),(13,'Ponedera',4,'0000-00-00 00:00:00',NULL),(14,'Puerto Colombia',4,'0000-00-00 00:00:00',NULL),(15,'Repelón',4,'0000-00-00 00:00:00',NULL),(16,'Sabanagrande',4,'0000-00-00 00:00:00',NULL),(17,'Sabanalarga',4,'0000-00-00 00:00:00',NULL),(18,'Santa Lucía',4,'0000-00-00 00:00:00',NULL),(19,'Santo Tomás',4,'0000-00-00 00:00:00',NULL),(20,'Soledad',4,'0000-00-00 00:00:00',NULL),(21,'Suán',4,'0000-00-00 00:00:00',NULL),(22,'Tubará',4,'0000-00-00 00:00:00',NULL),(23,'Usiacurí',4,'0000-00-00 00:00:00',NULL),(24,'gggg',4,'0000-00-00 00:00:00',NULL);
+insert  into `towns`(`id`,`name`,`provinces_id`,`createdAt`,`deletedAt`) values (1,'Barranquilla',4,'0000-00-00 00:00:00',NULL),(2,'Baranoa',4,'0000-00-00 00:00:00',NULL),(3,'Campo de la Cruz',4,'0000-00-00 00:00:00',NULL),(4,'Candelaria',4,'0000-00-00 00:00:00',NULL),(5,'Galapa',4,'0000-00-00 00:00:00',NULL),(6,'Juan de \nAcosta',4,'0000-00-00 00:00:00',NULL),(7,'Luruaco',4,'0000-00-00 00:00:00',NULL),(8,'Malambo',4,'0000-00-00 00:00:00',NULL),(9,'Manatí',4,'0000-00-00 00:00:00',NULL),(10,'Palmar de Varela',4,'0000-00-00 00:00:00',NULL),(11,'Piojó',4,'0000-00-00 00:00:00',NULL),(12,'Polonuevo',4,'0000-00-00 00:00:00',NULL),(13,'Ponedera',4,'0000-00-00 00:00:00',NULL),(14,'Puerto Colombia',4,'0000-00-00 00:00:00',NULL),(15,'Repelón',4,'0000-00-00 00:00:00',NULL),(16,'Sabanagrande',4,'0000-00-00 00:00:00',NULL),(17,'Sabanalarga',4,'0000-00-00 00:00:00',NULL),(18,'Santa Lucía',4,'0000-00-00 00:00:00',NULL),(19,'Santo Tomás',4,'0000-00-00 00:00:00',NULL),(20,'Soledad',4,'0000-00-00 00:00:00',NULL),(21,'Suán',4,'0000-00-00 00:00:00',NULL),(22,'Tubará',4,'0000-00-00 00:00:00',NULL),(23,'Usiacurí',4,'0000-00-00 00:00:00',NULL),(24,'gggg',4,'0000-00-00 00:00:00',NULL);
 
 /*Table structure for table `transfers` */
 
@@ -457,11 +471,11 @@ CREATE TABLE `users` (
   PRIMARY KEY  (`id`),
   KEY `FK_users` (`companies_id`),
   CONSTRAINT `FK_users` FOREIGN KEY (`companies_id`) REFERENCES `companies` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 /*Data for the table `users` */
 
-insert  into `users`(`id`,`name`,`email`,`phoneNumber`,`profile`,`password`,`createdAt`,`deletedAt`,`companies_id`) values (1,'Admin','support@coddeeweb.com',NULL,'Administrador','e11a8f5f22179a6485f5ef8d1fa59003','0000-00-00 00:00:00',NULL,NULL);
+insert  into `users`(`id`,`name`,`email`,`phoneNumber`,`profile`,`password`,`createdAt`,`deletedAt`,`companies_id`) values (1,'Admin','support@coddeeweb.com','','Administrador','e11a8f5f22179a6485f5ef8d1fa59003','0000-00-00 00:00:00',NULL,44444444),(2,'David Bohorquez','david@coddee.com','4444','Operador de DistribuciÃ³n','69db2ed2289243b9b4508f087e11f1ad','2011-01-23 00:18:29',NULL,555555);
 
 /*Table structure for table `vouchers` */
 
