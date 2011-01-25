@@ -55,7 +55,7 @@
                     <td><?php echo $donation['detail']; ?></td>
                     <td>
                     	<ul class="table-actions">
-                        <li><a href="donation-promises.php?em=<?php echo $donation['sequence']; ?>" class="icon check colorbox" title="Recordatorio"><span>Enviar Recordatorio</span></a></li>
+                        <li><a href="donations-promises.php?em=<?php echo $donation['sequence']; ?>" class="icon mail" title="Recordatorio"><span>Enviar Recordatorio</span></a></li>
 	                        <li><a href="includes/forms/donationpromiseReceive.php?r=<?php echo $donation['sequence']; ?>" class="icon check colorbox" title="Recibir"><span>Recibir</span></a></li>
                         	<li><a href="includes/forms/donationpromiseEdit.php?e=<?php echo $donation['sequence']; ?>" class="icon edit colorbox" title="Editar"><span>Editar</span></a></li>
                             <li><a href="includes/forms/delete.php?t=donations-promises&d=<?php echo $donation['sequence']; ?>" class="icon delete colorbox" title="Eliminar"><span>Eliminar</span></a></li>
