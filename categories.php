@@ -17,28 +17,29 @@
             <table cellpadding="0" cellspacing="0"><thead>
             	<tr>
                 	<th>Nombre</th>
-                    <th>Descripción</th>
-                    <th width="50">&nbsp;</th>
+									<th>Cantidad</th>
+                  <th>Descripción</th>
+                  <th width="50">&nbsp;</th>
                 </tr></thead><tbody>
                 <?php
 					$categories = getTable('categories','deletedAt IS NULL','id desc');
 					$numRows = mysql_num_rows($categories);
 					if($numRows > 0){
 						while($category = mysql_fetch_array($categories)){
+							 $unit = getTable('units',"id = $category[unit_id]",'',1);
 				?>
                 <tr>
                 	<td><?php echo $category['name']; ?></td>
-                    <td><?php echo $category['description']; ?></td>
-                    <td>
+                  <td><?php echo $category['quantity']; ?> - <?php echo $unit['name'] ?></td>
+									<td><?php echo $category['description']; ?></td>
+                  <td>
                      <?php if($rol== 1 || $rol== 3 || $rol== 5 || $rol== 6){?>
                     	<ul class="table-actions">
                         	<li><a href="includes/forms/categoriesEdit.php?e=<?php echo $category['id']; ?>&us=<?php echo $_SESSION['dms_id']?>" class="icon edit colorbox" title="Editar"><span>Editar</span></a></li>
                             <li><a href="includes/forms/delete.php?t=categories&d=<?php echo $category['id']; ?>" class="icon delete colorbox" title="Eliminar"><span>Eliminar</span></a></li>
                         </ul>
 					<?php } ?>
-
-        
-                    </td>
+            			</td>
                 </tr>
                 <?php
 						}

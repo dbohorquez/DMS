@@ -309,7 +309,7 @@ function editCompany($data){
 /* Product Types 
 ============================================================ */
 function addProductType($data){	
-	if($data['name'] != ""){
+	if($data['name'] != "" ){
 		if(!exists("producttypes","name='$data[name]'")){
 			
 			if(exists("categories","name='$data[category]'"))
@@ -1009,9 +1009,9 @@ function sendNotification($data){
 /* Categories
 ============================================================ */
 function addCategory($data){	
-	if($data['name'] != ""){
+	if($data['name'] != "" and $data['quantity'] != "" and $data['unit'] != ""){
 		if(!exists("categories","name='$data[name]'")){
-			$datos = array(name => $data['name'],description => $data['description']);
+			$datos = array(name => $data['name'],description => $data['description'], quantity => $data['quantity'], unit_id => $data['unit'] );
 			if(dbInsert("categories",$datos)){
 				$success = "La categoría fue agregada exitosamente.";
 			}else{
@@ -1027,9 +1027,9 @@ function addCategory($data){
 } 
 
 function editCategory($data){	
-	if($data['name'] != ""){
+	if($data['name'] != "" and $data['quantity'] != "" and $data['unit'] != ""){
 		if((!exists("categories","name='$data[name]' ")) or (exists("categories","name='$data[name]'")==$data[id])){										
-			$datos = array(name => $data['name'],description => $data['description']);
+			$datos = array(name => $data['name'],description => $data['description'], quantity => $data['quantity'], unit_id => $data['unit'] );
 			if(dbUpdate("categories",$datos,"id= $data[id]")){
 				$success = "La categoría fue editada exitosamente.";
 			}else{

@@ -4,6 +4,7 @@
 		$id = $_GET['e']; 
 		$userid = $_GET['us']; 
 		$type = getTable('categories',"id = $id",'',1);
+		$units = getTable("units");
 	?>
 	<h3>Editar Categorias</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
@@ -17,6 +18,21 @@
             <label for="description">Descripción:</label>
             <textarea class="text" cols="44" rows="6" name="description" id="description"><?php echo $type['description']; ?></textarea>
         </fieldset>
+					<fieldset>
+						<label for="quantity">Cantidad: <span class="required">*</span></label>
+						<input type="text" class="text" size="48" name="quantity" id="quantity" value="<?php echo $type['quantity'] ?>" />
+					</fieldset>
+					<fieldset>
+						<label for="unit">Unidad: <span class="required">*</span></label>
+						<select name="unit" id="unit">
+				     <?php
+		               while($unit = mysql_fetch_array($units)){
+		          ?>
+		               <option value="<?php echo $unit['id']; ?>" <?php if($type['unit_id'] == $unit['id']){ ?> selected="selected"<?php } ?> ><?php echo $unit['name']; ?></option>
+		           <?php } ?>			
+						</select>
+	     		</fieldset>
+			
         <fieldset class="clear">
 	        <?php 
 			$rol=isAnyRol($userid);
