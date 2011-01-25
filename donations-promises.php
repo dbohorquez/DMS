@@ -5,7 +5,7 @@
 <?php if(isset($_POST['bt-edit'])) list($warning, $success) = editDonationPromise($_POST);?>
 <?php if(isset($_POST['bt-receive'])) list($warning, $success) = receiveDonationPromise($_POST);?>
 <?php if(isset($_POST['bt-delete'])) list($warning, $success) = delete($_POST);?>
-<?php if($_GET['em']) list($warning, $success) = sendMailPromise($_GET['em']);?>
+<?php if($_GET['em']) list($warning, $success) = sendMailPromiseDonor($_GET['em']);?>
 			<h2>Promesas de donaciones</h2>
 			
 			  <div class="column c50p">
