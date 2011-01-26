@@ -13,12 +13,15 @@
 									<th>Porcentaje de cumplimiento</th>
 							  </tr></thead><tbody>
                 <?php
-					$query	= 'SELECT c.name name, c.quantity AS quantity, u.name unit, SUM(p.quantity) accomplished,
-									   (SUM(p.quantity)/c.quantity)*100 percentage
-										 FROM categories c, units u, producttypes pt, products p
-										 WHERE p.productTypes_id=pt.id AND pt.categories_id=c.id AND c.unit_id=u.id 
-										 AND c.deletedAt IS NULL AND pt.deletedAt IS NULL AND p.deletedAt IS NULL 
-										 GROUP BY  c.name';
+					$query	=  'SELECT  categories.name NAME, categories.quantity,  units.name unit, SUM(products.quantity) accomplished , (SUM(products.quantity)/categories.quantity)*100 porcentaje
+								FROM categories
+								INNER JOIN units 
+								ON categories.unit_id=units.id
+								LEFT JOIN producttypes
+								ON producttypes.categories_id=categories.id 
+								LEFT JOIN products
+								ON  products.productTypes_id=producttypes.id  
+								GROUP BY  categories.name';
 					$categories = runQuery($query);
 					$numRows = mysql_num_rows($categories);
 					if($numRows > 0){
