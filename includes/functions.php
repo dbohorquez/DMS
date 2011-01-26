@@ -359,16 +359,26 @@ function editProductType($data){
 	return array($warning, $success);
 } 
 
+function getUnitName($type_name){	
+$query = " SELECT u.name unit_name FROM units u, producttypes p, categories c WHERE p.name= '$type_name' AND p.categories_id=c.id AND c.unit_id=u.id";
+	$result= runQuery($query);
+	if($result){
+		$row = mysql_fetch_array($result);
+		return $row['unit_name'];
+	}else{
+		return "error";
+	}
+}
 /* Products 
 ============================================================ */
 function addProduct($data){	
-	if($data['name'] != ""){
+	if($data['name'] != "" and $data['quantity'] != ""){
 		if(!exists("products","name='$data[name]'")){
 			
 			if(exists("producttypes","name='$data[type]'"))
 			{
 				$type = exists("producttypes","name='$data[type]'");									
-				$datos = array(name => $data['name'], productTypes_id => $type, description => $data['description'],state => 1,flagkit => 0);
+				$datos = array(name => $data['name'], productTypes_id => $type, description => $data['description'],state => 1,flagkit => 0, quantity => $data['quantity']);
 				if(dbInsert("products",$datos)){
 					$success = "El Producto fue agregado exitosamente.";
 				}else{
@@ -389,13 +399,13 @@ function addProduct($data){
 } 
 
 function editProduct($data){	
-	if($data['name'] != ""){
+	if($data['name'] != "" and $data['quantity'] != ""){
 		if((!exists("products","name='$data[name]' ")) or (exists("products","name='$data[name]'")==$data[id])){										
 
 			if(exists("producttypes","name='$data[type]'"))
 			{
 				$type = exists("producttypes","name='$data[type]'");
-				$datos = array(name => $data['name'], productTypes_id => $type,description => $data['description'],state => 1,flagkit => 0);
+				$datos = array(name => $data['name'], productTypes_id => $type,description => $data['description'],state => 1,flagkit => 0, quantity => $data['quantity']);
 				if(dbUpdate("products",$datos,"id= $data[id]")){
 					$success = "El Producto fue editado exitosamente.";
 				}else{

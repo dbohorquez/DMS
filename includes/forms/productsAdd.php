@@ -1,12 +1,12 @@
-<div class="medium">
+<div class="">
 	<h3>Agregar Producto</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
     <form action="products.php" enctype="application/x-www-form-urlencoded" method="post">
     	<?php
 			include('../functions.php');
-			$types = getTable('producttypes','deletedAt IS NULL','name asc');
-			$data = '';
-			$userid = $_GET['us']; 
+				$types = getTable('producttypes','deletedAt IS NULL','name asc');
+				$data = '';
+				$userid = $_GET['us']; 
 			while($type = mysql_fetch_array($types)){
 				$data .= '"' . $type['name'] . '",';
 			}
@@ -19,7 +19,15 @@
             <label for="type">Tipo de Producto: <span class="required">*</span></label>
             <input type="text" class="text autocomplete" size="48" name="type" id="type" />
         </fieldset>
-        <fieldset class="clear">
+				<fieldset>
+							<label for="quantity">Cantidad: <span class="required">*</span></label>
+							<input type="text" class="text" size="48" name="quantity" id="quantity" />
+				</fieldset>
+				<fieldset>
+					<label>Unidad: <span id="unit"></span></label>
+     		</fieldset>
+				
+        <fieldset>
          <?php 
 		 $rol=isAnyRol($userid);
 		 if($rol== 1 || $rol== 3 || $rol== 5 || $rol== 6){?>
@@ -31,7 +39,17 @@
     <script type="text/javascript">
 		var data = [<?php echo $data; ?>];
 		$('#type').autocomplete({
-			source: data
+			source: data,
+			select: function(){
+				var type_name = jQuery("#type").val(); 
+				jQuery.ajax({
+					type	 	 : 'POST', 
+					url      : "includes/data/getUnitName.php",
+					dataType : "text",
+					data     : { type_name : type_name },
+					success  : function(msg){ if(msg != "error") jQuery("#unit").html(msg) }
+				})
+			}
 		});
 	</script>
 </div>

@@ -39,23 +39,24 @@ if($section != 'login' && !isset($_SESSION['dms_authorized'])){ header('Location
                 <li<?php if($section == 'warehouses'){ ?> class="active"<?php } ?>><a href="warehouses.php">Bodegas</a>
 	                <ul>
                     	<li><a href="transfers.php">Transferencias</a></li>
-                        <li><a href="products_checkpoint.php">Puntos de reorden</a></li>
+                      <li><a href="products_checkpoint.php">Puntos de reorden</a></li>
                     </ul>
                 </li>
                 <li<?php if($section == 'products'){ ?> class="active"<?php } ?>><a href="products.php">Productos</a>
                 	<ul>
                     	<li><a href="categories.php">Categorías</a></li>
-                        <li><a href="producttypes.php">Tipos</a></li>
-                        <li><a href="kits.php">Kits</a></li>
-                    </ul>
+                      <li><a href="producttypes.php">Tipos</a></li>
+                      <li><a href="kits.php">Kits</a></li>
+											<li><a href="goals.php">Metas</a></li>
+                  </ul>
                 </li>
-                <li<?php if($section == 'companies'){ ?> class="active"<?php } ?>><a href="companies.php">Entidades</a></li>
+                <li<?php if($section == 'companies'){ ?> class="active"<?php } ?>><a href="companies.php">Operadores</a></li>
                 <li<?php if($section == 'donations'){ ?> class="active"<?php } ?>><a href="donations.php">Donaciones</a>
                 	<ul>
                     	<li><a href="virtual-receptions.php">Donación Virtual</a></li>
-                        <li><a href="donation-checkin.php">Comprobantes DV</a></li>
+                      <li><a href="donation-checkin.php">Comprobantes DV</a></li>
                     	<li><a href="donations-promises.php">Promesas de Donación</a></li>
-                        <li><a href="donors.php">Donantes</a></li>
+                      <li><a href="donors.php">Donantes</a></li>
                     </ul>
                 </li>
                 <li<?php if($section == 'distribution'){ ?> class="active"<?php } ?>><a href="distribution.php">Distribución</a>
