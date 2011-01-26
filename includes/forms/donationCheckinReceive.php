@@ -3,6 +3,7 @@
 		include('../functions.php');
 		$id = $_GET['r']; 
 		if($id !=''){
+			$userid = $_GET['us']; 
 			$voucher = getTable('vouchers',"id = $id",'',1);
 			$donor = getTable('donors',"id = $voucher[donors_id]",'',1);
 			$location = getItemLocation('donors',$donor['id']);
@@ -83,7 +84,12 @@
 							}
 						?>
 	        <fieldset class="clear">
-		        <input type="submit" class="btn" value="Comprobar" name="bt-verify" /><span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
+          	<?php 
+			$rol=isAnyRol($userid);
+			if($rol== 1 ||  $rol== 2){?>
+            <input type="submit" class="btn" value="Comprobar" name="bt-verify" />
+			<?php } ?>
+	        <span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
 	        </fieldset>
 		    </form>
 		    <script type="text/javascript">

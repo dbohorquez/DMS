@@ -10,7 +10,7 @@
             <ul class="toolbar">
             	<?php 
 			$rol=isAnyRol($_SESSION['dms_id']);
-			if($rol== 1){?>
+			if($rol== 1 || $rol== 6){?>
             <li><label for="donorId">Número de Identificación:</label><input type="text" class="text autocomplete" id="donorId" />
                 <a href="javascript:void(0);" class="btn" onclick="var href = 'includes/forms/virtualReceptionAdd.php?d=' + $('#donorId').attr('value'); $.colorbox({href:href});">Agregar Donación Virtual</a></li>
 			<?php } ?>
@@ -18,7 +18,7 @@
         </div>
         <div class="column c50p last">
             <ul class="toolbar">
-                <?php if($rol== 1){?>
+                <?php if($rol== 1 || $rol== 6){?>
                 <li><label for="sequence">Número de Consecutivo:</label><input type="text" class="text autocomplete" id="sequence" />
                 <a href="javascript:void(0);" class="btn" onclick="var href = 'includes/forms/virtualReceptionEdit.php?e=' + $('#sequence').attr('value'); $.colorbox({href:href});">Editar Donación Virtual</a></li>
 			<?php } ?>
@@ -35,7 +35,7 @@
                     <th width="50">&nbsp;</th>
                 </tr></thead><tbody>
                 <?php
-					$donations = getTable('donations d,companies w','d.deletedAt IS NULL and d.type=2 and w.id=companies_id','sequence asc');
+					$donations = getTable('donations d,companies w','d.deletedAt IS NULL and d.type=2 and w.id=companies_id and users_id='.$_SESSION['dms_id'],'sequence asc');
 					$numRows = mysql_num_rows($donations);
 					$ddata = '';
 					if($numRows > 0){

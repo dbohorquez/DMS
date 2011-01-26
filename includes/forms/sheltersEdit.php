@@ -4,6 +4,7 @@
 		$id = $_GET['e']; 
 		$shelter = getTable('shelters',"id = $id",'',1);
 		$location = getItemLocation('shelters',$id);
+		$userid = $_GET['us']; 
 	?>
 	<h3>Editar Beneficiario</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
@@ -60,7 +61,12 @@
             </fieldset>
         </div>
         <fieldset class="clear">
-	        <input type="submit" class="btn" value="Guardar Cambios" name="bt-edit" /><span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
+        	<?php 
+			$rol=isAnyRol($userid);
+			if($rol== 1 || $rol== 4){?>
+			<input type="submit" class="btn" value="Guardar Cambios" name="bt-edit" />
+			<?php } ?>
+	        <span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
         </fieldset>
     </form>
 </div>

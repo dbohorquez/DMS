@@ -1,5 +1,7 @@
 <div class="medium">
-	<?php include('../functions.php'); ?>
+	<?php include('../functions.php'); 
+	$userid = $_GET['us']; 
+	?>
 	<h3>Agregar Beneficiario</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
     <form action="beneficiaries.php" enctype="application/x-www-form-urlencoded" method="post">
@@ -49,7 +51,12 @@
             </fieldset>
         </div>
         <fieldset class="clear">
-	        <input type="submit" class="btn" value="Agregar" name="bt-add" /><span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
+	        <?php 
+			$rol=isAnyRol($userid);
+			if($rol== 1 || $rol== 4){?>
+			<input type="submit" class="btn" value="Agregar" name="bt-add" />
+			<?php } ?>
+	        <span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
         </fieldset>
     </form>
 </div>

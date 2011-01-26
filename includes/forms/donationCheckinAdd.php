@@ -7,6 +7,7 @@
 			$donorId = $_GET['d'];
 			if(is_numeric($donorId)){
 				if(exists('donors',"id = $donorId")){
+					$userid = $_GET['us']; 
 					$donor = getTable('donors',"id = $donorId",'',1);
 					$location = getItemLocation('donors',$donorId);
 			?>
@@ -97,7 +98,12 @@
         </div>
 
         <fieldset class="clear">
-	        <input type="submit" class="btn" value="Agregar" name="bt-add" /><span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
+        	<?php 
+			$rol=isAnyRol($userid);
+			if($rol== 1 ||  $rol== 2){?>
+            <input type="submit" class="btn" value="Agregar" name="bt-add" />
+			<?php } ?>
+	        <span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
         </fieldset>
 	    </form>
 	    <script type="text/javascript">

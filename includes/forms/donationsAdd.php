@@ -5,6 +5,7 @@
     	<?php
 			include('../functions.php');
 			$donorId = $_GET['d'];
+			$userid = $_GET['us']; 
 			if(is_numeric($donorId)){
 				if(exists('donors',"id = $donorId")){
 					$donor = getTable('donors',"id = $donorId",'',1);
@@ -87,7 +88,12 @@
             </fieldset>
         </div>
         <fieldset class="clear">
-	        <input type="submit" class="btn" value="Agregar" name="bt-add" /><span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
+		        <?php 
+				$rol=isAnyRol($userid);
+				if($rol== 1 || $rol== 5){?>
+				<input type="submit" class="btn" value="Agregar" name="bt-add" />
+				<?php } ?>
+	        <span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
         </fieldset>
         	<?php }else{ ?>
             	<div class="error">Debe escribir un número de identificación</div>

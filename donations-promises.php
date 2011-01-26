@@ -11,19 +11,20 @@
 			
 			  <div class="column c50p">
             <ul class="toolbar">
+            <input type="hidden" name="util" id="util" value="<?php echo $_SESSION['dms_id']?>"/>
             	<?php 
 			$rol=isAnyRol($_SESSION['dms_id']);
-			if($rol== 1){?>
+			if($rol== 1 || $rol== 3 || $rol== 2){?>
             <li><label for="donorId">Número de Identificación:</label><input type="text" class="text autocomplete" id="donorId" />
-                <a href="javascript:void(0);" class="btn" onclick="var href = 'includes/forms/donationPromiseAdd.php?d=' + $('#donorId').attr('value'); $.colorbox({href:href});">Agregar Promesa</a></li>
+                <a href="javascript:void(0);" class="btn" onclick="var href = 'includes/forms/donationPromiseAdd.php?d=' + $('#donorId').attr('value')+'&us='+ $('#util').attr('value'); $.colorbox({href:href});">Agregar Promesa</a></li>
 			<?php } ?>
             </ul>
         </div>
         <div class="column c50p last">
             <ul class="toolbar">
-                <?php if($rol== 1){?>
+                <?php if($rol== 1 || $rol== 3 || $rol== 2){?>
                 <li><label for="sequence">Número de Consecutivo:</label><input type="text" class="text autocomplete" id="sequence" />
-                <a href="javascript:void(0);" class="btn" onclick="var href = 'includes/forms/donationpromiseEdit.php?e=' + $('#sequence').attr('value'); $.colorbox({href:href});">Editar Promesa</a></li>
+                <a href="javascript:void(0);" class="btn" onclick="var href = 'includes/forms/donationpromiseEdit.php?e=' + $('#sequence').attr('value')+'&us='+ $('#util').attr('value'); $.colorbox({href:href});">Editar Promesa</a></li>
 			<?php } ?>
             </ul>
         </div>
@@ -38,7 +39,7 @@
                     <th width="60">&nbsp;</th>
                 </tr></thead><tbody>
                 <?php
-					$donations = getTable('donations d','d.deletedAt IS NULL and d.type=3','sequence asc');
+					$donations = getTable('donations d','d.deletedAt IS NULL and d.type=3 and users_id='.$_SESSION['dms_id'],'sequence asc');
 					$numRows = mysql_num_rows($donations);
 					$ddata = '';
 					if($numRows > 0){
@@ -56,11 +57,17 @@
                     <td><?php echo $donation['detail']; ?></td>
                     <td>
                     	<ul class="table-actions">
+                        <?php if($rol== 1 || $rol== 2){?>
                         <li><a href="donations-promises.php?eg=<?php echo $donation['sequence']; ?>" class="icon mail" title="Recordatorio"><span>Enviar Recordatorio Gestor</span></a></li>
+						<?php } ?>
+                        <?php if($rol== 1 || $rol== 3 || $rol== 2){?>
                         <li><a href="donations-promises.php?em=<?php echo $donation['sequence']; ?>" class="icon mail" title="Recordatorio"><span>Enviar Recordatorio Donante</span></a></li>
-	                        <li><a href="includes/forms/donationpromiseReceive.php?r=<?php echo $donation['sequence']; ?>" class="icon check colorbox" title="Recibir"><span>Recibir</span></a></li>
-                        	<li><a href="includes/forms/donationpromiseEdit.php?e=<?php echo $donation['sequence']; ?>" class="icon edit colorbox" title="Editar"><span>Editar</span></a></li>
-                            <li><a href="includes/forms/delete.php?t=donations-promises&d=<?php echo $donation['sequence']; ?>" class="icon delete colorbox" title="Eliminar"><span>Eliminar</span></a></li>
+	                        <li><a href="includes/forms/donationpromiseReceive.php?r=<?php echo $donation['sequence']; ?>&us=<?php echo $_SESSION['dms_id']?>" class="icon check colorbox" title="Recibir"><span>Recibir</span></a></li>
+                        	<li><a href="includes/forms/donationpromiseEdit.php?e=<?php echo $donation['sequence']; ?>&us=<?php echo $_SESSION['dms_id']?>" class="icon edit colorbox" title="Editar"><span>Editar</span></a></li>
+                            <li><a href="includes/forms/delete.php?t=donations-promises&d=<?php echo $donation['sequence']; ?>&us=<?php echo $_SESSION['dms_id']?>" class="icon delete colorbox" title="Eliminar"><span>Eliminar</span></a></li>
+						<?php } ?>
+                        
+                        
                         </ul>
                     </td>
                 </tr>

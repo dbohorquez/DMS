@@ -33,15 +33,22 @@ if($section != 'login' && !isset($_SESSION['dms_authorized'])){ header('Location
 <!--[if (gt IE 9)|!(IE)]><!--> <div id="wrapper"> <!--<![endif]-->
 		<div id="header">
 			<h1 id="logo"><a href="index.php"><img src="images/logo.png" alt="" /></a></h1>
-            <?php if($section != 'login'){ ?>
+            <?php if($section != 'login'){ 
+			$rol=isAnyRol($_SESSION['dms_id']);
+			?>
+            
+					
             <ul id="nav">
                 <li<?php if($section == 'home'){ ?> class="active"<?php } ?>><a href="index.php">Inicio</a></li>
-                <li<?php if($section == 'warehouses'){ ?> class="active"<?php } ?>><a href="warehouses.php">Bodegas</a>
+                <?php if($rol== 1 || $rol== 2){?>
+                <li<?php if($section == 'warehouses'){ ?> class="active"<?php } ?>><?php if($rol== 1){?><a href="warehouses.php">Bodegas</a><?php }?>
 	                <ul>
-                    	<li><a href="transfers.php">Transferencias</a></li>
+                    	<?php if($rol== 1){?><a href="warehouses.php">Bodegas</a><?php }?>
+                        <li><a href="transfers.php">Transferencias</a></li>
                       <li><a href="products_checkpoint.php">Puntos de reorden</a></li>
                     </ul>
                 </li>
+                <?php }?>
                 <li<?php if($section == 'products'){ ?> class="active"<?php } ?>><a href="products.php">Productos</a>
                 	<ul>
                     	<li><a href="categories.php">Categorías</a></li>
@@ -51,9 +58,9 @@ if($section != 'login' && !isset($_SESSION['dms_authorized'])){ header('Location
                   </ul>
                 </li>
                 <li<?php if($section == 'companies'){ ?> class="active"<?php } ?>><a href="companies.php">Operadores</a></li>
-                <li<?php if($section == 'donations'){ ?> class="active"<?php } ?>><a href="donations.php">Donaciones</a>
+                <li<?php if($section == 'donations'){ ?> class="active"<?php } ?>><a <?php if($rol== 5 || $rol== 1){?>href="donations.php"<?php }?>>Donaciones</a>
                 	<ul>
-                    	<li><a href="virtual-receptions.php">Donación Virtual</a></li>
+                    	 <?php if($rol== 6 || $rol== 1){?><li><a href="virtual-receptions.php">Donación Virtual</a></li><?php }?>
                       <li><a href="donation-checkin.php">Comprobantes DV</a></li>
                     	<li><a href="donations-promises.php">Promesas de Donación</a></li>
                       <li><a href="donors.php">Donantes</a></li>
