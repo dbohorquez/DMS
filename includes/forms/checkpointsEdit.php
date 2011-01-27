@@ -1,7 +1,9 @@
-<div class="medium">
+<div class="">
 	<h3>Editar Punto de Reorden</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
-    <form action="products_checkpoint.php" enctype="application/x-www-form-urlencoded" method="post">
+		<div id="errorMessage" class="error"> </div>
+		
+    <form action="products_checkpoint.php" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateCheckpointsForm();">
     	<?php
 			include('../functions.php');
 			$types = getTable('products','deletedAt IS NULL','name asc');
