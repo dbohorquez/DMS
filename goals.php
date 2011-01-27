@@ -13,7 +13,7 @@
 									<th>Porcentaje de cumplimiento</th>
 							  </tr></thead><tbody>
                 <?php
-					$query	=  'SELECT  categories.name NAME, categories.quantity,  units.name unit, SUM(products.quantity) accomplished , (SUM(products.quantity)/categories.quantity)*100 porcentaje
+					$query	=  'SELECT  categories.name name, categories.quantity,  units.name unit, IFNULL(SUM(products.quantity),0) accomplished , IFNULL((SUM(products.quantity)/categories.quantity)*100,0) percentage
 								FROM categories
 								INNER JOIN units 
 								ON categories.unit_id=units.id
