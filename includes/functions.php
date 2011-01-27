@@ -947,9 +947,13 @@ function addDistribution($data){
 		if(validateExistenceProduct($data)){
 			$warehouse = exists("warehouses","id='$data[warehouse]'");	
 			$company = exists("companies","id='$data[company]' and type=2");
-			//se valida que la bodega y el oper	
+			//se valida que la bodega y el operorador de distribucion existan
 			if($warehouse and $company ){
-				$datos = array(warehouses_id => $warehouse, companies_id  => $company , deliveryDate => $data['deliveryDate'],state => $data['state']);
+				if($data['shelter']!=''){
+					$datos = array(warehouses_id => $warehouse, companies_id  => $company , deliveryDate => $data['deliveryDate'],state => $data['state'], shelter_id => $data['shelter']);
+				}else{
+					$datos = array(warehouses_id => $warehouse, companies_id  => $company , deliveryDate => $data['deliveryDate'],state => $data['state']);
+				}
 				$id = dbInsert("distributions",$datos);
 				if($id != ''){
 					foreach($data as $key => $value){
