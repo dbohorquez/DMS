@@ -8,7 +8,8 @@
 	?>
 	<h3>Editar Categorias</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
-    <form action="categories.php" enctype="application/x-www-form-urlencoded" method="post">
+			<div id="errorMessage" class="error"> </div>
+    <form action="categories.php" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateCategoriesForm();">
     	<input type="hidden" id="id" name="id" value="<?php echo $id; ?>" />
         <fieldset>
             <label for="name">Nombre: <span class="required">*</span></label>

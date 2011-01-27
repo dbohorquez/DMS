@@ -17,10 +17,10 @@
 			<?php if($warning != ''){ echo '<div class="error">' . $warning . '</div>'; } ?>
             <table cellpadding="0" cellspacing="0"><thead>
             	<tr>
-                	<th>Canal</th>
+                	  <th>Operador de Distribución</th>
                     <th>Bodega</th>
                     <th>Fecha</th>
-                    <th>Productos</th>
+                    <th>Destino</th>
                     <th width="50">&nbsp;</th>
                 </tr></thead><tbody>
                 <?php
@@ -30,19 +30,13 @@
 						while($distribution = mysql_fetch_array($distributions)){
 							$company = getTable('companies',"id = $distribution[companies_id]",'',1);
 							$warehouse = getTable('warehouses',"id = $distribution[warehouses_id]",'',1);
+							$shelter = getTable('shelters',"id = $distribution[shelter_id]")
 				?>
                 <tr>
                 	<td><?php echo $company['name']; ?></td>
                     <td><?php echo $warehouse['name']; ?></td>
                     <td><?php echo formatDate($distribution['deliveryDate']); ?></td>
-                    <td><ul class="kit-product-list">
-						<?php
-							$products = getDistributionProducts($distribution['id']);
-							while($product = mysql_fetch_array($products)){
-								echo  '<li>' . $product['name'] . ' <strong>(x' . $product['quantity'] . ')</strong></li>';
-							}
-						?>
-                    </ul></td>
+                    <td><?php echo $shelter['name']?></td>
                     <td>
                     <?php if($rol== 1 || $rol== 2){?>
                     	<ul class="table-actions">

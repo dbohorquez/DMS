@@ -41,6 +41,10 @@
                 <?php } ?>
                 </select>
             </fieldset>
+						 <fieldset>
+	                <label for="shelter">Beneficiarios:</label>
+	                <input type="text" class="text" size="20" name="shelter" id="shelter" />
+	            </fieldset>
         </div>
         <div class="column c50p last">
             <fieldset>
@@ -56,6 +60,7 @@
                 </select>
             </fieldset>
         </div>
+ 				<div class="clear"></div>
         <h4>Productos <span class="required">*</span></h4>
         <fieldset>
             <div class="column c33p">

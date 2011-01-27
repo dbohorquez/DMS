@@ -8,7 +8,7 @@
 	<h3>Editar Bodega</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
     <form action="warehouses.php" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateWarehouseForm();">
-				<div id="errorMessage"> </div>
+				<div id="errorMessage" class="error"> </div>
         <div class="column c50p">
         	<input type="hidden" id="id" name="id" value="<?php echo $id; ?>" />
             <fieldset>
