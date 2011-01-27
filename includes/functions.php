@@ -464,7 +464,43 @@ function transferProducts ($data){
 							addStatesChanges ($row[id],1,$_SESSION['dms_id'],$reason = 'Tranferencia desde la bodega virtual');
 						}
 						
-					}	
+					}
+					
+					if($data[warehouse]==-1){
+							$currentdate = date("Y-m-d H:i");
+							$headers = 'From: Sahana Caribe <admin@sahanacaribe.com>' . "\r\n" .'Fecha: '.$date. "\r\n";
+							$subject = 'Informe de transferencia"\r\n"';
+																	
+							$body = 'El dia '.$currentdate.' ha sido realizada la donación con consecutivo '.$id.'. Estos son los datos de contacto del donante: ';
+							$body = $body."<ul>";
+							$body = $body."<li>Identificación: $data[identification]</li>";
+							$body = $body."<li>Nombre: $data[name]</li>";
+							$body = $body."<li>Dirección : $data[address]</li>";
+							$body = $body."<li>Teléfono : $data[phonenumber]</li>";
+							$body = $body."<li>Correo Electrónico : $data[email]</li>";						
+							$body = $body."</ul>";
+							$body = $body."Le agradecemos gestionar este certificado de donación con la mayor brevedad posible, para entregar al usuario en forma de reconocimiento por su colaboración.". "\r\n";
+							$body = $body."Un cordial saludo.". "\r\n Gobernación del Atlántico.";
+         //					
+                    		$idc = findRow('warehouses','id',"'".$data['warehousefrom']."'",'companies_id');
+							if($idc)
+							{
+							$email = findRow('companies','id',"'".$idc."'",'email');
+								if(mail($email,$subject,$body,$headers)){
+								  $success = "Mensaje Enviado con exito.";
+								  
+									$datos = array(subjectnot => $subject, fromnot  => 'admin@sahanacaribe.com' , tonot => 'certificacion@sahanacaribe.com' ,bodynot => $body, users_id => $data['user']);
+									if(dbInsert("notifications",$datos)){
+										}
+									else
+									{
+									$warning = "El mensaje ha sido enviado, pero no ha podido guardarse en la base de datos. Por favor consulte al Administrador.2";
+									}
+						
+								}
+							}
+						}
+					
 				}
 			}
 		}else{
@@ -488,6 +524,7 @@ function addKit($data){
 					foreach($data as $key => $value){
 						if(substr($key,0,5) == 'hitem'){
 							$qtyname = 'citem' . substr($key,-7);
+							echo $qtyname;
 							$qty = $data[$qtyname];
 							$idp = findRow('products','name',"'".$value."'",'id');
 							$datos = array(kits_id => $id, products_id =>$idp,quantity => $qty);
