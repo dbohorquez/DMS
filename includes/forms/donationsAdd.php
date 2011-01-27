@@ -14,6 +14,7 @@
 					$location = getItemLocation('donors',$donorId);
 			?>
         <h4>Identificación: (<?php echo $donorId; ?>)</h4>
+        <input type="hidden" id="user" name="user" value="<?php echo $userid;?>" />
         <input type="hidden" id="exists" name="exists" value="true" />
 			<?php
                 }else{
