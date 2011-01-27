@@ -19,6 +19,7 @@
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
     <form action="donation-checkin.php" enctype="application/x-www-form-urlencoded" method="post">
         <input type="hidden" id="id" name="id" value="<?php echo $id; ?>" />
+        <input type="hidden" id="user" name="user" value="<?php echo $userid; ?>" />
 	        <div class="column c50p">
 	        	<input type="hidden" id="identification" name="identification" value="<?php echo $donor['id']; ?>" />
 	         <fieldset>

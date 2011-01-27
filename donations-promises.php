@@ -5,8 +5,8 @@
 <?php if(isset($_POST['bt-edit'])) list($warning, $success) = editDonationPromise($_POST);?>
 <?php if(isset($_POST['bt-receive'])) list($warning, $success) = receiveDonationPromise($_POST);?>
 <?php if(isset($_POST['bt-delete'])) list($warning, $success) = delete($_POST);?>
-<?php if($_GET['em']) list($warning, $success) = sendMailPromiseDonor($_GET['em']);?>
-<?php if($_GET['eg']) list($warning, $success) = sendMailPromiseGestor($_GET['eg']);?>
+<?php if($_GET['em']) list($warning, $success) = sendMailPromiseDonor($_GET['em'],$_GET['us']);?>
+<?php if($_GET['eg']) list($warning, $success) = sendMailPromiseGestor($_GET['eg'],$_GET['us']);?>
 			<h2>Promesas de donaciones</h2>
 			
 			  <div class="column c50p">
@@ -58,10 +58,10 @@
                     <td>
                     	<ul class="table-actions">
                         <?php if($rol== 1 || $rol== 2){?>
-                        <li><a href="donations-promises.php?eg=<?php echo $donation['sequence']; ?>" class="icon mail" title="Recordatorio"><span>Enviar Recordatorio Gestor</span></a></li>
+                        <li><a href="donations-promises.php?eg=<?php echo $donation['sequence']; ?>&us=<?php echo $_SESSION['dms_id']?>" class="icon mail" title="Recordatorio"><span>Enviar Recordatorio Gestor</span></a></li>
 						<?php } ?>
                         <?php if($rol== 1 || $rol== 3 || $rol== 2){?>
-                        <li><a href="donations-promises.php?em=<?php echo $donation['sequence']; ?>" class="icon mail" title="Recordatorio"><span>Enviar Recordatorio Donante</span></a></li>
+                        <li><a href="donations-promises.php?em=<?php echo $donation['sequence']; ?>&us=<?php echo $_SESSION['dms_id']?>" class="icon mail" title="Recordatorio"><span>Enviar Recordatorio Donante</span></a></li>
 	                        <li><a href="includes/forms/donationpromiseReceive.php?r=<?php echo $donation['sequence']; ?>&us=<?php echo $_SESSION['dms_id']?>" class="icon check colorbox" title="Recibir"><span>Recibir</span></a></li>
                         	<li><a href="includes/forms/donationpromiseEdit.php?e=<?php echo $donation['sequence']; ?>&us=<?php echo $_SESSION['dms_id']?>" class="icon edit colorbox" title="Editar"><span>Editar</span></a></li>
                             <li><a href="includes/forms/delete.php?t=donations-promises&d=<?php echo $donation['sequence']; ?>&us=<?php echo $_SESSION['dms_id']?>" class="icon delete colorbox" title="Eliminar"><span>Eliminar</span></a></li>

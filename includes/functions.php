@@ -681,7 +681,7 @@ function addDonation($data){
 	}
     
 	$currentdate = date("Y-m-d H:i");
-	$datos = array(donors_id =>$data['identification'],users_id => 1,warehouses_id => $data['warehouse'], date => $currentdate, type => 1);
+	$datos = array(donors_id =>$data['identification'],users_id => $data['user'],warehouses_id => $data['warehouse'], date => $currentdate, type => 1);
 	$id = dbInsert("donations",$datos);
 	if($id != ''){
 		$success = $success."La donación fue ingresada exitosamente. El consecutivo asignado es ".$id;
@@ -698,32 +698,37 @@ function addDonation($data){
 		$body = $body."</ul>";
 		$body = $body."Le agradecemos gestionar este certificado de donación con la mayor brevedad posible, para entregar al usuario en forma de reconocimiento por su colaboración.". "\r\n";
 		$body = $body."Un cordial saludo.". "\r\n Gobernación del Atlántico.";
-		
+
 		if(mail('certificacion@sahanacaribe.com',$subject,$body,$headers)){
 		  $success = "Mensaje Enviado para generar certificado fisico, con exito.";
-		  $datos = array(subject => $subject, from  => 'admin@sahanacaribe.com' , to => 'certificacion@sahanacaribe.com' ,body => $body, type => $data['type'], users_id => $data['user']);
+		  
+		  	$datos = array(subjectnot => $subject, fromnot  => 'admin@sahanacaribe.com' , tonot => 'certificacion@sahanacaribe.com' ,bodynot => $body, users_id => $data['user']);
 			if(dbInsert("notifications",$datos)){
 				}
 			else
 			{
-			$warning = "El mensaje ha sido enviado, pero no ha podido guardarse en la base de datos. Por favor consulte al Administrador.";
+			$warning = "El mensaje ha sido enviado, pero no ha podido guardarse en la base de datos. Por favor consulte al Administrador.2";
 			}
+
 		}
 		
-		$body = 'Sr. '.$data[name].'"\r\n". El dia '.$currentdate.' usted ha realizado una donación cuyo consecutivo es '.$id.'.';
-		$body = $body."Le agradecemos enormemente por su colaboración para nuestros hermanos del Departamento del Atlántico que estan pasando por esta dificil situación. ". "\r\n Para mayor información o conocer el detalle de su donación, por favor dirijase a <a href='http://sahanacaribe.org/'>Sahana Caribe</a> ";
-		$body = $body."Un cordial saludo.". "\r\n Gobernación del Atlántico.";
-
-		if(mail($data['email'],$subject,$body,$headers)){
+	if(mail($data['email'],$subject,$body,$headers)){
 		  $success = "Mensaje Enviado para generar certificado fisico, con exito.";
-		  $datos = array(subject => $subject, from  => 'admin@sahanacaribe.com' , to => 'certificacion@sahanacaribe.com' ,body => $body, type => $data['type'], users_id => $data['user']);
+		  
+		  		$body = "Sr. ".$data['name'].". El dia ".$currentdate." usted ha realizado una donación cuyo consecutivo es ".$id.".";
+		$body = $body."Le agradecemos enormemente por su colaboración para nuestros hermanos del Departamento del Atlántico que estan pasando por esta dificil situación. ". " Para mayor información o conocer el detalle de su donación, por favor dirijase a <a href='http://sahanacaribe.org/'>Sahana Caribe</a> ";
+		$body = $body."Un cordial saludo.". " Gobernación del Atlántico.";
+
+		  $datos = array(subjectnot => $subject, fromnot  => 'admin@sahanacaribe.com' , tonot => 'certificacion@sahanacaribe.com' ,bodynot => $body, users_id => $data['user']);
 			if(dbInsert("notifications",$datos)){
 				}
 			else
 			{
-			$warning = "El mensaje ha sido enviado, pero no ha podido guardarse en la base de datos. Por favor consulte al Administrador.";
+			$warning = "El mensaje ha sido enviado, pero no ha podido guardarse en la base de datos. Por favor consulte al Administrador.1";
 			}	
+
 		}
+		
 	}else{
 		$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
 	}
@@ -1045,7 +1050,7 @@ function sendNotification($data){
     $headers = 'From: Sahana Caribe <admin@sahanacaribe.com>' . "\r\n" .'Fecha: '.$date. "\r\n";
 	if(mail($data['email'],$data['subject'],$data['body'],$headers)){
       $success = "Mensaje Enviado con exito.";
-	  $datos = array(subject => $data['subject'], from  => $data['from'] , to => $data['to'],body => $data['body'], type => $data['type'], users_id => $data['user']);
+	  $datos = array(subjectnot => $data['subject'], fromnot  => $data['from'] , tonot => $data['to'],bodynot => $data['body'], users_id => $data['user']);
 		if(dbInsert("notifications",$datos)){
 			
 		}
@@ -1471,8 +1476,8 @@ function verifyDonationPromise($data){
 			$body = $body."Muchas gracias por su gestión. En el momento que se requiera, serán solicitados los productos asociados a esta factura.". "\r\n";
 			
 			$query = "select p.*,products.name from products_donations p, donations d, products where d.donors_id = $donor[id] and d.companies_id = $voucher[company_id] and d.bill = $voucher[bill] and d.deletedAt IS NULL and d.sequence = p.donations_id and p.deletedAt IS NULL and products.id = p.products_id";
-		  $products = runQuery($query);
-				$body = $body."<ul>";
+		    $products = runQuery($query);
+			$body = $body."<ul>";
 			$numRows = mysql_num_rows($products);
 			if($numRows > 0){
 				while($product = mysql_fetch_array($products)){
@@ -1482,16 +1487,19 @@ function verifyDonationPromise($data){
 			$body = $body."</ul>";
 
 			$body = $body."Un cordial saludo.". "\r\n Gobernación del Atlántico.";
+			
+			
+			
 			if(mail($company['email'],$subject,$body,$headers)){
 			  $success = "Mensaje Enviado con exito.";
-			  $datos = array(subject => $subject, from  => 'admin@sahanacaribe.com' , to => $donor['email'],body => $body, type => $data['type'], users_id => $data['user']);
+			$datos = array(subjectnot => $subject, fromnot  => 'admin@sahanacaribe.com' , tonot => $donor['email'],bodynot => $body, users_id => $data['user']);
 				if(dbInsert("notifications",$datos)){
 					
 				}
 				else
 				{
 					$warning = "El mensaje ha sido enviado, pero no ha podido guardarse en la base de datos. Por favor consulte al Administrador.";
-					}
+					}  
 		   }else{
 			  $warning = "El mensaje no ha podido ser enviado";
 		   }
@@ -1502,7 +1510,7 @@ function verifyDonationPromise($data){
 	return array($warning, $success);
 }
 
-function sendMailPromiseDonor($donation_id){
+function sendMailPromiseDonor($donation_id,$user){
 	
 	$donation = getTable('donations','deletedAt IS NULL and type=3 and sequence = '.$donation_id,'sequence asc',1);
 	$products = getTable('products_donations','deletedAt IS NULL and donations_id = '.$donation_id,'id asc');
@@ -1521,9 +1529,10 @@ function sendMailPromiseDonor($donation_id){
 	$body = $body."</ul>";
 	$body = $body."Le agradecemos acercarse a nuestra sede, para realizar la entrega de estos productos y poder ayudar a los damnificados de nuestra region.". "\r\n";
 	$body = $body."Un cordial saludo.". "\r\n Gobernación del Atlántico.";
+		
 	if(mail($donor['email'],$subject,$body,$headers)){
       $success = "Mensaje Enviado con exito.";
-	  $datos = array(subject => $subject, from  => 'admin@sahanacaribe.com' , to => $donor['email'],body => $body, type => $data['type'], users_id => $data['user']);
+ 		  $datos = array(subjectnot => $subject, fromnot  => 'admin@sahanacaribe.com' , tonot => $donor['email'],bodynot => $body, users_id => $user);
 		if(dbInsert("notifications",$datos)){
 			
 		}
@@ -1531,13 +1540,14 @@ function sendMailPromiseDonor($donation_id){
 		{
 			$warning = "El mensaje ha sido enviado, pero no ha podido guardarse en la base de datos. Por favor consulte al Administrador.";
 			}
+
    }else{
       $warning = "El mensaje no ha podido ser enviado";
    }
 	return array($warning, $success);
 }
 
-function sendMailPromiseGestor($donation_id){
+function sendMailPromiseGestor($donation_id, $user){
 	
 	$donation = getTable('donations','deletedAt IS NULL and type=3 and sequence = '.$donation_id,'sequence asc',1);
 	$products = getTable('products_donations','deletedAt IS NULL and donations_id = '.$donation_id,'id asc');
@@ -1556,9 +1566,11 @@ function sendMailPromiseGestor($donation_id){
 	$body = $body."</ul>";
 	$body = $body."Le agradecemos gestionar esta donacion para poder realizar la entrega de estos productos y poder ayudar a los damnificados de nuestra region.". "\r\n";
 	$body = $body."Un cordial saludo.". "\r\n Gobernación del Atlántico.";
+	
+		
 	if(mail($donor['email'],$subject,$body,$headers)){
       $success = "Mensaje Enviado con exito.";
-	  $datos = array(subject => $subject, from  => 'admin@sahanacaribe.com' , to => $donor['email'],body => $body, type => $data['type'], users_id => $data['user']);
+	    $datos = array(subjectnot => $subject, fromnot  => 'admin@sahanacaribe.com' , tonot => $donor['email'],bodynot => $body, users_id => $user);
 		if(dbInsert("notifications",$datos)){
 			
 		}
@@ -1566,6 +1578,7 @@ function sendMailPromiseGestor($donation_id){
 		{
 			$warning = "El mensaje ha sido enviado, pero no ha podido guardarse en la base de datos. Por favor consulte al Administrador.";
 			}
+
    }else{
       $warning = "El mensaje no ha podido ser enviado";
    }
