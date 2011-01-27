@@ -16,7 +16,9 @@
 	?>
 	<h3>Editar Promesa de Donación #<?php echo $donation['sequence']; ?></h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
-    <form action="donations-promises.php" enctype="application/x-www-form-urlencoded" method="post">
+		<div id="errorMessage" class="error"> </div>
+		
+    <form action="donations-promises.php" enctype="application/x-www-form-urlencoded" method="post"  onsubmit="return validateColorboxForm();">
         <input type="hidden" id="id" name="id" value="<?php echo $id; ?>" />
         <div class="column c50p">
             <fieldset>
@@ -49,7 +51,7 @@
                 <a href="javascript:void(0);" class="btn" onclick="addProductAjax('#product',$('#quantity'),'#expirationDate','.product-list',this, <?php echo $id; ?>, $('#warehouse').val(), 3 );" id="add">Añadir</a>
             </fieldset>
             <label>Productos seleccionados:</label>
-            <ul class="product-list text">
+            <ul class="product-list text atLeastOne">
                 <?php
                     $products = getDonationProducts($id);
                     while($product = mysql_fetch_array($products)){

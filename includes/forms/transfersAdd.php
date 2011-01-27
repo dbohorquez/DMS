@@ -1,7 +1,9 @@
 <div class="medium">
 	<h3>Nueva Transferencia</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
-    <form action="transfers.php" enctype="application/x-www-form-urlencoded" method="post">
+		<div id="errorMessage" class="error"> </div>
+
+    <form action="transfers.php" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateColorboxForm();"> 
     	<?php
 			include('../functions.php');
 			$query = "SELECT  products.id, products.name, COUNT(products_donations.id)
@@ -21,6 +23,7 @@
         <div class="column c50p">
             <fieldset>
                 <label for="warehousefrom">Bodega Origen: <span class="required">*</span></label>
+								
                 <select name="warehousefrom" id="warehousefrom">
 										<option value="-1">Bodega Virtual</option>
                 <?php
@@ -80,7 +83,7 @@
             </div>
         </fieldset>
         <label>Productos seleccionados:</label>
-        <ul class="product-list text"></ul>
+        <ul class="product-list text atLeastOne"></ul>
         <fieldset class="clear">
         <?php 
 		$rol=isAnyRol($userid);

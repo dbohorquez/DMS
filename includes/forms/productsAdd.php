@@ -1,7 +1,9 @@
 <div class="">
 	<h3>Agregar Producto</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
-    <form action="products.php" enctype="application/x-www-form-urlencoded" method="post">
+		<div id="errorMessage" class="error"> </div>
+		
+    <form action="products.php" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateColorboxForm();">
     	<?php
 			include('../functions.php');
 				$types = getTable('producttypes','deletedAt IS NULL','name asc');
@@ -13,15 +15,15 @@
 		?>
         <fieldset>
             <label for="name">Nombre: <span class="required">*</span></label>
-            <input type="text" class="text" size="48" name="name" id="name" />
+            <input type="text" class="text not-nil" size="48" name="name" id="name" />
         </fieldset>
         <fieldset>
             <label for="type">Tipo de Producto: <span class="required">*</span></label>
-            <input type="text" class="text autocomplete" size="48" name="type" id="type" />
+            <input type="text" class="text autocomplete not-nil" size="48" name="type" id="type" />
         </fieldset>
 				<fieldset>
 							<label for="quantity">Cantidad: <span class="required">*</span></label>
-							<input type="text" class="text" size="48" name="quantity" id="quantity" />
+							<input type="text" class="text decimal" size="48" name="quantity" id="quantity" />
 				</fieldset>
 				<fieldset>
 					<label>Unidad: <span id="unit"></span></label>

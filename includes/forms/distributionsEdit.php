@@ -3,7 +3,7 @@
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
 		<div id="errorMessage" class="error"> </div>
 
-    <form action="distribution.php" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateDistributionsForm();">
+    <form action="distribution.php" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateColorboxForm();">
     	<?php
 			include('../functions.php');
 			$userid = $_GET['us']; 
@@ -60,7 +60,7 @@
         <div class="column c50p last">
             <fieldset>
                 <label for="deliveryDate">Fecha de Entrega: <span class="required">*</span></label>
-                <input type="text" class="text datepicker" size="20" name="deliveryDate" id="deliveryDate" value="<?php echo $distribution['deliveryDate']; ?>" />
+                <input type="text" class="text datepicker not-nil" size="20" name="deliveryDate" id="deliveryDate" value="<?php echo $distribution['deliveryDate']; ?>" />
             </fieldset>
             <fieldset>
                 <label for="state">Estado: <span class="required">*</span></label>
@@ -89,7 +89,7 @@
             </div>
         </fieldset>
         <label>Productos seleccionados:</label>
-        <ul class="product-list text">
+        <ul class="product-list text atLeastOne">
         	 <?php
 				$products = getDistributionProducts($id);
 				while($product = mysql_fetch_array($products)){

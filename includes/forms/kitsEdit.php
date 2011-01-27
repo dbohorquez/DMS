@@ -1,7 +1,9 @@
 <div class="narrow">
 	<h3>Editar Kit</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
-    <form action="kits.php" enctype="application/x-www-form-urlencoded" method="post">
+		<div id="errorMessage" class="error"> </div>
+
+    <form action="kits.php" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateColorboxForm();">
     	<?php
 			include('../functions.php');
 			$userid = $_GET['us']; 
@@ -16,7 +18,7 @@
         <input type="hidden" id="id" name="id" value="<?php echo $id; ?>" />
         <fieldset>
             <label for="name">Nombre: <span class="required">*</span></label>
-            <input type="text" class="text" size="48" name="name" id="name" value="<?php echo $kit['name']; ?>" />
+            <input type="text" class="text not-nil" size="48" name="name" id="name" value="<?php echo $kit['name']; ?>" />
         </fieldset>
         <h4>Productos <span class="required">*</span></h4>
         <fieldset>
@@ -31,7 +33,7 @@
             </div>
         </fieldset>
         <label>Productos seleccionados:</label>
-        <ul class="product-list text">
+        <ul class="product-list text atLeastOne">
         	<?php
 				$products = getKitProducts($id);
 				while($product = mysql_fetch_array($products)){

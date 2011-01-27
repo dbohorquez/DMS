@@ -1,13 +1,13 @@
 <div class="medium">
 	<h3>Agregar Bodega</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
-    <form action="warehouses.php" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateWarehouseForm();">
+    <form action="warehouses.php" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateColorboxForm();">
     <?php include('../functions.php'); ?>
         	<div id="errorMessage" class="error"> </div>
 					<div class="column c50p">
 					  <fieldset>
                 <label for="name">Nombre: <span class="required">*</span></label>
-                <input type="text" class="text" size="48" name="name" id="name" />
+                <input type="text" class="text not-nil" size="48" name="name" id="name" />
             </fieldset>
             <fieldset>
             	<label for="description">Descripción:</label>
@@ -32,7 +32,7 @@
             </fieldset>
             <fieldset>
             	<label for="town">Ciudad/Municipio: <span class="required">*</span></label>
-                <select name="town" id="town">
+                <select name="town" id="town" class="selectOne">
                 	<option value="0">-- Seleccione un departamento --</option>
                 </select>
             </fieldset>

@@ -3,7 +3,7 @@
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
 		<div id="errorMessage" class="error"> </div>
 		
-    <form action="products_checkpoint.php" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateCheckpointsForm();">
+    <form action="products_checkpoint.php" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateColorboxForm();">
     	<?php
 			include('../functions.php');
 			$types = getTable('products','deletedAt IS NULL','name asc');
@@ -15,11 +15,11 @@
 		?>
         <fieldset>
             <label for="product">Producto: <span class="required">*</span></label>
-            <input type="text" class="text autocomplete" size="48" name="product" id="product" />
+            <input type="text" class="text autocomplete not-nil" size="48" name="product" id="product" />
         </fieldset>
         <fieldset>
             <label for="quantity">Cantidad: <span class="required">*</span></label>
-            <input type="text" class="text" size="48" name="quantity" id="quantity" />
+            <input type="text" class="text decimal" size="48" name="quantity" id="quantity" />
         </fieldset>
 
         <fieldset class="clear">

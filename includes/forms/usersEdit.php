@@ -7,11 +7,13 @@
 	?>
 	<h3>Editar Usuario</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
-    <form action="options.php" enctype="application/x-www-form-urlencoded" method="post">
+		<div id="errorMessage" class="error"> </div>
+		
+    <form action="options.php" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateColorboxForm();">
     	<input type="hidden" id="id" name="id" value="<?php echo $id; ?>" />
         <fieldset>
             <label for="name">Nombre: <span class="required">*</span></label>
-            <input type="text" class="text" size="48" name="name" id="name" value="<?php echo $user['name']; ?>" />
+            <input type="text" class="text not-nil" size="48" name="name" id="name" value="<?php echo $user['name']; ?>" />
         </fieldset>
         <fieldset>
             <label for="email">Correo electrónico: <span class="required">*</span></label>

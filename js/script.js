@@ -130,139 +130,43 @@ function isPercentage(elem) {
 	return isFloat(elem) && parseInt(elem.val()) > 0 && parseInt(elem.val()) < 100
 }
 
-function validateWarehouseForm(){
-		valid = true
-	  $("form input, form select").removeClass("error")
-		if (isNil($("#name")))
-		{ valid= false; $("#name").addClass("error") }
-		if (!isSelected($("#town")))
-		{ valid= false; $("#town").addClass("error") }
-		if ( !isNil($("#occupation")) && !isPercentage($("#occupation")) )
-		{ valid= false; $("#occupation").addClass("error") }
-		
-		if (!valid){	
-			$("#errorMessage").html("Por favor digite todos los campos obligatorios (<span class=\"required\">*</span>).");
-			$("#errorMessage").show();
-			$.colorbox.resize();
-		}
-    return valid;
-}
-
-function validateTransferForm(){
-		valid = true
-	  $("form input").removeClass("error")
-	
-		if (!atLeastOne($(".product-list.text")))
-		{ valid= false; $(".product-list.text").addClass("error") }
-		
-		if (!valid){
-			$("#errorMessage").html("Por favor digite todos los campos obligatorios (<span class=\"required\">*</span>).");
-			$("#errorMessage").show();
-			$.colorbox.resize();
-		}
-    return valid;
-}
-
-function validateCategoriesForm() {
-		valid = true
-	  	$("form input").removeClass("error")
-	
-		if (isNil($("#name")))
-		{ valid= false; $("#name").addClass("error") }
-		
-		if (!isFloat($("#quantity")))
-		{ valid= false; $("#quantity").addClass("error") }
-				
-		if (!valid){
-			$("#errorMessage").html("Por favor digite todos los campos obligatorios (<span class=\"required\">*</span>).");
-			$("#errorMessage").show();
-			$.colorbox.resize();
-		}
-    return valid;
-}
-
-function validateCheckpointsForm() {
-		valid = true
-	  	$("form input").removeClass("error")
-	
-		if (isNil($("#product")))
-		{ valid= false; $("#product").addClass("error") }
-		
-		if (!isFloat($("#quantity")))
-		{ valid= false; $("#quantity").addClass("error") }
-				
-		if (!valid){
-			$("#errorMessage").html("Por favor digite todos los campos obligatorios (<span class=\"required\">*</span>).");
-			$("#errorMessage").show();
-			$.colorbox.resize();
-		}
-    return valid;
-}
-
-function validateCompaniesForm() {
-		valid = true
-	  	$("form input").removeClass("error")
-	
-		if (!isInteger($("#nit")))
-		{ valid= false; $("#nit").addClass("error") }
-
-		if (isNil($("#name")))
-		{ valid= false; $("#name").addClass("error") }
-		
-		if (!isSelected($("#town")))
-		{ valid= false; $("#town").addClass("error") }
-
-		if (!isEmail($("#email")))
-		{ valid= false; $("#email").addClass("error") }
-				
-		if (!valid){
-			$("#errorMessage").html("Por favor digite todos los campos obligatorios (<span class=\"required\">*</span>).");
-			$("#errorMessage").show();
-			$.colorbox.resize();
-		}
-    return valid;
-}
-
-function validateDistributionsForm() {
-		valid = true
-	  	$("form input").removeClass("error")
-	
-		if (isNil($("#deliveryDate")))
-		{ valid= false; $("#deliveryDate").addClass("error") }
-		
-		if (!atLeastOne($(".product-list")))
-		{ valid= false; $(".product-list").addClass("error") }
-				
-		if (!valid){
-			$("#errorMessage").html("Por favor digite todos los campos obligatorios (<span class=\"required\">*</span>).");
-			$("#errorMessage").show();
-			$.colorbox.resize();
-		}
-    return valid;
-}
-
-function validateCheckinForm(type) {
-		valid = true
-	  	$("form input").removeClass("error")
-		
-		if(type=="add"){
-			if (isNil($("#name")))
-			{ valid= false; $("#name").addClass("error") }
-
-			if (!isSelected($("#town")))
-			{ valid= false; $("#town").addClass("error") }
-		}
-				
-		if (isNil($("#bill")))
-		{ valid= false; $("#bill").addClass("error") }
-		
-		if (isNil($("#date")))
-		{ valid= false; $("#date").addClass("error") }
-				
-		if (!valid){
-			$("#errorMessage").html("Por favor digite todos los campos obligatorios (<span class=\"required\">*</span>).");
-			$("#errorMessage").show();
-			$.colorbox.resize();
-		}
-    return valid;
+function validateColorboxForm() {
+	valid = true
+  	$("form input, form select").removeClass("error")
+	$(".not-nil").each(function(){
+		$elem = $(this)
+		if (isNil($elem))
+		{ valid= false; $elem.addClass("error") }
+	})
+	$(".integer").each(function(){
+		$elem = $(this)
+		if (!isInteger($elem))
+		{ valid= false; $elem.addClass("error") }
+	})
+	$(".decimal").each(function(){
+		$elem = $(this)
+		if (!isFloat($elem))
+		{ valid= false; $elem.addClass("error") }
+	})
+	$(".atLeastOne").each(function(){
+		$elem = $(this)
+		if (!atLeastOne($elem))
+		{ valid= false; $elem.addClass("error") }
+	})
+	$(".selectOne").each(function(){
+		$elem = $(this)
+		if (!isSelected($elem))
+		{ valid= false; $elem.addClass("error") }
+	})
+	$(".email").each(function(){
+		$elem = $(this)
+		if (!isEmail($elem))
+		{ valid= false; $elem.addClass("error") }
+	})
+	if (!valid){
+		$("#errorMessage").html("Por favor digite todos los campos obligatorios (<span class=\"required\">*</span>).");
+		$("#errorMessage").show();
+		$.colorbox.resize();
+	}
+   return valid;
 }

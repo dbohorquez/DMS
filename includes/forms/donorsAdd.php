@@ -5,11 +5,13 @@
 	?>
 	<h3>Agregar Donante</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
-    <form action="donors.php" enctype="application/x-www-form-urlencoded" method="post">
+		<div id="errorMessage" class="error"> </div>
+		
+    <form action="donors.php" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateColorboxForm();">
         <div class="column c50p">
             <fieldset>
                 <label for="name">Nombre: <span class="required">*</span></label>
-                <input type="text" class="text" size="48" name="name" id="name" />
+                <input type="text" class="text not-nil" size="48" name="name" id="name" />
             </fieldset>
             <fieldset>
             	<label for="type">Tipo de Identificación:</label>
@@ -21,7 +23,7 @@
             </fieldset>
             <fieldset>
                 <label for="identification">Identificación: <span class="required">*</span></label>
-                <input type="text" class="text" size="48" name="identification" id="identification" />
+                <input type="text" class="text integer" size="48" name="identification" id="identification" />
             </fieldset>
             <fieldset>
             	<label for="province">Departamento: <span class="required">*</span></label>
@@ -36,7 +38,7 @@
             </fieldset>
             <fieldset>
             	<label for="town">Ciudad/Municipio: <span class="required">*</span></label>
-                <select name="town" id="town">
+                <select name="town" id="town" class="selectOne">
                 	<option value="0">-- Seleccione un departamento --</option>
                 </select>
             </fieldset>

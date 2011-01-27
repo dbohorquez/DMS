@@ -1,7 +1,9 @@
 <div class="">
 	<h3>Editar Producto</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
-    <form action="products.php" enctype="application/x-www-form-urlencoded" method="post">
+		<div id="errorMessage" class="error"> </div>
+
+    <form action="products.php" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateColorboxForm();">
     	<?php
 			include('../functions.php');
 			$id = $_GET['e']; 
@@ -20,15 +22,15 @@
         <input type="hidden" id="id" name="id" value="<?php echo $id; ?>" />
         <fieldset>
             <label for="name">Nombre: <span class="required">*</span></label>
-            <input type="text" class="text" size="48" name="name" id="name" value="<?php echo $product['name']; ?>" />
+            <input type="text" class="text not-nil" size="48" name="name" id="name" value="<?php echo $product['name']; ?>" />
         </fieldset>
         <fieldset>
             <label for="type">Tipo de Producto: <span class="required">*</span></label>
-            <input type="text" class="text autocomplete" size="48" name="type" id="type" value="<?php echo $productType[name] ?>" />
+            <input type="text" class="text autocomplete not-nil" size="48" name="type" id="type" value="<?php echo $productType[name] ?>" />
         </fieldset>
 					<fieldset>
 								<label for="quantity">Cantidad: <span class="required">*</span></label>
-								<input type="text" class="text" size="48" name="quantity" id="quantity" value="<?php echo $product['quantity'] ?>"/>
+								<input type="text" class="text decimal" size="48" name="quantity" id="quantity" value="<?php echo $product['quantity'] ?>"/>
 					</fieldset>
 					<fieldset>
 						<label>Unidad: <span id="unit"><?php echo $unit; ?></span></label>

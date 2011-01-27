@@ -3,16 +3,16 @@
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
 		<div id="errorMessage" class="error"> </div>
 
-    <form action="companies.php" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateCompaniesForm();">
+    <form action="companies.php" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateColorboxForm();">
     <?php include('../functions.php'); ?>
         <div class="column c50p">
 		    <fieldset>
                 <label for="nit">Nit: <span class="required">*</span></label>
-                <input type="text" class="text" size="48" name="nit" id="nit" />
+                <input type="text" class="text not-nil" size="48" name="nit" id="nit" />
             </fieldset>
             <fieldset>
                 <label for="name">Nombre: <span class="required">*</span></label>
-                <input type="text" class="text" size="48" name="name" id="name" />
+                <input type="text" class="text not-nil" size="48" name="name" id="name" />
             </fieldset>
             <fieldset>
             	<label for="type">Tipo de Entidad:</label>
@@ -35,7 +35,7 @@
             </fieldset>
             <fieldset>
             	<label for="town">Ciudad/Municipio: <span class="required">*</span></label>
-                <select name="town" id="town">
+                <select name="town" id="town" class="selectOne">
                 	<option value="0">-- Seleccione un departamento --</option>
                 </select>
             </fieldset>
@@ -60,7 +60,7 @@
             </fieldset>
            <fieldset>
             	<label for="email">Correo electrónico: <span class="required">*</span></label>
-                <input type="text" class="text" size="48" name="email" id="email" />
+                <input type="text" class="text email" size="48" name="email" id="email" />
             </fieldset>
         </div>
         <fieldset class="clear">
