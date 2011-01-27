@@ -28,7 +28,7 @@
             </fieldset>
            <fieldset>
             	<label for="occupation">Capacidad Actual:</label>
-                <input type="text" class="text" size="4" name="occupation" id="occupation" value="<?php echo $warehouse['occupation']; ?>"/> %
+                <input type="text" class="text percent" size="4" name="occupation" id="occupation" value="<?php echo $warehouse['occupation']; ?>"/> %
             </fieldset>
         </div>
         <div class="column c50p last">

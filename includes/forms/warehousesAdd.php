@@ -15,7 +15,7 @@
             </fieldset>
             <fieldset>
             	<label for="occupation">Capacidad Actual:</label>
-                <input type="text" class="text" size="4" name="occupation" id="occupation" value="0" /> %
+                <input type="text" class="text percent" size="4" name="occupation" id="occupation" value="0" /> %
             </fieldset>
         </div>
         <div class="column c50p last">

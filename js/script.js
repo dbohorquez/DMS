@@ -143,6 +143,11 @@ function validateColorboxForm() {
 		if (!isInteger($elem))
 		{ valid= false; $elem.addClass("error") }
 	})
+	$(".percent").each(function(){
+		$elem = $(this)
+		if (!isPercentage($elem))
+		{ valid= false; $elem.addClass("error") }
+	})
 	$(".decimal").each(function(){
 		$elem = $(this)
 		if (!isFloat($elem))
