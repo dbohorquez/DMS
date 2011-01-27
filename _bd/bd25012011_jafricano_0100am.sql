@@ -31,11 +31,11 @@ CREATE TABLE `categories` (
   PRIMARY KEY  (`id`),
   KEY `FK_categories` (`unit_id`),
   CONSTRAINT `FK_categories` FOREIGN KEY (`unit_id`) REFERENCES `units` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 /*Data for the table `categories` */
 
-insert  into `categories`(`id`,`name`,`description`,`deletedAt`,`createdAt`,`quantity`,`unit_id`) values (1,'Productos de Aseo de Ropa','Diferentes productos de aseo para la ropa',NULL,'0000-00-00 00:00:00',0,1),(2,'comida','comida',NULL,'0000-00-00 00:00:00',0,1);
+insert  into `categories`(`id`,`name`,`description`,`deletedAt`,`createdAt`,`quantity`,`unit_id`) values (1,'Productos de Aseo de Ropa','Diferentes productos de aseo para la ropa',NULL,'0000-00-00 00:00:00',500,1),(2,'comida','comida',NULL,'0000-00-00 00:00:00',100,1),(3,'prueba','Prueba',NULL,'2011-01-26 12:55:36',400,2);
 
 /*Table structure for table `certificates` */
 
@@ -92,15 +92,18 @@ CREATE TABLE `distributions` (
   `warehouses_id` int(11) NOT NULL,
   `createdAt` timestamp NOT NULL default CURRENT_TIMESTAMP,
   `deletedAt` datetime default NULL,
+  `shelter_id` int(11) default NULL,
   PRIMARY KEY  (`id`),
   KEY `fk_distributions_companies1` (`companies_id`),
   KEY `fk_distributions_warehouses1` (`warehouses_id`),
+  KEY `FK_distributions` (`shelter_id`),
+  CONSTRAINT `FK_distributions` FOREIGN KEY (`shelter_id`) REFERENCES `shelters` (`id`),
   CONSTRAINT `fk_distributions_warehouses1` FOREIGN KEY (`warehouses_id`) REFERENCES `warehouses` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 /*Data for the table `distributions` */
 
-insert  into `distributions`(`id`,`deliveryDate`,`state`,`companies_id`,`warehouses_id`,`createdAt`,`deletedAt`) values (1,'2011-01-11',1,555555,1,'0000-00-00 00:00:00',NULL),(2,'2011-01-11',1,555555,1,'0000-00-00 00:00:00',NULL),(3,'2011-01-11',1,555555,1,'0000-00-00 00:00:00',NULL),(4,'2011-01-11',1,555555,1,'0000-00-00 00:00:00',NULL),(5,'2011-01-11',1,555555,1,'0000-00-00 00:00:00',NULL),(6,'2011-01-11',1,555555,1,'0000-00-00 00:00:00',NULL),(7,'2011-01-11',1,555555,1,'0000-00-00 00:00:00',NULL),(8,'2011-01-11',1,555555,1,'0000-00-00 00:00:00',NULL),(9,'2011-01-12',1,555555,1,'0000-00-00 00:00:00',NULL),(10,'2011-01-11',1,555555,1,'0000-00-00 00:00:00',NULL),(11,'2011-01-12',1,555555,1,'0000-00-00 00:00:00',NULL),(12,'2011-01-13',1,555555,1,'0000-00-00 00:00:00',NULL),(13,'2011-01-12',1,555555,1,'0000-00-00 00:00:00',NULL),(14,'2011-01-12',1,555555,1,'0000-00-00 00:00:00',NULL);
+insert  into `distributions`(`id`,`deliveryDate`,`state`,`companies_id`,`warehouses_id`,`createdAt`,`deletedAt`,`shelter_id`) values (1,'2011-01-11',1,555555,1,'0000-00-00 00:00:00',NULL,1),(2,'2011-01-11',1,555555,1,'0000-00-00 00:00:00',NULL,1),(3,'2011-01-11',1,555555,1,'0000-00-00 00:00:00',NULL,1),(4,'2011-01-11',1,555555,1,'0000-00-00 00:00:00',NULL,1),(5,'2011-01-11',1,555555,1,'0000-00-00 00:00:00',NULL,1),(6,'2011-01-11',1,555555,1,'0000-00-00 00:00:00',NULL,1),(7,'2011-01-11',1,555555,1,'0000-00-00 00:00:00',NULL,1),(8,'2011-01-11',1,555555,1,'0000-00-00 00:00:00',NULL,1),(9,'2011-01-12',1,555555,1,'0000-00-00 00:00:00',NULL,1),(10,'2011-01-11',1,555555,1,'0000-00-00 00:00:00',NULL,1),(11,'2011-01-12',1,555555,1,'0000-00-00 00:00:00',NULL,1),(12,'2011-01-13',1,555555,1,'0000-00-00 00:00:00',NULL,1),(13,'2011-01-12',1,555555,1,'0000-00-00 00:00:00',NULL,1),(14,'2011-01-12',1,555555,1,'0000-00-00 00:00:00',NULL,1);
 
 /*Table structure for table `donations` */
 
@@ -255,7 +258,7 @@ CREATE TABLE `products` (
 
 /*Data for the table `products` */
 
-insert  into `products`(`id`,`name`,`description`,`state`,`productTypes_id`,`flagkit`,`createdAt`,`deletedAt`,`quantity`) values (2,'Aceite Vivi de 2 litros','',1,1,0,'2011-01-16 19:33:40',NULL,0),(3,'Colchon sencillo','',1,4,0,'2011-01-16 19:33:40',NULL,0),(4,'Mesa pequeÃ±a','',1,3,0,'2011-01-16 19:33:40',NULL,0),(5,'Aceite Girasol 1 litro','',1,1,0,'2011-01-16 19:33:40',NULL,0),(7,'werwer','',1,5,0,'2011-01-16 19:33:40',NULL,0),(8,'ALGO',NULL,1,5,0,'2011-01-16 19:22:14',NULL,0),(9,'Re Prueba',NULL,1,1,0,'2011-01-16 19:23:47',NULL,0),(10,'REPRUEBA','',1,5,0,'2011-01-16 19:24:38',NULL,0);
+insert  into `products`(`id`,`name`,`description`,`state`,`productTypes_id`,`flagkit`,`createdAt`,`deletedAt`,`quantity`) values (2,'Aceite Vivi de 2 litros','',1,1,0,'2011-01-16 19:33:40',NULL,10),(3,'Colchon sencillo','',1,4,0,'2011-01-16 19:33:40',NULL,20),(4,'Mesa pequeÃ±a','',1,3,0,'2011-01-16 19:33:40',NULL,10),(5,'Aceite Girasol 1 litro','',1,1,0,'2011-01-16 19:33:40',NULL,20),(7,'werwer','',1,5,0,'2011-01-16 19:33:40',NULL,10),(8,'ALGO',NULL,1,5,0,'2011-01-16 19:22:14',NULL,10),(9,'Re Prueba',NULL,1,1,0,'2011-01-16 19:23:47',NULL,30),(10,'REPRUEBA','',1,5,0,'2011-01-16 19:24:38',NULL,10);
 
 /*Table structure for table `products_checkpoint` */
 
@@ -472,11 +475,11 @@ CREATE TABLE `units` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(45) collate utf8_unicode_ci NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Data for the table `units` */
 
-insert  into `units`(`id`,`name`) values (1,'Kg');
+insert  into `units`(`id`,`name`) values (1,'Kg'),(2,'Libra'),(3,'Litro'),(4,'Unidad');
 
 /*Table structure for table `users` */
 
