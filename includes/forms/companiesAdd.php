@@ -1,7 +1,9 @@
 <div class="medium">
 	<h3>Agregar Operador</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
-    <form action="companies.php" enctype="application/x-www-form-urlencoded" method="post">
+		<div id="errorMessage" class="error"> </div>
+
+    <form action="companies.php" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateCompaniesForm();">
     <?php include('../functions.php'); ?>
         <div class="column c50p">
 		    <fieldset>
