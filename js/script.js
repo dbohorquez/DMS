@@ -162,3 +162,21 @@ function validateTransferForm(){
 		}
     return valid;
 }
+
+function validateCategoriesForm() {
+		valid = true
+	  	$("form input").removeClass("error")
+	
+		if (isNil($("#name")))
+		{ valid= false; $("#name").addClass("error") }
+		
+		if (!isFloat($("#quantity")))
+		{ valid= false; $("#quantity").addClass("error") }
+				
+		if (!valid){
+			$("#errorMessage").html("Por favor digite todos los campos obligatorios (<span class=\"required\">*</span>).");
+			$("#errorMessage").show();
+			$.colorbox.resize();
+		}
+    return valid;
+}

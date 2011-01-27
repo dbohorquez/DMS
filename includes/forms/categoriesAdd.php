@@ -6,7 +6,8 @@
 <div class="">
 	<h3>Agregar Categoria</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
-    <form action="categories.php" enctype="application/x-www-form-urlencoded" method="post">
+		<div id="errorMessage" class="error"> </div>
+		<form action="categories.php" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateCategoriesForm();">
         <fieldset>
             <label for="name">Nombre: <span class="required">*</span></label>
             <input type="text" class="text" size="48" name="name" id="name" />
