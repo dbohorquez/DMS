@@ -940,11 +940,14 @@ function resetPassword($data){
 }
 /* Distributions
 ============================================================ */
-function addDistribution($data){	
+function addDistribution($data){
+	//se validan los campo obligatorios	
 	if($data['warehouse'] != "" and $data['company'] != "" and $data['deliveryDate'] != ""){
+		//se valida que se escogiera por lomenos un producto para distribuir
 		if(validateExistenceProduct($data)){
 			$warehouse = exists("warehouses","id='$data[warehouse]'");	
-			$company = exists("companies","id='$data[company]'");	
+			$company = exists("companies","id='$data[company]' and type=2");
+			//se valida que la bodega y el oper	
 			if($warehouse and $company ){
 				$datos = array(warehouses_id => $warehouse, companies_id  => $company , deliveryDate => $data['deliveryDate'],state => $data['state']);
 				$id = dbInsert("distributions",$datos);
