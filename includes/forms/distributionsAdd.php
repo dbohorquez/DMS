@@ -34,7 +34,7 @@
                 <label for="company">Canal de Distribución: <span class="required">*</span></label>
                 <select name="company" id="company">
                 <?php
-                    $companies = getTable('companies','type = 2','name asc');
+                    $companies = getTable('companies','type = 2 and deletedAt IS NULL','name asc');
                     while($company = mysql_fetch_array($companies)){
                 ?>
                     <option value="<?php echo $company['id']; ?>"><?php echo $company['name']; ?></option>
@@ -43,8 +43,15 @@
             </fieldset>
 						 <fieldset>
 	                <label for="shelter">Beneficiarios:</label>
-	                <input type="text" class="text" size="20" name="shelter" id="shelter" />
-	            </fieldset>
+	         				<select name="company" id="company">
+	                <?php
+	                    $shelters = getTable('shelters','deletedAt IS NULL','name asc');
+	                    while($shelter = mysql_fetch_array($shelters)){
+	                ?>
+	                    <option value="<?php echo $shelter['id']; ?>"><?php echo $shelter['name']; ?></option>
+	                <?php } ?>
+	                </select>
+					   </fieldset>
         </div>
         <div class="column c50p last">
             <fieldset>

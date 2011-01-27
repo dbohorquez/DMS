@@ -7,7 +7,6 @@
 			$userid = $_GET['us']; 
 			$id = $_GET['e']; 
 			$distribution = getTable('distributions',"id = $id",'',1);
-			$shelter = getTable('shelters',"id = $distribution[shelter_id]",'',1);
 			$query = "SELECT  products.id, products.name, COUNT(products_donations.id)
 				FROM products
 				INNER JOIN products_donations
@@ -46,8 +45,15 @@
             </fieldset>
 						 <fieldset>
 	                <label for="shelter">Beneficiarios:</label>
-	                <input type="text" class="text" size="20" name="shelter" id="shelter" value="<?php echo $shelter['name'] ?>"/>
-	            </fieldset>
+	           			<select name="company" id="company">
+	                <?php
+	                    $shelters = getTable('shelters','deletedAt IS NULL','name asc');
+	                    while($shelter = mysql_fetch_array($shelters)){
+	                ?>
+	                    <option value="<?php echo $shelter['id']; ?>" <?php if($distribution['shelter_id'] == $shelter['id']){ ?> selected="selected"<?php } ?>><?php echo $shelter['name']; ?></option>
+	                <?php } ?>
+	                </select>
+	 					</fieldset>
         </div>
         <div class="column c50p last">
             <fieldset>
