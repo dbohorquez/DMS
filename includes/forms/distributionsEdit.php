@@ -43,6 +43,17 @@
                 <?php } ?>
                 </select>
             </fieldset>
+						 <fieldset>
+	                <label for="shelter">Beneficiarios:</label>
+	           			<select name="company" id="company">
+	                <?php
+	                    $shelters = getTable('shelters','deletedAt IS NULL','name asc');
+	                    while($shelter = mysql_fetch_array($shelters)){
+	                ?>
+	                    <option value="<?php echo $shelter['id']; ?>" <?php if($distribution['shelter_id'] == $shelter['id']){ ?> selected="selected"<?php } ?>><?php echo $shelter['name']; ?></option>
+	                <?php } ?>
+	                </select>
+	 					</fieldset>
         </div>
         <div class="column c50p last">
             <fieldset>
@@ -58,6 +69,7 @@
                 </select>
             </fieldset>
         </div>
+				<div class="clear"></div>
         <h4>Productos <span class="required">*</span></h4>
         <fieldset>
             <div class="column c33p">

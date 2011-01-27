@@ -7,7 +7,10 @@
 	?>
 	<h3>Editar Operador</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
-    <form action="companies.php" enctype="application/x-www-form-urlencoded" method="post">
+		<div id="errorMessage" class="error"> </div>
+
+     <form action="companies.php" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateCompaniesForm();">
+	
         <div class="column c50p">
         <input type="hidden" id="id" name="id" value="<?php echo $id; ?>" />
         <fieldset>

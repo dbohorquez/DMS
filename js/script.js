@@ -162,3 +162,64 @@ function validateTransferForm(){
 		}
     return valid;
 }
+
+function validateCategoriesForm() {
+		valid = true
+	  	$("form input").removeClass("error")
+	
+		if (isNil($("#name")))
+		{ valid= false; $("#name").addClass("error") }
+		
+		if (!isFloat($("#quantity")))
+		{ valid= false; $("#quantity").addClass("error") }
+				
+		if (!valid){
+			$("#errorMessage").html("Por favor digite todos los campos obligatorios (<span class=\"required\">*</span>).");
+			$("#errorMessage").show();
+			$.colorbox.resize();
+		}
+    return valid;
+}
+
+function validateCheckpointsForm() {
+		valid = true
+	  	$("form input").removeClass("error")
+	
+		if (isNil($("#product")))
+		{ valid= false; $("#product").addClass("error") }
+		
+		if (!isFloat($("#quantity")))
+		{ valid= false; $("#quantity").addClass("error") }
+				
+		if (!valid){
+			$("#errorMessage").html("Por favor digite todos los campos obligatorios (<span class=\"required\">*</span>).");
+			$("#errorMessage").show();
+			$.colorbox.resize();
+		}
+    return valid;
+}
+
+function validateCompaniesForm() {
+		valid = true
+	  	$("form input").removeClass("error")
+	
+		if (!isInteger($("#nit")))
+		{ valid= false; $("#nit").addClass("error") }
+
+		if (isNil($("#name")))
+		{ valid= false; $("#name").addClass("error") }
+		
+		if (!isSelected($("#town")))
+		{ valid= false; $("#town").addClass("error") }
+
+		if (!isEmail($("#email")))
+		{ valid= false; $("#email").addClass("error") }
+				
+		if (!valid){
+			$("#errorMessage").html("Por favor digite todos los campos obligatorios (<span class=\"required\">*</span>).");
+			$("#errorMessage").show();
+			$.colorbox.resize();
+		}
+    return valid;
+}
+

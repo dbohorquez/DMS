@@ -34,13 +34,24 @@
                 <label for="company">Canal de Distribución: <span class="required">*</span></label>
                 <select name="company" id="company">
                 <?php
-                    $companies = getTable('companies','type = 2','name asc');
+                    $companies = getTable('companies','type = 2 and deletedAt IS NULL','name asc');
                     while($company = mysql_fetch_array($companies)){
                 ?>
                     <option value="<?php echo $company['id']; ?>"><?php echo $company['name']; ?></option>
                 <?php } ?>
                 </select>
             </fieldset>
+						 <fieldset>
+	                <label for="shelter">Beneficiarios:</label>
+	         				<select name="company" id="company">
+	                <?php
+	                    $shelters = getTable('shelters','deletedAt IS NULL','name asc');
+	                    while($shelter = mysql_fetch_array($shelters)){
+	                ?>
+	                    <option value="<?php echo $shelter['id']; ?>"><?php echo $shelter['name']; ?></option>
+	                <?php } ?>
+	                </select>
+					   </fieldset>
         </div>
         <div class="column c50p last">
             <fieldset>
@@ -56,6 +67,7 @@
                 </select>
             </fieldset>
         </div>
+ 				<div class="clear"></div>
         <h4>Productos <span class="required">*</span></h4>
         <fieldset>
             <div class="column c33p">
