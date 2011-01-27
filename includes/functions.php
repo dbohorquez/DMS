@@ -947,11 +947,17 @@ function addDistribution($data){
 		if(validateExistenceProduct($data)){
 			$warehouse = exists("warehouses","id='$data[warehouse]'");	
 			$company = exists("companies","id='$data[company]' and type=2");
-			//se valida que la bodega y el oper	
+			//se valida que la bodega y el operorador de distribucion existan
 			if($warehouse and $company ){
-				$datos = array(warehouses_id => $warehouse, companies_id  => $company , deliveryDate => $data['deliveryDate'],state => $data['state']);
+				//se valida si se elijio un beneficiario para el insert
+				if($data['shelter']!=''){
+					$datos = array(warehouses_id => $warehouse, companies_id  => $company , deliveryDate => $data['deliveryDate'],state => $data['state'], shelter_id => $data['shelter']);
+				}else{
+					$datos = array(warehouses_id => $warehouse, companies_id  => $company , deliveryDate => $data['deliveryDate'],state => $data['state']);
+				}
 				$id = dbInsert("distributions",$datos);
 				if($id != ''){
+					//se agregan los productos a la distribucion
 					foreach($data as $key => $value){
 						if(substr($key,0,5) == 'hitem'){
 							$qtyname = 'citem' . substr($key,-7);
@@ -962,7 +968,11 @@ function addDistribution($data){
 							while($result and $row = mysql_fetch_array($result)){
 								$datos = array(products_donations_id => $row['id'], distributions_id =>$id);
 								$idlist = dbInsert("products_donations_distributions",$datos);
-								$update=dbUpdate(products_donations,array(state => 4),"id=$row[id]");
+								//se lecambia el producto a 5 que es canal de distribucion
+								addStatesChanges ($row['id'],5,$_SESSION['dms_id'],'Se distribuyo desde la bodega '.$warehouse);
+								if($data['shelter']!=''){
+									addStatesChanges ($row['id'],7,$_SESSION['dms_id'],'Se envio desde el operador de distribucion '.$company);
+								}
 							}	
 						}
 					}
