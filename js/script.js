@@ -223,3 +223,21 @@ function validateCompaniesForm() {
     return valid;
 }
 
+function validateDistributionsForm() {
+		valid = true
+	  	$("form input").removeClass("error")
+	
+		if (isNil($("#deliveryDate")))
+		{ valid= false; $("#deliveryDate").addClass("error") }
+		
+		if (!atLeastOne($(".product-list")))
+		{ valid= false; $(".product-list").addClass("error") }
+				
+		if (!valid){
+			$("#errorMessage").html("Por favor digite todos los campos obligatorios (<span class=\"required\">*</span>).");
+			$("#errorMessage").show();
+			$.colorbox.resize();
+		}
+    return valid;
+}
+

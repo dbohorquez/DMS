@@ -1,7 +1,9 @@
 <div class="medium">
 	<h3>Nueva Distribución</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
-    <form action="distribution.php" enctype="application/x-www-form-urlencoded" method="post">
+		<div id="errorMessage" class="error"> </div>
+
+    <form action="distribution.php" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateDistributionsForm();">
     	<?php
 			include('../functions.php');
 			$userid = $_GET['us']; 
