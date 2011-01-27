@@ -241,3 +241,28 @@ function validateDistributionsForm() {
     return valid;
 }
 
+function validateCheckinForm(type) {
+		valid = true
+	  	$("form input").removeClass("error")
+		
+		if(type=="add"){
+			if (isNil($("#name")))
+			{ valid= false; $("#name").addClass("error") }
+
+			if (!isSelected($("#town")))
+			{ valid= false; $("#town").addClass("error") }
+		}
+				
+		if (isNil($("#bill")))
+		{ valid= false; $("#bill").addClass("error") }
+		
+		if (isNil($("#date")))
+		{ valid= false; $("#date").addClass("error") }
+				
+		if (!valid){
+			$("#errorMessage").html("Por favor digite todos los campos obligatorios (<span class=\"required\">*</span>).");
+			$("#errorMessage").show();
+			$.colorbox.resize();
+		}
+    return valid;
+}

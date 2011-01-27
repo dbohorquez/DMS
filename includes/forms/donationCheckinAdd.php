@@ -1,7 +1,9 @@
 <div class="medium">
 	<h3>Agregar Comprobante de Donación</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
-    <form action="donation-checkin.php" enctype="application/x-www-form-urlencoded" method="post">
+		<div id="errorMessage" class="error"> </div>
+
+    <form action="donation-checkin.php" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateCheckinForm('add');">
     	<?php
 			include('../functions.php');
 			$donorId = $_GET['d'];
