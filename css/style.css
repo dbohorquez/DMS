@@ -344,7 +344,8 @@ label.inline{
 
 input.error,
 textarea.error,
-select.error{
+select.error,
+ul.error{
 	background:#FFF6F6;
 	border:1px solid #C66;
 }

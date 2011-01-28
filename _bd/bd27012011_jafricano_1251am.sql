@@ -1,6 +1,6 @@
 /*
-SQLyog Community v8.53 
-MySQL - 5.0.51b-community-nt-log : Database - coddeedms
+SQLyog Community v8.55 
+MySQL - 5.1.49-community : Database - coddeedms
 *********************************************************************
 */
 
@@ -21,14 +21,14 @@ USE `coddeedms`;
 DROP TABLE IF EXISTS `categories`;
 
 CREATE TABLE `categories` (
-  `id` int(11) NOT NULL auto_increment,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
-  `description` varchar(500) default NULL,
-  `deletedAt` datetime default NULL,
-  `createdAt` timestamp NOT NULL default CURRENT_TIMESTAMP,
+  `description` varchar(500) DEFAULT NULL,
+  `deletedAt` datetime DEFAULT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `quantity` int(11) NOT NULL,
   `unit_id` int(11) NOT NULL,
-  PRIMARY KEY  (`id`),
+  PRIMARY KEY (`id`),
   KEY `FK_categories` (`unit_id`),
   CONSTRAINT `FK_categories` FOREIGN KEY (`unit_id`) REFERENCES `units` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
@@ -43,12 +43,12 @@ DROP TABLE IF EXISTS `certificates`;
 
 CREATE TABLE `certificates` (
   `id` int(11) NOT NULL,
-  `printDate` datetime default NULL,
+  `printDate` datetime DEFAULT NULL,
   `users_id` int(11) NOT NULL,
   `donations_sequence` int(11) NOT NULL,
-  `createdAt` timestamp NOT NULL default CURRENT_TIMESTAMP,
-  `deletedAt` datetime default NULL,
-  PRIMARY KEY  (`id`),
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deletedAt` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `fk_certificates_users1` (`users_id`),
   KEY `fk_certificates_donations1` (`donations_sequence`),
   CONSTRAINT `fk_certificates_donations1` FOREIGN KEY (`donations_sequence`) REFERENCES `donations` (`sequence`) ON DELETE NO ACTION ON UPDATE CASCADE,
@@ -64,16 +64,16 @@ DROP TABLE IF EXISTS `companies`;
 CREATE TABLE `companies` (
   `id` double NOT NULL,
   `name` varchar(45) NOT NULL,
-  `contactName` varchar(45) default NULL,
-  `phoneNumber` varchar(45) default NULL,
-  `address` varchar(45) default NULL,
-  `email` varchar(45) default NULL,
-  `faxNumber` varchar(45) default NULL,
-  `type` int(11) default NULL,
+  `contactName` varchar(45) DEFAULT NULL,
+  `phoneNumber` varchar(45) DEFAULT NULL,
+  `address` varchar(45) DEFAULT NULL,
+  `email` varchar(45) DEFAULT NULL,
+  `faxNumber` varchar(45) DEFAULT NULL,
+  `type` int(11) DEFAULT NULL,
   `towns_id` int(11) NOT NULL,
-  `createdA` timestamp NOT NULL default CURRENT_TIMESTAMP,
-  `deletedAt` datetime default NULL,
-  PRIMARY KEY  (`id`)
+  `createdA` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deletedAt` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `companies` */
@@ -85,15 +85,15 @@ insert  into `companies`(`id`,`name`,`contactName`,`phoneNumber`,`address`,`emai
 DROP TABLE IF EXISTS `distributions`;
 
 CREATE TABLE `distributions` (
-  `id` int(11) NOT NULL auto_increment,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `deliveryDate` date NOT NULL,
   `state` int(11) NOT NULL,
   `companies_id` double NOT NULL,
   `warehouses_id` int(11) NOT NULL,
-  `createdAt` timestamp NOT NULL default CURRENT_TIMESTAMP,
-  `deletedAt` datetime default NULL,
-  `shelter_id` int(11) default NULL,
-  PRIMARY KEY  (`id`),
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deletedAt` datetime DEFAULT NULL,
+  `shelter_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `fk_distributions_companies1` (`companies_id`),
   KEY `fk_distributions_warehouses1` (`warehouses_id`),
   KEY `FK_distributions` (`shelter_id`),
@@ -110,18 +110,18 @@ insert  into `distributions`(`id`,`deliveryDate`,`state`,`companies_id`,`warehou
 DROP TABLE IF EXISTS `donations`;
 
 CREATE TABLE `donations` (
-  `sequence` int(11) NOT NULL auto_increment,
-  `detail` varchar(500) default NULL,
-  `bill` decimal(10,0) default NULL,
+  `sequence` int(11) NOT NULL AUTO_INCREMENT,
+  `detail` varchar(500) DEFAULT NULL,
+  `bill` decimal(10,0) DEFAULT NULL,
   `users_id` int(11) NOT NULL,
   `donors_id` double NOT NULL,
-  `warehouses_id` int(11) default NULL,
-  `companies_id` double default NULL,
+  `warehouses_id` int(11) DEFAULT NULL,
+  `companies_id` double DEFAULT NULL,
   `date` datetime NOT NULL,
-  `createdAt` timestamp NOT NULL default CURRENT_TIMESTAMP,
-  `deletedAt` datetime default NULL,
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deletedAt` datetime DEFAULT NULL,
   `type` int(1) NOT NULL,
-  PRIMARY KEY  (`sequence`),
+  PRIMARY KEY (`sequence`),
   KEY `fk_donations_users1` (`users_id`),
   KEY `fk_donations_donors1` (`donors_id`),
   KEY `fk_donations_warehouses1` (`warehouses_id`),
@@ -129,11 +129,11 @@ CREATE TABLE `donations` (
   CONSTRAINT `fk_donations_donors1` FOREIGN KEY (`donors_id`) REFERENCES `donors` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `fk_donations_users1` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `fk_donations_warehouses1` FOREIGN KEY (`warehouses_id`) REFERENCES `warehouses` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 /*Data for the table `donations` */
 
-insert  into `donations`(`sequence`,`detail`,`bill`,`users_id`,`donors_id`,`warehouses_id`,`companies_id`,`date`,`createdAt`,`deletedAt`,`type`) values (7,'','425874',1,111,1,NULL,'2011-01-11 00:00:00','0000-00-00 00:00:00',NULL,0),(8,'Se tranfirio de bodega de promesas por el usuario 1','0',1,111,2,0,'2011-01-23 15:50:00','2011-01-23 15:50:46',NULL,1),(9,'Se tranfirio de bodega de promesas por el usuario 1','0',1,1129574,2,0,'2011-01-23 16:07:00','2011-01-23 16:07:08',NULL,1),(10,'Se tranfirio de bodega de promesas por el usuario 1','0',1,1129574,2,0,'2011-01-23 16:45:00','2011-01-23 16:45:20',NULL,1),(11,'Se tranfirio de bodega de promesas por el usuario 1','8000',1,111,2,44444444,'2011-01-23 16:47:00','2011-01-23 16:47:12',NULL,1),(12,'',NULL,1,111,NULL,NULL,'2011-01-23 20:30:00','2011-01-23 20:30:29',NULL,3);
+insert  into `donations`(`sequence`,`detail`,`bill`,`users_id`,`donors_id`,`warehouses_id`,`companies_id`,`date`,`createdAt`,`deletedAt`,`type`) values (7,'','425874',1,111,1,NULL,'2011-01-11 00:00:00','0000-00-00 00:00:00',NULL,0),(8,'Se tranfirio de bodega de promesas por el usuario 1','0',1,111,2,0,'2011-01-23 15:50:00','2011-01-23 15:50:46',NULL,1),(9,'Se tranfirio de bodega de promesas por el usuario 1','0',1,1129574,2,0,'2011-01-23 16:07:00','2011-01-23 16:07:08',NULL,1),(10,'Se tranfirio de bodega de promesas por el usuario 1','0',1,1129574,2,0,'2011-01-23 16:45:00','2011-01-23 16:45:20',NULL,1),(11,'Se tranfirio de bodega de promesas por el usuario 1','8000',1,111,2,44444444,'2011-01-23 16:47:00','2011-01-23 16:47:12',NULL,1),(12,'',NULL,1,111,NULL,NULL,'2011-01-23 20:30:00','2011-01-23 20:30:29',NULL,3),(13,NULL,NULL,1,111,2,NULL,'2011-01-27 00:20:00','2011-01-27 00:20:09',NULL,1),(14,NULL,NULL,1,111,2,NULL,'2011-01-27 00:23:00','2011-01-27 00:23:19',NULL,1),(15,NULL,NULL,1,111,2,NULL,'2011-01-27 00:25:00','2011-01-27 00:25:24','2011-01-27 00:35:00',1),(17,NULL,NULL,1,111,2,NULL,'2011-01-27 00:30:00','2011-01-27 00:30:15',NULL,1),(18,NULL,NULL,1,111,2,NULL,'2011-01-27 00:33:00','2011-01-27 00:33:27',NULL,1),(19,NULL,NULL,1,111,2,NULL,'2011-01-27 00:35:00','2011-01-27 00:35:59',NULL,1),(20,NULL,NULL,1,111,2,NULL,'2011-01-27 00:38:00','2011-01-27 00:38:22',NULL,1),(21,NULL,NULL,1,111,2,NULL,'2011-01-27 00:42:00','2011-01-27 00:42:49',NULL,1),(22,NULL,NULL,1,111,2,NULL,'2011-01-27 00:43:00','2011-01-27 00:43:46',NULL,1),(23,NULL,NULL,1,111,2,NULL,'2011-01-27 00:46:00','2011-01-27 00:46:23',NULL,1);
 
 /*Table structure for table `donors` */
 
@@ -143,14 +143,14 @@ CREATE TABLE `donors` (
   `id` double NOT NULL,
   `name` varchar(45) NOT NULL,
   `type` int(11) NOT NULL,
-  `address` varchar(45) default NULL,
-  `email` varchar(45) default NULL,
-  `phoneNumber` varchar(45) default NULL,
-  `faxNumber` varchar(45) default NULL,
-  `creationDate` timestamp NOT NULL default CURRENT_TIMESTAMP,
+  `address` varchar(45) DEFAULT NULL,
+  `email` varchar(45) DEFAULT NULL,
+  `phoneNumber` varchar(45) DEFAULT NULL,
+  `faxNumber` varchar(45) DEFAULT NULL,
+  `creationDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `towns_id` int(11) NOT NULL,
-  `deletedAt` datetime default NULL,
-  PRIMARY KEY  (`id`),
+  `deletedAt` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `fk_donors_towns1` (`towns_id`),
   CONSTRAINT `fk_donors_towns1` FOREIGN KEY (`towns_id`) REFERENCES `towns` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
@@ -164,11 +164,11 @@ insert  into `donors`(`id`,`name`,`type`,`address`,`email`,`phoneNumber`,`faxNum
 DROP TABLE IF EXISTS `kits`;
 
 CREATE TABLE `kits` (
-  `id` int(11) NOT NULL auto_increment,
-  `name` varchar(45) default NULL,
-  `createdAt` timestamp NOT NULL default CURRENT_TIMESTAMP,
-  `deletedAt` datetime default NULL,
-  PRIMARY KEY  (`id`)
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) DEFAULT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deletedAt` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 /*Data for the table `kits` */
@@ -183,8 +183,8 @@ CREATE TABLE `kits_products` (
   `quantity` int(11) NOT NULL,
   `kits_id` int(11) NOT NULL,
   `products_id` int(11) NOT NULL,
-  `createdAt` timestamp NOT NULL default CURRENT_TIMESTAMP,
-  `deletedAt` datetime default NULL,
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deletedAt` datetime DEFAULT NULL,
   KEY `fk_kits_products_kits1` (`kits_id`),
   KEY `fk_kits_products_products1` (`products_id`),
   CONSTRAINT `fk_kits_products_kits1` FOREIGN KEY (`kits_id`) REFERENCES `kits` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
@@ -200,15 +200,15 @@ insert  into `kits_products`(`quantity`,`kits_id`,`products_id`,`createdAt`,`del
 DROP TABLE IF EXISTS `log`;
 
 CREATE TABLE `log` (
-  `id` int(11) NOT NULL auto_increment,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `action` varchar(45) NOT NULL,
   `date` varchar(45) NOT NULL,
   `tableName` varchar(45) NOT NULL,
   `tableId` int(11) NOT NULL,
   `users_id` int(11) NOT NULL,
-  `createdAt` timestamp NOT NULL default CURRENT_TIMESTAMP,
-  `deletedAt` datetime default NULL,
-  PRIMARY KEY  (`id`),
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deletedAt` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `fk_log_users1` (`users_id`),
   CONSTRAINT `fk_log_users1` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
@@ -220,38 +220,38 @@ CREATE TABLE `log` (
 DROP TABLE IF EXISTS `notifications`;
 
 CREATE TABLE `notifications` (
-  `id` int(11) NOT NULL,
-  `subject` varchar(100) default NULL,
-  `from` varchar(45) default NULL,
-  `to` varchar(45) default NULL,
-  `body` varchar(45) default NULL,
-  `date` datetime default NULL,
-  `type` varchar(45) default NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `subjectnot` varchar(100) DEFAULT NULL,
+  `fromnot` varchar(45) DEFAULT NULL,
+  `tonot` varchar(45) DEFAULT NULL,
+  `bodynot` text,
   `users_id` int(11) NOT NULL,
-  `createdAt` timestamp NOT NULL default CURRENT_TIMESTAMP,
-  `deletedAt` datetime default NULL,
-  PRIMARY KEY  (`id`),
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deletedAt` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `fk_notifications_users1` (`users_id`),
   CONSTRAINT `fk_notifications_users1` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 /*Data for the table `notifications` */
+
+insert  into `notifications`(`id`,`subjectnot`,`fromnot`,`tonot`,`bodynot`,`users_id`,`createdAt`,`deletedAt`) values (5,'Certificado de DonaciÃ³n\"\r\n\"','admin@sahanacaribe.com','certificacion@sahanacaribe.com','El dia 2011-01-27 00:30 ha sido realizada la donaciÃ³n con consecutivo 17. Estos son los datos de contacto del donante: <ul><li>IdentificaciÃ³n: 111</li><li>Nombre: David</li><li>DirecciÃ³n : a</li><li>TelÃ©fono : 8</li><li>Correo ElectrÃ³nico : a</li></ul>Le agradecemos gestionar este certificado de donaciÃ³n con la mayor brevedad posible, para entregar al usuario en forma de reconocimiento por su colaboraciÃ³n.\r\nUn cordial saludo.\r\n GobernaciÃ³n del AtlÃ¡ntico.',1,'2011-01-27 00:30:15',NULL),(6,'Certificado de Donación\"\r\n\"','admin@sahanacaribe.com','certificacion@sahanacaribe.com','Sr. David\"\r\n\". El dia 2011-01-27 00:30 usted ha realizado una donación cuyo consecutivo es 17.Le agradecemos enormemente por su colaboración para nuestros hermanos del Departamento del Atlántico que estan pasando por esta dificil situación. Para mayor información o conocer el detalle de su donación, por favor dirijase a Sahana Caribe Un cordial saludo. Gobernación del Atlántico.',1,'2011-01-27 00:31:06',NULL),(7,'Certificado de DonaciÃ³n\"\r\n\"','admin@sahanacaribe.com','certificacion@sahanacaribe.com','El dia 2011-01-27 00:33 ha sido realizada la donaciÃ³n con consecutivo 18. Estos son los datos de contacto del donante: <ul><li>IdentificaciÃ³n: 111</li><li>Nombre: David</li><li>DirecciÃ³n : a</li><li>TelÃ©fono : 8</li><li>Correo ElectrÃ³nico : a</li></ul>Le agradecemos gestionar este certificado de donaciÃ³n con la mayor brevedad posible, para entregar al usuario en forma de reconocimiento por su colaboraciÃ³n.\r\nUn cordial saludo.\r\n GobernaciÃ³n del AtlÃ¡ntico.',1,'2011-01-27 00:33:28',NULL),(8,'Certificado de Donación\"\r\n\"','admin@sahanacaribe.com','certificacion@sahanacaribe.com','Sr. David\"\r\n\". El dia 2011-01-27 00:35 usted ha realizado una donación cuyo consecutivo es 19.Le agradecemos enormemente por su colaboración para nuestros hermanos del Departamento del Atlántico que estan pasando por esta dificil situación. Para mayor información o conocer el detalle de su donación, por favor dirijase a Sahana Caribe Un cordial saludo. Gobernación del Atlántico.',1,'2011-01-27 00:36:27',NULL),(9,'Certificado de Donación\"\r\n\"','admin@sahanacaribe.com','certificacion@sahanacaribe.com','Sr. David\"\r\n\". El dia 2011-01-27 00:38 usted ha realizado una donación cuyo consecutivo es 20.Le agradecemos enormemente por su colaboración para nuestros hermanos del Departamento del Atlántico que estan pasando por esta dificil situación. Para mayor información o conocer el detalle de su donación, por favor dirijase a Sahana Caribe Un cordial saludo. Gobernación del Atlántico.',1,'2011-01-27 00:38:50',NULL),(10,'Certificado de Donación\"\r\n\"','admin@sahanacaribe.com','certificacion@sahanacaribe.com','Sr. David\"\r\n\". El dia 2011-01-27 00:42 usted ha realizado una donación cuyo consecutivo es 21.Le agradecemos enormemente por su colaboración para nuestros hermanos del Departamento del Atlántico que estan pasando por esta dificil situación. Para mayor información o conocer el detalle de su donación, por favor dirijase a Sahana Caribe Un cordial saludo. Gobernación del Atlántico.',1,'2011-01-27 00:43:12',NULL),(11,'Certificado de DonaciÃ³n\"\r\n\"','admin@sahanacaribe.com','certificacion@sahanacaribe.com','El dia 2011-01-27 00:43 ha sido realizada la donaciÃ³n con consecutivo 22. Estos son los datos de contacto del donante: <ul><li>IdentificaciÃ³n: 111</li><li>Nombre: David</li><li>DirecciÃ³n : a</li><li>TelÃ©fono : 8</li><li>Correo ElectrÃ³nico : a</li></ul>Le agradecemos gestionar este certificado de donaciÃ³n con la mayor brevedad posible, para entregar al usuario en forma de reconocimiento por su colaboraciÃ³n.\r\nUn cordial saludo.\r\n GobernaciÃ³n del AtlÃ¡ntico.',1,'2011-01-27 00:43:46',NULL),(12,'Certificado de DonaciÃ³n\"\r\n\"','admin@sahanacaribe.com','certificacion@sahanacaribe.com','El dia 2011-01-27 00:46 ha sido realizada la donaciÃ³n con consecutivo 23. Estos son los datos de contacto del donante: <ul><li>IdentificaciÃ³n: 111</li><li>Nombre: David</li><li>DirecciÃ³n : a</li><li>TelÃ©fono : 8</li><li>Correo ElectrÃ³nico : a</li></ul>Le agradecemos gestionar este certificado de donaciÃ³n con la mayor brevedad posible, para entregar al usuario en forma de reconocimiento por su colaboraciÃ³n.\r\nUn cordial saludo.\r\n GobernaciÃ³n del AtlÃ¡ntico.',1,'2011-01-27 00:46:24',NULL);
 
 /*Table structure for table `products` */
 
 DROP TABLE IF EXISTS `products`;
 
 CREATE TABLE `products` (
-  `id` int(11) NOT NULL auto_increment,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
-  `description` varchar(200) default NULL,
-  `state` int(11) default '0',
+  `description` varchar(200) DEFAULT NULL,
+  `state` int(11) DEFAULT '0',
   `productTypes_id` int(11) NOT NULL,
-  `flagkit` tinyint(1) default '0',
-  `createdAt` timestamp NOT NULL default CURRENT_TIMESTAMP,
-  `deletedAt` datetime default NULL,
+  `flagkit` tinyint(1) DEFAULT '0',
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deletedAt` datetime DEFAULT NULL,
   `quantity` float NOT NULL,
-  PRIMARY KEY  (`id`),
+  PRIMARY KEY (`id`),
   KEY `fk_products_productTypes1` (`productTypes_id`),
   CONSTRAINT `fk_products_productTypes1` FOREIGN KEY (`productTypes_id`) REFERENCES `producttypes` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
@@ -265,12 +265,12 @@ insert  into `products`(`id`,`name`,`description`,`state`,`productTypes_id`,`fla
 DROP TABLE IF EXISTS `products_checkpoint`;
 
 CREATE TABLE `products_checkpoint` (
-  `id` int(11) NOT NULL auto_increment,
-  `quantity` int(11) default NULL,
-  `product_id` int(11) default NULL,
-  `deletedAt` datetime default NULL,
-  `createdAt` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-  PRIMARY KEY  (`id`),
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `quantity` int(11) DEFAULT NULL,
+  `product_id` int(11) DEFAULT NULL,
+  `deletedAt` datetime DEFAULT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
   KEY `FK_products_checkpoint` (`product_id`),
   CONSTRAINT `FK_products_checkpoint` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -286,13 +286,13 @@ DROP TABLE IF EXISTS `products_donations`;
 CREATE TABLE `products_donations` (
   `products_id` int(11) NOT NULL,
   `donations_id` int(11) NOT NULL,
-  `expirationDate` date default NULL,
-  `state` int(11) NOT NULL default '0',
-  `id` int(11) NOT NULL auto_increment,
-  `warehouses_id` int(11) default NULL,
-  `createdAt` timestamp NOT NULL default CURRENT_TIMESTAMP,
-  `deletedAt` datetime default NULL,
-  PRIMARY KEY  (`id`),
+  `expirationDate` date DEFAULT NULL,
+  `state` int(11) NOT NULL DEFAULT '0',
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `warehouses_id` int(11) DEFAULT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deletedAt` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `product` (`products_id`),
   KEY `donation` (`donations_id`),
   KEY `fk_products_donations_warehouses1` (`warehouses_id`),
@@ -310,8 +310,8 @@ DROP TABLE IF EXISTS `products_donations_distributions`;
 CREATE TABLE `products_donations_distributions` (
   `distributions_id` int(11) NOT NULL,
   `products_donations_id` int(11) NOT NULL,
-  `createdAt` timestamp NOT NULL default CURRENT_TIMESTAMP,
-  `deletedAt` datetime default NULL,
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deletedAt` datetime DEFAULT NULL,
   KEY `fk_products_distributions_distributions1` (`distributions_id`),
   KEY `fk_products_distributions_products_donations1` (`products_donations_id`),
   CONSTRAINT `fk_products_distributions_distributions1` FOREIGN KEY (`distributions_id`) REFERENCES `distributions` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
@@ -327,10 +327,10 @@ insert  into `products_donations_distributions`(`distributions_id`,`products_don
 DROP TABLE IF EXISTS `products_donations_tranfers`;
 
 CREATE TABLE `products_donations_tranfers` (
-  `product_donation_id` int(11) default NULL,
-  `tranfer_id` int(11) default NULL,
-  `quantity` int(11) default NULL,
-  `deletedAt` datetime default NULL,
+  `product_donation_id` int(11) DEFAULT NULL,
+  `tranfer_id` int(11) DEFAULT NULL,
+  `quantity` int(11) DEFAULT NULL,
+  `deletedAt` datetime DEFAULT NULL,
   KEY `FK_products_donations_tranfers` (`tranfer_id`),
   KEY `FK_products_donations_tranfers2` (`product_donation_id`),
   CONSTRAINT `FK_products_donations_tranfers` FOREIGN KEY (`tranfer_id`) REFERENCES `transfers` (`id`) ON UPDATE CASCADE,
@@ -344,13 +344,13 @@ CREATE TABLE `products_donations_tranfers` (
 DROP TABLE IF EXISTS `producttypes`;
 
 CREATE TABLE `producttypes` (
-  `id` int(11) NOT NULL auto_increment,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
-  `description` varchar(200) default NULL,
-  `createdAt` timestamp NOT NULL default CURRENT_TIMESTAMP,
-  `deletedAt` datetime default NULL,
+  `description` varchar(200) DEFAULT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deletedAt` datetime DEFAULT NULL,
   `categories_id` int(11) NOT NULL,
-  PRIMARY KEY  (`id`),
+  PRIMARY KEY (`id`),
   KEY `FK_producttypes` (`categories_id`),
   CONSTRAINT `FK_producttypes` FOREIGN KEY (`categories_id`) REFERENCES `categories` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
@@ -364,11 +364,11 @@ insert  into `producttypes`(`id`,`name`,`description`,`createdAt`,`deletedAt`,`c
 DROP TABLE IF EXISTS `provinces`;
 
 CREATE TABLE `provinces` (
-  `id` int(10) unsigned NOT NULL auto_increment,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(127) NOT NULL,
-  `createdAt` timestamp NOT NULL default CURRENT_TIMESTAMP,
-  `deletedAt` datetime default NULL,
-  PRIMARY KEY  (`id`)
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deletedAt` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
 
 /*Data for the table `provinces` */
@@ -380,18 +380,18 @@ insert  into `provinces`(`id`,`name`,`createdAt`,`deletedAt`) values (1,'Amazona
 DROP TABLE IF EXISTS `shelters`;
 
 CREATE TABLE `shelters` (
-  `id` int(11) NOT NULL auto_increment,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `contactName` varchar(45) NOT NULL,
-  `address` varchar(45) default NULL,
-  `phoneNumber` varchar(45) default NULL,
-  `cellphone` varchar(45) default NULL,
-  `fax` varchar(45) default NULL,
-  `email` varchar(45) default NULL,
+  `address` varchar(45) DEFAULT NULL,
+  `phoneNumber` varchar(45) DEFAULT NULL,
+  `cellphone` varchar(45) DEFAULT NULL,
+  `fax` varchar(45) DEFAULT NULL,
+  `email` varchar(45) DEFAULT NULL,
   `town_id` int(11) NOT NULL,
-  `createdAt` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-  `deletedAt` datetime default NULL,
-  PRIMARY KEY  (`id`),
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `deletedAt` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `FK_shelters` (`town_id`),
   CONSTRAINT `FK_shelters` FOREIGN KEY (`town_id`) REFERENCES `towns` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
@@ -405,16 +405,16 @@ insert  into `shelters`(`id`,`name`,`contactName`,`address`,`phoneNumber`,`cellp
 DROP TABLE IF EXISTS `statechanges`;
 
 CREATE TABLE `statechanges` (
-  `reason` varchar(100) default NULL,
-  `notes` varchar(500) default NULL,
-  `previousState` int(11) NOT NULL default '0',
+  `reason` varchar(100) DEFAULT NULL,
+  `notes` varchar(500) DEFAULT NULL,
+  `previousState` int(11) NOT NULL DEFAULT '0',
   `currentState` int(11) NOT NULL,
   `users_id` int(11) NOT NULL,
   `products_donations_id` int(11) NOT NULL,
-  `createdAt` timestamp NOT NULL default CURRENT_TIMESTAMP,
-  `deletedAt` datetime default NULL,
-  `id` int(11) NOT NULL auto_increment,
-  PRIMARY KEY  (`id`),
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deletedAt` datetime DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`),
   KEY `fk_statechanges_users1` (`users_id`),
   KEY `FK_statechanges_product_donation` (`products_donations_id`),
   CONSTRAINT `FK_statechanges` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE,
@@ -430,12 +430,12 @@ insert  into `statechanges`(`reason`,`notes`,`previousState`,`currentState`,`use
 DROP TABLE IF EXISTS `towns`;
 
 CREATE TABLE `towns` (
-  `id` int(11) NOT NULL auto_increment,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(127) NOT NULL,
   `provinces_id` int(10) unsigned NOT NULL,
-  `createdAt` timestamp NOT NULL default CURRENT_TIMESTAMP,
-  `deletedAt` datetime default NULL,
-  PRIMARY KEY  (`id`),
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deletedAt` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `fk_towns_provinces1` (`provinces_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 
@@ -448,15 +448,15 @@ insert  into `towns`(`id`,`name`,`provinces_id`,`createdAt`,`deletedAt`) values 
 DROP TABLE IF EXISTS `transfers`;
 
 CREATE TABLE `transfers` (
-  `id` int(11) NOT NULL auto_increment,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `starting_warehouse` int(11) NOT NULL,
   `destination_warehouse` int(11) NOT NULL,
-  `notes` varchar(127) default NULL,
-  `shelter_id` int(11) default NULL,
-  `createdAt` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-  `deletedAt` datetime default NULL,
+  `notes` varchar(127) DEFAULT NULL,
+  `shelter_id` int(11) DEFAULT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `deletedAt` datetime DEFAULT NULL,
   `state` int(11) NOT NULL,
-  PRIMARY KEY  (`id`),
+  PRIMARY KEY (`id`),
   KEY `FK_transfers` (`destination_warehouse`),
   KEY `FK_transfers2` (`starting_warehouse`),
   KEY `FK_transfers3` (`shelter_id`),
@@ -472,9 +472,9 @@ CREATE TABLE `transfers` (
 DROP TABLE IF EXISTS `units`;
 
 CREATE TABLE `units` (
-  `id` int(11) NOT NULL auto_increment,
-  `name` varchar(45) collate utf8_unicode_ci NOT NULL,
-  PRIMARY KEY  (`id`)
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Data for the table `units` */
@@ -486,16 +486,16 @@ insert  into `units`(`id`,`name`) values (1,'Kg'),(2,'Libra'),(3,'Litro'),(4,'Un
 DROP TABLE IF EXISTS `users`;
 
 CREATE TABLE `users` (
-  `id` int(11) NOT NULL auto_increment,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `email` varchar(45) NOT NULL,
-  `phoneNumber` varchar(45) default NULL,
+  `phoneNumber` varchar(45) DEFAULT NULL,
   `profile` varchar(45) NOT NULL,
   `password` varchar(128) NOT NULL,
-  `createdAt` timestamp NOT NULL default CURRENT_TIMESTAMP,
-  `deletedAt` datetime default NULL,
-  `companies_id` double default NULL,
-  PRIMARY KEY  (`id`),
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deletedAt` datetime DEFAULT NULL,
+  `companies_id` double DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `FK_users` (`companies_id`),
   CONSTRAINT `FK_users` FOREIGN KEY (`companies_id`) REFERENCES `companies` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
@@ -509,16 +509,16 @@ insert  into `users`(`id`,`name`,`email`,`phoneNumber`,`profile`,`password`,`cre
 DROP TABLE IF EXISTS `vouchers`;
 
 CREATE TABLE `vouchers` (
-  `id` int(11) NOT NULL auto_increment,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `bill` decimal(10,0) NOT NULL,
   `donors_id` double NOT NULL,
-  `notes` varchar(511) default NULL,
-  `createdAt` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-  `deletedAt` datetime default NULL,
-  `state` int(11) NOT NULL default '0',
+  `notes` varchar(511) DEFAULT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `deletedAt` datetime DEFAULT NULL,
+  `state` int(11) NOT NULL DEFAULT '0',
   `company_id` double NOT NULL,
   `date` datetime NOT NULL,
-  PRIMARY KEY  (`id`),
+  PRIMARY KEY (`id`),
   KEY `FK_vouchers` (`donors_id`),
   KEY `FK_vouchers2` (`company_id`),
   CONSTRAINT `FK_vouchers` FOREIGN KEY (`donors_id`) REFERENCES `donors` (`id`) ON UPDATE CASCADE,
@@ -534,22 +534,22 @@ insert  into `vouchers`(`id`,`bill`,`donors_id`,`notes`,`createdAt`,`deletedAt`,
 DROP TABLE IF EXISTS `warehouses`;
 
 CREATE TABLE `warehouses` (
-  `id` int(11) NOT NULL auto_increment,
-  `name` varchar(45) default NULL,
-  `description` varchar(45) default NULL,
-  `type` int(2) default '1',
-  `occupation` int(11) default NULL,
-  `contactName` varchar(45) default NULL,
-  `address` varchar(45) default NULL,
-  `phoneNumber` varchar(45) default NULL,
-  `cellphone` varchar(45) default NULL,
-  `faxNumber` varchar(45) default NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) DEFAULT NULL,
+  `description` varchar(45) DEFAULT NULL,
+  `type` int(2) DEFAULT '1',
+  `occupation` int(11) DEFAULT NULL,
+  `contactName` varchar(45) DEFAULT NULL,
+  `address` varchar(45) DEFAULT NULL,
+  `phoneNumber` varchar(45) DEFAULT NULL,
+  `cellphone` varchar(45) DEFAULT NULL,
+  `faxNumber` varchar(45) DEFAULT NULL,
   `towns_id` int(11) NOT NULL,
-  `createdAt` timestamp NOT NULL default CURRENT_TIMESTAMP,
-  `deletedAt` datetime default NULL,
-  `email` varchar(45) default NULL,
-  `companies_id` double default NULL,
-  PRIMARY KEY  (`id`),
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deletedAt` datetime DEFAULT NULL,
+  `email` varchar(45) DEFAULT NULL,
+  `companies_id` double DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `fk_warehouses_towns1` (`towns_id`),
   KEY `companies` (`companies_id`),
   CONSTRAINT `FK_warehouses` FOREIGN KEY (`companies_id`) REFERENCES `companies` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,

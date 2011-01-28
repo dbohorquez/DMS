@@ -17,21 +17,23 @@
             <table cellpadding="0" cellspacing="0"><thead>
             	<tr>
                 	<th>Nombre</th>
-                    <th>Tipo</th>
-                    <th width="50">&nbsp;</th>
+                  <th>Tipo</th>
+									<th>Cantidad</th>
+									<th width="50">&nbsp;</th>
                 </tr></thead><tbody>
                 <?php
 					$products = getTable('products','flagkit=0 and deletedAt IS NULL','id desc');
 					$numRows = mysql_num_rows($products);
 					if($numRows > 0){
 						while($product = mysql_fetch_array($products)){
+							$productType = findRow('producttypes','id',$product['productTypes_id'],'name');	
 				?>
                 <tr>
                 	<td><?php echo $product['name']; ?></td>
-                    <td><?php 
-						echo findRow('producttypes','id',$product['productTypes_id'],'name');							
-					?></td>
-                    <td>
+                  <td><?php echo 	$productType; ?>
+									</td>
+								  <td><?php echo $product['quantity'] ?> <?php echo getUnitName($productType); ?></td>
+								<td>
                     <?php if($rol== 1 || $rol== 3 || $rol== 5 || $rol== 6){?>
 	            	<ul class="table-actions">
                         	<li><a href="includes/forms/productsEdit.php?e=<?php echo $product['id']; ?>&us=<?php echo $_SESSION['dms_id']?>" class="icon edit colorbox" title="Editar"><span>Editar</span></a></li>

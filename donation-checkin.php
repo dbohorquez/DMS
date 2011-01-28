@@ -10,19 +10,20 @@
 			
 			  <div class="column c50p">
             <ul class="toolbar">
-            	<?php 
+            <input type="hidden" name="util" id="util" value="<?php echo $_SESSION['dms_id']?>"/>
+            <?php 
 			$rol=isAnyRol($_SESSION['dms_id']);
-			if($rol== 1){?>
+			if($rol== 1 ||  $rol== 2){?>
             <li><label for="donorId">Número de Identificación:</label><input type="text" class="text autocomplete" id="donorId" />
-                <a href="javascript:void(0);" class="btn" onclick="var href = 'includes/forms/donationCheckinAdd.php?d=' + $('#donorId').attr('value'); $.colorbox({href:href});">Agregar Comprobante</a></li>
+                <a href="javascript:void(0);" class="btn" onclick="var href = 'includes/forms/donationCheckinAdd.php?d=' + $('#donorId').attr('value')+'&us='+ $('#util').attr('value'); $.colorbox({href:href});">Agregar Comprobante</a></li>
 			<?php } ?>
             </ul>
         </div>
         <div class="column c50p last">
             <ul class="toolbar">
-                <?php if($rol== 1){?>
+                <?php if($rol== 1 ||  $rol== 2){?>
                 <li><label for="sequence">Número de Consecutivo:</label><input type="text" class="text autocomplete" id="sequence" />
-                <a href="javascript:void(0);" class="btn" onclick="var href = 'includes/forms/donationCheckinEdit.php?e=' + $('#sequence').attr('value'); $.colorbox({href:href});">Editar Comprobante</a></li>
+                <a href="javascript:void(0);" class="btn" onclick="var href = 'includes/forms/donationCheckinEdit.php?e=' + $('#sequence').attr('value')+'&us='+ $('#util').attr('value'); $.colorbox({href:href});">Editar Comprobante</a></li>
 			<?php } ?>
             </ul>
         </div>
@@ -59,9 +60,12 @@
 										<td><?php echo $voucher['detail']; ?></td>
                     <td>
                     	<ul class="table-actions">
-	                        <li><a href="includes/forms/donationCheckinReceive.php?r=<?php echo $voucher['id']; ?>" class="icon check colorbox" title="Recibir"><span>Recibir</span></a></li>
-                        	<li><a href="includes/forms/donationCheckinEdit.php?e=<?php echo $voucher['id']; ?>" class="icon edit colorbox" title="Editar"><span>Editar</span></a></li>
+                        <?php if($rol== 1 ||  $rol== 2){?>
+                            <li><a href="includes/forms/donationCheckinReceive.php?r=<?php echo $voucher['id']; ?>&us=<?php echo $_SESSION['dms_id']?>" class="icon check colorbox" title="Recibir"><span>Recibir</span></a></li>
+                        	<li><a href="includes/forms/donationCheckinEdit.php?e=<?php echo $voucher['id']; ?>&us=<?php echo $_SESSION['dms_id']?>" class="icon edit colorbox" title="Editar"><span>Editar</span></a></li>
                             <li><a href="includes/forms/delete.php?t=donation-checkin&d=<?php echo $voucher['id']; ?>" class="icon delete colorbox" title="Eliminar"><span>Eliminar</span></a></li>
+						<?php } ?>
+	        
                         </ul>
                     </td>
                 </tr>

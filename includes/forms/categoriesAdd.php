@@ -6,10 +6,11 @@
 <div class="">
 	<h3>Agregar Categoria</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
-    <form action="categories.php" enctype="application/x-www-form-urlencoded" method="post">
+		<div id="errorMessage" class="error"> </div>
+		<form action="categories.php" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateColorboxForm();">
         <fieldset>
             <label for="name">Nombre: <span class="required">*</span></label>
-            <input type="text" class="text" size="48" name="name" id="name" />
+            <input type="text" class="text not-nil" size="48" name="name" id="name" />
         </fieldset>
        <fieldset>
             <label for="description">Descripción:</label>
@@ -17,7 +18,7 @@
         </fieldset>
 				<fieldset>
 					<label for="quantity">Cantidad: <span class="required">*</span></label>
-					<input type="text" class="text" size="48" name="quantity" id="quantity" />
+					<input type="text" class="text decimal" size="48" name="quantity" id="quantity" />
 				</fieldset>
 				<fieldset>
 					<label for="unit">Unidad: <span class="required">*</span></label>

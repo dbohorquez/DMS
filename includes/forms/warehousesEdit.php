@@ -7,13 +7,13 @@
 	?>
 	<h3>Editar Bodega</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
-    <form action="warehouses.php" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateWarehouseForm();">
-				<div id="errorMessage"> </div>
+    <form action="warehouses.php" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateColorboxForm();">
+				<div id="errorMessage" class="error"> </div>
         <div class="column c50p">
         	<input type="hidden" id="id" name="id" value="<?php echo $id; ?>" />
             <fieldset>
                 <label for="name">Nombre: <span class="required">*</span></label>
-                <input type="text" class="text" size="48" name="name" id="name" value="<?php echo $warehouse['name']; ?>" />
+                <input type="text" class="text not-nil" size="48" name="name" id="name" value="<?php echo $warehouse['name']; ?>" />
             </fieldset>
             <fieldset>
             	<label for="type">Tipo de Bodega: <span class="required">*</span></label>
@@ -28,7 +28,7 @@
             </fieldset>
            <fieldset>
             	<label for="occupation">Capacidad Actual:</label>
-                <input type="text" class="text" size="4" name="occupation" id="occupation" value="<?php echo $warehouse['occupation']; ?>"/> %
+                <input type="text" class="text percent" size="4" name="occupation" id="occupation" value="<?php echo $warehouse['occupation']; ?>"/> %
             </fieldset>
         </div>
         <div class="column c50p last">
@@ -45,7 +45,7 @@
             </fieldset>
             <fieldset>
             	<label for="town">Ciudad/Municipio <span class="required">*</span>:</label>
-                <select name="town" id="town">
+                <select name="town" id="town" class="selectOne">
                 <?php
 					$towns = getTable('towns',"provinces_id = $location[provinces_id]",'name asc');
 					while($town = mysql_fetch_array($towns)){

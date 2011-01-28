@@ -1,10 +1,13 @@
 <div class="medium">
 	<h3>Agregar Promesa de Donación</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
-    <form action="donations-promises.php" enctype="application/x-www-form-urlencoded" method="post">
+		<div id="errorMessage" class="error"> </div>
+		
+    <form action="donations-promises.php" enctype="application/x-www-form-urlencoded" method="post"  onsubmit="return validateColorboxForm();">
     	<?php
 			include('../functions.php');
 			$donorId = $_GET['d'];
+			$userid = $_GET['us']; 
 			if(is_numeric($donorId)){
 				if(exists('donors',"id = $donorId")){
 					$donor = getTable('donors',"id = $donorId",'',1);
@@ -24,7 +27,7 @@
         	<input type="hidden" id="identification" name="identification" value="<?php echo $donorId; ?>" />
 				   <fieldset>
                 <label for="name">Nombre: <span class="required">*</span></label>
-                <input type="text" class="text" size="48" name="name" id="name" value="<?php echo $donor['name']; ?>" />
+                <input type="text" class="text not-nil" size="48" name="name" id="name" value="<?php echo $donor['name']; ?>" />
             </fieldset>
             <fieldset>
             	<label for="type">Tipo de Identificación:</label>
@@ -47,7 +50,7 @@
             </fieldset>
             <fieldset>
             	<label for="town">Ciudad/Municipio: <span class="required">*</span></label>
-                <select name="town" id="town">
+                <select name="town" id="town" class="selectOne">
                 <?php
 					$towns = getTable('towns',"provinces_id = $location[provinces_id]",'name asc');
 					while($town = mysql_fetch_array($towns)){
@@ -76,7 +79,12 @@
             </fieldset>
         </div>
         <fieldset class="clear">
-	        <input type="submit" class="btn" value="Agregar" name="bt-add" /><span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
+        	<?php 
+			$rol=isAnyRol($userid);
+			if($rol== 1 ||  $rol== 3){?>
+            <input type="submit" class="btn" value="Agregar" name="bt-add" />
+			<?php } ?>
+	        <span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
         </fieldset>
         	<?php }else{ ?>
             	<div class="error">Debe escribir un número de identificación</div>

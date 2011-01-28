@@ -9,17 +9,18 @@
                 <ul class="toolbar">
                 	<?php 
 					$rol=isAnyRol($_SESSION['dms_id']);
-					if($rol== 1){?>
+					if($rol== 1 || $rol== 5){?>
+                    <input type="hidden" name="util" id="util" value="<?php echo $_SESSION['dms_id']?>"/>
 		            <li><label for="donorId">Número de Identificación:</label><input type="text" class="text autocomplete" id="donorId" />
-                    <a href="javascript:void(0);" class="btn" onclick="var href = 'includes/forms/donationsAdd.php?d=' + $('#donorId').attr('value'); $.colorbox({href:href});">Agregar Donación</a></li>
+                    <a href="javascript:void(0);" class="btn" onclick="var href = 'includes/forms/donationsAdd.php?d=' + $('#donorId').attr('value')+'&us='+ $('#util').attr('value'); $.colorbox({href:href});">Agregar Donación</a></li>
 					<?php } ?>
                 </ul>
             </div>
             <div class="column c50p last">
                 <ul class="toolbar">
-                    <?php if($rol== 1){?>
+                    <?php if($rol== 1 || $rol== 5){?>
                     <li><label for="sequence">Número de Consecutivo:</label><input type="text" class="text autocomplete" id="sequence" />
-                    <a href="javascript:void(0);" class="btn" onclick="var href = 'includes/forms/donationsEdit.php?e=' + $('#sequence').attr('value'); $.colorbox({href:href});">Editar Donación</a></li>
+                    <a href="javascript:void(0);" class="btn" onclick="var href = 'includes/forms/donationsEdit.php?e=' + $('#sequence').attr('value')+'&us='+ $('#util').attr('value'); $.colorbox({href:href});">Editar Donación</a></li>
 					<?php } ?>
                 </ul>
             </div>
@@ -34,7 +35,7 @@
                     <th width="50">&nbsp;</th>
                 </tr></thead><tbody>
                 <?php
-					$donations = getTable('donations','deletedAt IS NULL and type=1','sequence asc');
+					$donations = getTable('donations','deletedAt IS NULL and type=1 and users_id='.$_SESSION['dms_id'],'sequence asc');
 					$numRows = mysql_num_rows($donations);
 					$ddata = '';
 					if($numRows > 0){
@@ -52,11 +53,11 @@
 					<?php echo formatDate($donation['date']); ?></td>
                     <td><?php echo $donation['bill'] != '' ? '<strong>Factura:</strong> ' . $donation['bill'] . '<br />' : ''; ?><?php echo $donation['detail']; ?></td>
                     <td>
-                                    	<?php 
+                    <?php 
 					$rol=isAnyRol($_SESSION['dms_id']);
-					if($rol== 1){?>
+					if($rol== 1 || $rol== 5){?>
                    	<ul class="table-actions">
-                        	<li><a href="includes/forms/donationsEdit.php?e=<?php echo $donation['sequence']; ?>" class="icon edit colorbox" title="Editar"><span>Editar</span></a></li>
+                        	<li><a href="includes/forms/donationsEdit.php?e=<?php echo $donation['sequence']; ?>&us=<?php echo $_SESSION['dms_id']?>" class="icon edit colorbox" title="Editar"><span>Editar</span></a></li>
                             <li><a href="includes/forms/delete.php?t=donations&d=<?php echo $donation['sequence']; ?>" class="icon delete colorbox" title="Eliminar"><span>Eliminar</span></a></li>
                         </ul>
 

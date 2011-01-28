@@ -1,7 +1,9 @@
 <div class="">
 	<h3>Agregar Tipo de Producto</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
-    <form action="producttypes.php" enctype="application/x-www-form-urlencoded" method="post">
+		<div id="errorMessage" class="error"> </div>
+
+    <form action="producttypes.php" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateColorboxForm();">
         	<?php
 			include('../functions.php');
 			$userid = $_GET['us']; 
@@ -11,10 +13,10 @@
 				$data .= '"' . $category['name'] . '",';
 			}
 		?>
-
+		
         <fieldset>
             <label for="name">Nombre: <span class="required">*</span></label>
-            <input type="text" class="text" size="48" name="name" id="name" />
+            <input type="text" class="text not-nil" size="48" name="name" id="name" />
         </fieldset>
        <fieldset>
             <label for="description">Descripción:</label>
@@ -22,7 +24,7 @@
         </fieldset>
                 <fieldset>
             <label for="category">Categoria: <span class="required">*</span></label>
-            <input type="text" class="text autocomplete" size="48" name="category" id="category" />
+            <input type="text" class="text autocomplete not-nil" size="48" name="category" id="category" />
         </fieldset>
         <fieldset class="clear">
 	        <?php 

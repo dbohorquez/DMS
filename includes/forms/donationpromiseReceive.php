@@ -3,6 +3,7 @@
 		include('../functions.php');
 		$id = $_GET['r']; 
 		if($id !=''){
+			$userid = $_GET['us']; 
 			$donation = getTable('donations',"sequence = $id",'',1);
 			$donor = getTable('donors',"id = $donation[donors_id]",'',1);
 			$query = "select * from products_donations where donations_id=$id and deletedAt IS NULL";
@@ -80,7 +81,12 @@
 			</div>	
 				
     <fieldset class="clear">
-	        <input type="submit" class="btn" value="Guardar Cambios" name="bt-receive" /><span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
+   	        <?php 
+			$rol=isAnyRol($userid);
+			if($rol== 1 ||  $rol== 3){?>
+            <input type="submit" class="btn" value="Guardar Cambios" name="bt-receive" />
+			<?php } ?>
+	        <span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
         </fieldset>
     </form>
    <script type="text/javascript">

@@ -8,12 +8,14 @@
 	?>
 	<h3>Editar Donante</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
-    <form action="donors.php" enctype="application/x-www-form-urlencoded" method="post">
+		<div id="errorMessage" class="error"> </div>
+		
+    <form action="donors.php" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateColorboxForm();">
     	<input type="hidden" id="id" name="id" value="<?php echo $id; ?>" />
         <div class="column c50p">
             <fieldset>
                 <label for="name">Nombre: <span class="required">*</span></label>
-                <input type="text" class="text" size="48" name="name" id="name" value="<?php echo $donor['name']; ?>" />
+                <input type="text" class="text not-nil" size="48" name="name" id="name" value="<?php echo $donor['name']; ?>" />
             </fieldset>
             <fieldset>
             	<label for="type">Tipo de Identificación:</label>
@@ -25,7 +27,7 @@
             </fieldset>
             <fieldset>
                 <label for="identification">Identificación: <span class="required">*</span></label>
-                <input type="text" class="text" size="48" name="identification" id="identification" value="<?php echo $donor['id']; ?>" />
+                <input type="text" class="text integer" size="48" name="identification" id="identification" value="<?php echo $donor['id']; ?>" />
             </fieldset>
             <fieldset>
             	<label for="province">Departamento: <span class="required">*</span></label>
@@ -40,7 +42,7 @@
             </fieldset>
             <fieldset>
             	<label for="town">Ciudad/Municipio: <span class="required">*</span></label>
-                <select name="town" id="town">
+                <select name="town" id="town" class="selectOne">
                 <?php
 					$towns = getTable('towns',"provinces_id = $location[provinces_id]",'name asc');
 					while($town = mysql_fetch_array($towns)){

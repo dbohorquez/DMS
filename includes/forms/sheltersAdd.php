@@ -1,16 +1,20 @@
 <div class="medium">
-	<?php include('../functions.php'); ?>
+	<?php include('../functions.php'); 
+	$userid = $_GET['us']; 
+	?>
 	<h3>Agregar Beneficiario</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
-    <form action="beneficiaries.php" enctype="application/x-www-form-urlencoded" method="post">
+		<div id="errorMessage" class="error"> </div>
+
+    <form action="beneficiaries.php" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateColorboxForm();">
         <div class="column c50p">
             <fieldset>
                 <label for="name">Nombre: <span class="required">*</span></label>
-                <input type="text" class="text" size="48" name="name" id="name" />
+                <input type="text" class="text not-nil" size="48" name="name" id="name" />
             </fieldset>
             <fieldset>
                 <label for="contactname">Contacto: <span class="required">*</span></label>
-                <input type="text" class="text" size="48" name="contactname" id="contactname" />
+                <input type="text" class="text not-nil" size="48" name="contactname" id="contactname" />
             </fieldset>
             <fieldset>
             	<label for="province">Departamento: <span class="required">*</span></label>
@@ -25,7 +29,7 @@
             </fieldset>
             <fieldset>
             	<label for="town">Ciudad/Municipio: <span class="required">*</span></label>
-                <select name="town" id="town">
+                <select name="town" id="town" class="selectOne">
                 	<option value="0">-- Seleccione un departamento --</option>
                 </select>
             </fieldset>
@@ -49,7 +53,12 @@
             </fieldset>
         </div>
         <fieldset class="clear">
-	        <input type="submit" class="btn" value="Agregar" name="bt-add" /><span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
+	        <?php 
+			$rol=isAnyRol($userid);
+			if($rol== 1 || $rol== 4){?>
+			<input type="submit" class="btn" value="Agregar" name="bt-add" />
+			<?php } ?>
+	        <span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
         </fieldset>
     </form>
 </div>

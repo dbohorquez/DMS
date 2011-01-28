@@ -1,7 +1,9 @@
 <div class="narrow">
 	<h3>Agregar Kit</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
-    <form action="kits.php" enctype="application/x-www-form-urlencoded" method="post">
+		<div id="errorMessage" class="error"> </div>
+		
+    <form action="kits.php" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateColorboxForm();">
     	<?php
 			include('../functions.php');
 			$userid = $_GET['us']; 
@@ -13,7 +15,7 @@
 		?>
         <fieldset>
             <label for="name">Nombre: <span class="required">*</span></label>
-            <input type="text" class="text" size="48" name="name" id="name" />
+            <input type="text" class="text not-nil" size="48" name="name" id="name" />
         </fieldset>
         <h4>Productos <span class="required">*</span></h4>
         <fieldset>
@@ -28,7 +30,7 @@
             </div>
         </fieldset>
         <label>Productos seleccionados:</label>
-        <ul class="product-list text"></ul>
+        <ul class="product-list text atLeastOne"></ul>
         <fieldset class="clear">
          <?php 
 		 $rol=isAnyRol($userid);

@@ -27,6 +27,7 @@ function dbInsert($table,$data){
 	$values = substr($values, 0, -1);
 
 	$query = "insert into " . $table . "({$fields}) values({$values})";
+	echo $query;
 	return runQuery($query,3);
 }
 

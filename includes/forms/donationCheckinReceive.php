@@ -3,6 +3,7 @@
 		include('../functions.php');
 		$id = $_GET['r']; 
 		if($id !=''){
+			$userid = $_GET['us']; 
 			$voucher = getTable('vouchers',"id = $id",'',1);
 			$donor = getTable('donors',"id = $voucher[donors_id]",'',1);
 			$location = getItemLocation('donors',$donor['id']);
@@ -18,6 +19,7 @@
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
     <form action="donation-checkin.php" enctype="application/x-www-form-urlencoded" method="post">
         <input type="hidden" id="id" name="id" value="<?php echo $id; ?>" />
+        <input type="hidden" id="user" name="user" value="<?php echo $userid; ?>" />
 	        <div class="column c50p">
 	        	<input type="hidden" id="identification" name="identification" value="<?php echo $donor['id']; ?>" />
 	         <fieldset>
@@ -83,7 +85,12 @@
 							}
 						?>
 	        <fieldset class="clear">
-		        <input type="submit" class="btn" value="Comprobar" name="bt-verify" /><span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
+          	<?php 
+			$rol=isAnyRol($userid);
+			if($rol== 1 ||  $rol== 2){?>
+            <input type="submit" class="btn" value="Comprobar" name="bt-verify" />
+			<?php } ?>
+	        <span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
 	        </fieldset>
 		    </form>
 		    <script type="text/javascript">

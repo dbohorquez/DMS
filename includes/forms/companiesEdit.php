@@ -7,16 +7,19 @@
 	?>
 	<h3>Editar Operador</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
-    <form action="companies.php" enctype="application/x-www-form-urlencoded" method="post">
+		<div id="errorMessage" class="error"> </div>
+
+     <form action="companies.php" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateColorboxForm();">
+	
         <div class="column c50p">
         <input type="hidden" id="id" name="id" value="<?php echo $id; ?>" />
         <fieldset>
                 <label for="nit">Nit: <span class="required">*</span></label>
-                <input type="text" class="text" size="48" name="nit" id="nit" value="<?php echo $company['id']; ?>" />
+                <input type="text" class="text not-nil" size="48" name="nit" id="nit" value="<?php echo $company['id']; ?>" />
             </fieldset>
             <fieldset>
                 <label for="name">Nombre: <span class="required">*</span></label>
-                <input type="text" class="text" size="48" name="name" id="name" value="<?php echo $company['name']; ?>" />
+                <input type="text" class="text not-nil" size="48" name="name" id="name" value="<?php echo $company['name']; ?>" />
             </fieldset>
             <fieldset>
             	<label for="type">Tipo de Entidad:</label>
@@ -39,7 +42,7 @@
             </fieldset>
             <fieldset>
             	<label for="town">Ciudad/Municipio: <span class="required">*</span></label>
-                <select name="town" id="town">
+                <select name="town" id="town" class="selectOne">
                 <?php
 					$towns = getTable('towns',"provinces_id = $location[provinces_id]",'name asc');
 					while($town = mysql_fetch_array($towns)){
@@ -69,7 +72,7 @@
             </fieldset>
             <fieldset>
             	<label for="email">Correo Electrónico: <span class="required">*</span></label>
-                <input type="text" class="text" size="48" name="email" id="email" value="<?php echo $company['email']; ?>" />
+                <input type="text" class="text email" size="48" name="email" id="email" value="<?php echo $company['email']; ?>" />
             </fieldset>
 
         </div>

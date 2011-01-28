@@ -1,7 +1,9 @@
 <div class="medium">
 	<h3>Nueva Distribución</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
-    <form action="distribution.php" enctype="application/x-www-form-urlencoded" method="post">
+		<div id="errorMessage" class="error"> </div>
+
+    <form action="distribution.php" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateColorboxForm();">
     	<?php
 			include('../functions.php');
 			$userid = $_GET['us']; 
@@ -34,18 +36,29 @@
                 <label for="company">Canal de Distribución: <span class="required">*</span></label>
                 <select name="company" id="company">
                 <?php
-                    $companies = getTable('companies','type = 2','name asc');
+                    $companies = getTable('companies','type = 2 and deletedAt IS NULL','name asc');
                     while($company = mysql_fetch_array($companies)){
                 ?>
                     <option value="<?php echo $company['id']; ?>"><?php echo $company['name']; ?></option>
                 <?php } ?>
                 </select>
             </fieldset>
+						 <fieldset>
+	                <label for="shelter">Beneficiarios:</label>
+	         				<select name="company" id="company">
+	                <?php
+	                    $shelters = getTable('shelters','deletedAt IS NULL','name asc');
+	                    while($shelter = mysql_fetch_array($shelters)){
+	                ?>
+	                    <option value="<?php echo $shelter['id']; ?>"><?php echo $shelter['name']; ?></option>
+	                <?php } ?>
+	                </select>
+					   </fieldset>
         </div>
         <div class="column c50p last">
             <fieldset>
                 <label for="deliveryDate">Fecha de Entrega: <span class="required">*</span></label>
-                <input type="text" class="text datepicker" size="20" name="deliveryDate" id="deliveryDate" />
+                <input type="text" class="text datepicker not-nil" size="20" name="deliveryDate" id="deliveryDate" />
             </fieldset>
             <fieldset>
                 <label for="state">Estado: <span class="required">*</span></label>
@@ -56,6 +69,7 @@
                 </select>
             </fieldset>
         </div>
+ 				<div class="clear"></div>
         <h4>Productos <span class="required">*</span></h4>
         <fieldset>
             <div class="column c33p">
@@ -73,7 +87,7 @@
             </div>
         </fieldset>
         <label>Productos seleccionados:</label>
-        <ul class="product-list text"></ul>
+        <ul class="product-list text atLeastOne"></ul>
         <fieldset class="clear">
         <?php 
 		$rol=isAnyRol($userid);

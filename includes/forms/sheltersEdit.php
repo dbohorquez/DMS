@@ -4,19 +4,22 @@
 		$id = $_GET['e']; 
 		$shelter = getTable('shelters',"id = $id",'',1);
 		$location = getItemLocation('shelters',$id);
+		$userid = $_GET['us']; 
 	?>
 	<h3>Editar Beneficiario</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
-    <form action="donors.php" enctype="application/x-www-form-urlencoded" method="post">
+		<div id="errorMessage" class="error"> </div>
+		
+    <form action="donors.php" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateColorboxForm();">
     	<input type="hidden" id="id" name="id" value="<?php echo $id; ?>" />
         <div class="column c50p">
             <fieldset>
                 <label for="name">Nombre: <span class="required">*</span></label>
-                <input type="text" class="text" size="48" name="name" id="name" value="<?php echo $shelter['name']; ?>" />
+                <input type="text" class="text not-nil" size="48" name="name" id="name" value="<?php echo $shelter['name']; ?>" />
             </fieldset>
             <fieldset>
                 <label for="contactname">Contacto: <span class="required">*</span></label>
-                <input type="text" class="text" size="48" name="contactname" id="contactname" value="<?php echo $shelter['contactName']; ?>" />
+                <input type="text" class="text not-nil" size="48" name="contactname" id="contactname" value="<?php echo $shelter['contactName']; ?>" />
             </fieldset>
             <fieldset>
             	<label for="province">Departamento: <span class="required">*</span></label>
@@ -31,7 +34,7 @@
             </fieldset>
             <fieldset>
             	<label for="town">Ciudad/Municipio: <span class="required">*</span></label>
-                <select name="town" id="town">
+                <select name="town" id="town" class="selectOne">
                 <?php
 					$towns = getTable('towns',"provinces_id = $location[provinces_id]",'name asc');
 					while($town = mysql_fetch_array($towns)){
@@ -60,7 +63,12 @@
             </fieldset>
         </div>
         <fieldset class="clear">
-	        <input type="submit" class="btn" value="Guardar Cambios" name="bt-edit" /><span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
+        	<?php 
+			$rol=isAnyRol($userid);
+			if($rol== 1 || $rol== 4){?>
+			<input type="submit" class="btn" value="Guardar Cambios" name="bt-edit" />
+			<?php } ?>
+	        <span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
         </fieldset>
     </form>
 </div>

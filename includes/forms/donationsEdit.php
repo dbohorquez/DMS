@@ -2,6 +2,7 @@
 	<?php
 		include('../functions.php');
 		$id = $_GET['e']; 
+		$userid = $_GET['us']; 
 		if($id !=''){
 			$donation = getTable('donations',"sequence = $id",'',1);
 			$donor = getTable('donors',"id = $donation[donors_id]",'',1);
@@ -15,7 +16,9 @@
 	?>
 	<h3>Editar Donación #<?php echo $donation['sequence']; ?></h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
-    <form action="donations.php" enctype="application/x-www-form-urlencoded" method="post">
+		<div id="errorMessage" class="error"> </div>
+		
+    <form action="donations.php" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateColorboxForm();">
         <input type="hidden" id="id" name="id" value="<?php echo $id; ?>" />
         <div class="column c50p">
             <fieldset>
@@ -65,7 +68,7 @@
                 <a href="javascript:void(0);" class="btn" onclick="addProductAjax('#product',$('#quantity'),'#expirationDate','.product-list',this, <?php echo $id; ?>, $('#warehouse').val(), 1 );" id="add">Añadir</a>
             </fieldset>
             <label>Productos seleccionados:</label>
-            <ul class="product-list text">
+            <ul class="product-list text atLeastOne">
                 <?php
                     $products = getDonationProducts($id);
                     while($product = mysql_fetch_array($products)){
@@ -79,7 +82,12 @@
             </ul>
         </div>
         <fieldset class="clear">
-	        <input type="submit" class="btn" value="Guardar Cambios" name="bt-edit" /><span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
+        <?php 
+				$rol=isAnyRol($userid);
+				if($rol== 1 || $rol== 5){?>
+				<input type="submit" class="btn" value="Guardar Cambios" name="bt-edit" />
+				<?php } ?>
+	        <span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
         </fieldset>
     </form>
     <script type="text/javascript">

@@ -1,7 +1,9 @@
 <div class="medium">
 	<h3>Editar Distribución</h3>
     <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
-    <form action="distribution.php" enctype="application/x-www-form-urlencoded" method="post">
+		<div id="errorMessage" class="error"> </div>
+
+    <form action="distribution.php" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateColorboxForm();">
     	<?php
 			include('../functions.php');
 			$userid = $_GET['us']; 
@@ -43,11 +45,22 @@
                 <?php } ?>
                 </select>
             </fieldset>
+						 <fieldset>
+	                <label for="shelter">Beneficiarios:</label>
+	           			<select name="company" id="company">
+	                <?php
+	                    $shelters = getTable('shelters','deletedAt IS NULL','name asc');
+	                    while($shelter = mysql_fetch_array($shelters)){
+	                ?>
+	                    <option value="<?php echo $shelter['id']; ?>" <?php if($distribution['shelter_id'] == $shelter['id']){ ?> selected="selected"<?php } ?>><?php echo $shelter['name']; ?></option>
+	                <?php } ?>
+	                </select>
+	 					</fieldset>
         </div>
         <div class="column c50p last">
             <fieldset>
                 <label for="deliveryDate">Fecha de Entrega: <span class="required">*</span></label>
-                <input type="text" class="text datepicker" size="20" name="deliveryDate" id="deliveryDate" value="<?php echo $distribution['deliveryDate']; ?>" />
+                <input type="text" class="text datepicker not-nil" size="20" name="deliveryDate" id="deliveryDate" value="<?php echo $distribution['deliveryDate']; ?>" />
             </fieldset>
             <fieldset>
                 <label for="state">Estado: <span class="required">*</span></label>
@@ -58,6 +71,7 @@
                 </select>
             </fieldset>
         </div>
+				<div class="clear"></div>
         <h4>Productos <span class="required">*</span></h4>
         <fieldset>
             <div class="column c33p">
@@ -75,7 +89,7 @@
             </div>
         </fieldset>
         <label>Productos seleccionados:</label>
-        <ul class="product-list text">
+        <ul class="product-list text atLeastOne">
         	 <?php
 				$products = getDistributionProducts($id);
 				while($product = mysql_fetch_array($products)){
