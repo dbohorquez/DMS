@@ -22,17 +22,31 @@ function updateElm(elm,source){
 
 function addProduct(field,quantity,expDate,container,trigger){
 	if(quantity < 1) quantity = 1;
-	var xDate = $(expDate).attr('value');
-	var product = $(field).attr('value');
-	if(product != ''){
+
+	var xDate = $(expDate).val(),
+	 	product = $(field).val()
+				
+	if(!isNil(xDate)){
+		var d1=new Date();
+		d1.setDate(d1.getDate());
+		d1.setHours(0,0,0)
+
+		var d2= xDate.split(/\W+/);
+		d2=new Date(d2[0]*1,d2[1]-1,d2[2]*1);
+	}
+		
+	if( product != '' && !isNil(xDate) && d2 > d1 ) {
 		var rand = Math.floor(Math.random()*10000000);
 		$(container).append('<li id="item' + rand + '"><a href="javascript:void(0);" onclick="removeProduct($(this).parent());" class="icon delete" title="Remover Producto"><span>Remover Producto</span></a><span class="product-name">' + product + '</span><span class="product-quantity">x' + quantity + '</span></li>');
 		$(container).parent().append('<input type="hidden" id="hitem' + rand + '" name="hitem' + rand + '" value="' + product + '" /><input type="hidden" id="citem' + rand + '" name="citem' + rand + '" value="' + quantity + '" /><input type="hidden" id="ditem' + rand + '" name="ditem' + rand + '" value="' + xDate + '" />');
+		$(field).attr('value','');
+		$(expDate).attr('value','');
+		$(field).focus();
+		$(trigger).hide();
+	}else{
+		$(field).addClass("error")
+		$(expDate).addClass("error")
 	}
-	$(field).attr('value','');
-	$(expDate).attr('value','');
-	$(field).focus();
-	$(trigger).hide();
 }
 
 function removeProduct(product){
@@ -47,28 +61,49 @@ function removeProduct(product){
 
 function addProductAjax(field,quantityField,expDate,container,trigger, donationId, warehouseId, donationType){
 	if(quantity < 1) quantity = 1;
-	var rand = Math.floor(Math.random()*10000000);
+
+	var xDate = $(expDate).val(),
+	 	product = $(field).val(),
+		quantity = quantityField.val(),
+		d1 = 0,
+		d2 = 1
+		
+	if(xDate){
+		var d1=new Date();
+		d1.setDate(d1.getDate());
+		d1.setHours(0,0,0)
 	
-	var xDate = $(expDate).attr('value'),
-	 	product = $(field).attr('value'),
-		quantity = quantityField.val()
-	if(product != ''){
+		var d2= xDate.split(/\W+/);
+		d2=new Date(d2[0]*1,d2[1]-1,d2[2]*1);
+	}
+		
+	if(product != '' && isInteger(quantityField) && d2 > d1 ) {
 		jQuery.ajax({
 			type	 : 'POST', 
 			url      : "includes/data/addDonationProduct.php",
 			dataType : "text",
 			data     : { product_name : product , product_quantity : quantity, product_date : xDate, donation_id : donationId, warehouse_id : warehouseId, donation_type : donationType },
 			success  : function(msg){
-				if (msg != "error")
-				  $(container).append('<li id="'+msg+'"><a href="javascript:void(0);" onclick="removeProductAjax($(this).parent(),'+donationId+','+donationType+');" class="icon delete" title="Remover Producto"><span>Remover Producto</span></a><span class="product-name">' + product + '</span><span class="product-quantity">x' + quantity + '</span></li>');
+				if (msg != "error"){
+					$(container).append('<li id="'+msg+'"><a href="javascript:void(0);" onclick="removeProductAjax($(this).parent(),'+donationId+','+donationType+');" class="icon delete" title="Remover Producto"><span>Remover Producto</span></a><span class="product-name">' + product + '</span><span class="product-quantity">x' + quantity + '</span></li>');
+				  	quantityField.val("1")
+					$(field).val("")
+					$(expDate).val("")
+					$(field).focus();
+					$(trigger).hide();
+				}else{
+					$(field).addClass("error")
+					$(expDate).addClass("error")
+				}
+					
 			}
 		})
+	}else{
+		$(field).addClass("error")
+		$(expDate).addClass("error")
+		quantityField.addClass("error")
 	}
-	quantityField.val("1")
-	$(field).val("")
-	$(expDate).val("")
-	$(field).focus();
-	$(trigger).hide();
+
 }
 
 function removeProductAjax(product, donationId, donationType){
@@ -168,6 +203,12 @@ function validateColorboxForm() {
 		if (!isEmail($elem))
 		{ valid= false; $elem.addClass("error") }
 	})
+	$(".ifEmail").each(function(){
+		$elem = $(this)
+		if (!isNil($elem) && !isEmail($elem))
+		{ valid= false; $elem.addClass("error") }
+	})
+	
 	if (!valid){
 		$("#errorMessage").html("Por favor digite todos los campos obligatorios (<span class=\"required\">*</span>).");
 		$("#errorMessage").show();
