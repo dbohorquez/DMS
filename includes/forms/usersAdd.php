@@ -14,7 +14,7 @@
         </fieldset>
         <fieldset>
             <label for="email">Correo electrónico: <span class="required">*</span></label>
-            <input type="text email" class="text" size="48" name="email" id="email" />
+            <input type="text email" class="text email" size="48" name="email" id="email" />
         </fieldset>
         <fieldset>
             <label for="phonenumber">Teléfono:</label>

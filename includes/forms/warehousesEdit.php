@@ -64,7 +64,7 @@
             </fieldset>
             <fieldset>
             	<label for="email">Correo Electrónico:</label>
-                <input type="text" class="text" size="48" name="email" id="email" value="<?php echo $warehouse['email']; ?>"/>
+                <input type="text ifEmail" class="text" size="48" name="email" id="email" value="<?php echo $warehouse['email']; ?>"/>
             </fieldset>
             <fieldset>
             	<label for="phonenumber">Teléfono:</label>

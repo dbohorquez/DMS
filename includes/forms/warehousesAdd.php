@@ -46,7 +46,7 @@
             </fieldset>
             <fieldset>
             	<label for="email">Correo Electrónico:</label>
-                <input type="text" class="text" size="48" name="email" id="email" />
+                <input type="text ifEmail" class="text" size="48" name="email" id="email" />
             </fieldset>
             <fieldset>
             	<label for="phonenumber">Teléfono:</label>

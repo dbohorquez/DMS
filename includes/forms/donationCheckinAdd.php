@@ -75,7 +75,7 @@
             </fieldset>
            <fieldset>
             	<label for="email">Correo electrónico:</label>
-                <input type="text" class="text" size="48" name="email" id="email" value="<?php echo $donor['email']; ?>" />
+                <input type="text" class="text ifEmail" size="48" name="email" id="email" value="<?php echo $donor['email']; ?>" />
             </fieldset>
 	        	<h4>Detalle de Factura:</h4>
 						<fieldset>

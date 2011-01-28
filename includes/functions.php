@@ -524,7 +524,6 @@ function addKit($data){
 					foreach($data as $key => $value){
 						if(substr($key,0,5) == 'hitem'){
 							$qtyname = 'citem' . substr($key,-7);
-							echo $qtyname;
 							$qty = $data[$qtyname];
 							$idp = findRow('products','name',"'".$value."'",'id');
 							$datos = array(kits_id => $id, products_id =>$idp,quantity => $qty);
