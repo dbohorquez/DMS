@@ -812,19 +812,22 @@ function deleteDonation($data){
 	
 }
 
-function getProductQuantity($product,$donation = '',$state=''){
+function getProductQuantity($product,$donation = '',$state='',$warehouse=''){
 
 	if ($state!='')
 		$state= ' and state = '.$state;
+		
+	if ($warehouse!='')
+		$warehouse= ' and warehouse_id = '.$warehouse;
 	
 	if($donation != ''){
 		$idp = findRow('products','name',"'".$product."'",'id');
-		$query = "SELECT COUNT(*) AS cont FROM products_donations WHERE donations_id=$donation AND products_id=$idp AND deletedAt IS NULL".$state;	
+		$query = "SELECT COUNT(*) AS cont FROM products_donations WHERE donations_id=$donation AND products_id=$idp AND deletedAt IS NULL".$state.$warehouse;	
 		$row = runQuery($query,1);
 		return $row['cont'];
 	}else{
 		$idp = findRow('products','name',"'".$product."'",'id');
-		$query = "SELECT COUNT(*) AS cont FROM products_donations WHERE products_id=$idp AND deletedAt IS NULL".$state;	
+		$query = "SELECT COUNT(*) AS cont FROM products_donations WHERE products_id=$idp AND deletedAt IS NULL".$state.$warehouse;	
 		$row = runQuery($query,1);
 		return $row['cont'];
 	}
@@ -1021,10 +1024,15 @@ function addDistribution($data){
 							while($result and $row = mysql_fetch_array($result)){
 								$datos = array(products_donations_id => $row['id'], distributions_id =>$id);
 								$idlist = dbInsert("products_donations_distributions",$datos);
-								//se lecambia el producto a 5 que es canal de distribucion
-								addStatesChanges ($row['id'],5,$_SESSION['dms_id'],'Se distribuyo desde la bodega '.$warehouse);
-								if($data['shelter']!=''){
-									addStatesChanges ($row['id'],7,$_SESSION['dms_id'],'Se envio desde el operador de distribucion '.$company);
+								if($data['state']==2){// si el estao es entregada
+									addStatesChanges ($row['id'],5,$_SESSION['dms_id'],'Se distribuyo desde la bodega '.$warehouse);
+									if($data['shelter']!=''){
+										addStatesChanges ($row['id'],7,$_SESSION['dms_id'],'Se envio desde el operador de distribucion '.$company);
+									}
+								}else if ($data['state']==1){//si el estado es programada
+									addStatesChanges ($row['id'],8,$_SESSION['dms_id'],'En distribucion programada desde la bodega '.$warehouse.'al operador '.$company);
+								}else{// si ninguna de las anteriores entonces pasa a pendiente
+									addStatesChanges ($row['id'],9,$_SESSION['dms_id'],'En distribucion pendiente de la bodega '.$warehouse.'al operador '.$company);
 								}
 							}	
 						}
@@ -1054,45 +1062,27 @@ function validateExistenceProduct($data){
 	return false;	
 }
 function editDistribution($data){
-if($data['warehouse'] != "" and $data['company'] != "" and $data['deliveryDate'] != ""){
-		if(validateExistenceProduct($data)){
-			$warehouse = exists("warehouses","id='$data[warehouse]'");	
-			$company = exists("companies","id='$data[company]'");	
-			if($warehouse and $company ){
-				if(dbUpdate("products_donations",array(state => 2),"id in (select products_donations_id from products_donations_distributions where distributions_id=$data[id])")){
-					if(dbDelete("products_donations_distributions","distributions_id=$data[id]")){
-						$datos = array(warehouses_id => $warehouse, companies_id  => $company , deliveryDate => $data['deliveryDate'],state => $data['state']);
-						if(dbUpdate("distributions",$datos,"id=$data[id]")){
-							foreach($data as $key => $value){
-								if(substr($key,0,5) == 'hitem'){
-									$qtyname = 'citem' . substr($key,-7);
-									$qty = $data[$qtyname];
-									$idp = findRow('products','name',"'".$value."'",'id');
-									$query = "select * from products_donations where products_id=$idp and state in (1) order by expirationDate limit $qty";
-									$result= runQuery($query);
-									while($result and $row = mysql_fetch_array($result)){
-										$datos = array(products_donations_id => $row['id'], distributions_id =>$data[id]);
-										$idlist = dbInsert("products_donations_distributions",$datos);
-										$update=dbUpdate(products_donations,array(state => 4),"id=$row[id]");
-									}	
-								}
-							}
-							$success = "La distribución fue agregada exitosamente.";
-						}else{
-							$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
+	if($data['state'] != ""){
+		$datos = array(state => $data['state']);
+			if(dbUpdate("distributions",$datos,"id=$data[id]")){				
+				$query = "select id from products_donations  where id in (select products_donations_id from products_donations_distributions where distributions_id = $data[id])";
+				$result= runQuery($query);
+				while($result and $row = mysql_fetch_array($result)){
+					if($data['state']==2){// si el estao es entregada
+						addStatesChanges ($row['id'],5,$_SESSION['dms_id'],'Se distribuyo desde la bodega '.$warehouse);
+						if($data['shelter']!=''){
+							addStatesChanges ($row['id'],7,$_SESSION['dms_id'],'Se envio desde el operador de distribucion '.$company);
 						}
-					}else{
-					$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
+					}else if ($data['state']==1){//si el estado es programada
+						addStatesChanges ($row['id'],8,$_SESSION['dms_id'],'En distribucion programada desde la bodega '.$warehouse.'al operador '.$company);
+					}else{// si ninguna de las anteriores entonces pasa a pendiente
+						addStatesChanges ($row['id'],9,$_SESSION['dms_id'],'En distribucion pendiente de la bodega '.$warehouse.'al operador '.$company);
 					}
-				}else{
-					$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
 				}
+				$success = "La distribución fue agregada exitosamente.";	
 			}else{
-				$warning = "Hay datos que no existen, por favor verifique.";
+				$warning = "Ha ocurrido un error de conexión con el servidor. Por favor inténtelo nuevamente.";
 			}
-		}else{
-			$warning ="Se debe elegir por lo menos un producto, por favor verifique."; 
-		}
 	}else{
 		$warning = "Por favor digite todos los datos obligatorios.";
 	}
