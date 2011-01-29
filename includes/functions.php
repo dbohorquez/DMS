@@ -432,10 +432,14 @@ function transferProducts ($data){
 			foreach($data as $key => $value){
 			//se busca si el usuario elgio productos
 				if(substr($key,0,5) == 'hitem'){
-					if(sw==false){
+					if($sw==false){
 						$sw=true;
 						// si hay productos se ingresa la tranferencia a la que se le van asociar los productos
-						$datos = array(starting_warehouse => $data['warehousefrom'], destination_warehouse => $data['warehouseto'], notes => $data['notes'],state => 1, shelter_id => $data['shelter']);
+						if($data['warehousefrom']!=-1){
+							$datos = array(starting_warehouse => $data['warehousefrom'], destination_warehouse => $data['warehouseto'], notes => $data['notes'],state => 1, shelter_id => $data['shelter']);
+						}else{
+							$datos = array(destination_warehouse => $data['warehouseto'], notes => $data['notes'],state => 1, shelter_id => $data['shelter']);
+						}					
 						$idtranfer=dbInsert("transfers",$datos);
 						if($idtranfer){
 							$success = "La transferencia fue  exitosa.";
@@ -459,7 +463,7 @@ function transferProducts ($data){
 						$update=dbUpdate(products_donations,array(warehouses_id => $warehouse),"id=$row[id]");
 						// se ingresa el cambio de estado del producto
 						if($data[warehouse]!=-1){
-							addStatesChanges ($row[id],1,$_SESSION['dms_id'],$reason = 'Tranferencia desde la bodega $data[warehouse]');
+							addStatesChanges ($row[id],1,$_SESSION['dms_id'],$reason = 'Tranferencia desde la bodega '.$data[warehouse]);
 						}else{
 							addStatesChanges ($row[id],1,$_SESSION['dms_id'],$reason = 'Tranferencia desde la bodega virtual');
 						}

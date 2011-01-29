@@ -88,7 +88,7 @@
         <?php 
 		$rol=isAnyRol($userid);
 		if($rol== 1 || $rol== 2){?>
-  	    <input type="submit" class="btn clear" value="Agregar" name="bt-add" />
+  	    <input type="submit" class="btn clear" value="Agregar" name="bt-transfer" />
         <?php } ?>
 	    <span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
         </fieldset>
