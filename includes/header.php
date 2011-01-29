@@ -70,6 +70,8 @@ if($section != 'login' && !isset($_SESSION['dms_authorized'])){ header('Location
                     	<li><a href="beneficiaries.php">Beneficiarios</a></li>
                     </ul>
                 </li>
+                <li<?php if($section == 'reports'){ ?> class="active"<?php } ?>><a href="reports.php">Reportes y consultas</a>
+                </li>
             </ul>
             <ul id="options">
             	<li><a href="options.php">Opciones</a></li>

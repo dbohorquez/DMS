@@ -482,11 +482,11 @@ function transferProducts ($data){
 							$currentdate = date("Y-m-d H:i");
 							$headers = 'From: Sahana Caribe <admin@sahanacaribe.com>' . "\r\n" .'Fecha: '.$date. "\r\n";
 							$subject = 'Informe de transferencia"\r\n"';
-							$query = "SELECT DISTINCT(sequence),companies_id,email FROM products_donations_tranfers, products_donations pd,donations d,companies c WHERE tranfer_id=$idtranfer AND pd.id=product_donation_id AND donations_id=sequence AND c.id=companies_id";
+							$query = "SELECT DISTINCT(sequence),companies_id,email,bill FROM products_donations_tranfers, products_donations pd,donations d,companies c WHERE tranfer_id=$idtranfer AND pd.id=product_donation_id AND donations_id=sequence AND c.id=companies_id";
 							$result= runQuery($query);
 							while($row = mysql_fetch_array($result)){	
 							
-							$body = 'El dia '.$currentdate.' ha sido realizada una solicitud de transferencia hacia su compañia. Los productos solicitados son: ';
+							$body = 'El dia '.$currentdate.' ha sido realizada una solicitud de transferencia hacia su compañia relacionado a la factura $row[bill]. Los productos solicitados son: ';
 							
 							$query = "SELECT name, COUNT(name) AS quantity FROM products_donations_tranfers, products_donations pd, products p WHERE tranfer_id=$idtranfer AND pd.id=product_donation_id AND donations_id=$row[sequence] AND products_id=p.id GROUP BY p.name";
 							$result2= runQuery($query);
