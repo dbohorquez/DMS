@@ -14,9 +14,13 @@ los estados de los productos son:
 Estado      Descripción
     1          En bodega Física
     2          En bodega Virtual
-    3          Donación Anulada
-    4          En canal de distribución
-    5          Eliminado
+    3          En bodega de Promesas
+    4          Donación Anulada
+    5          En canal de distribución
+    6          Eliminado
+    7		   Entragada a beneficiario
+    8		   Distribucion Programada
+    9		   Distribucion Pendiente
 
 
 los estados de los comprobantes son:

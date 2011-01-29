@@ -16,45 +16,33 @@
             <table cellpadding="0" cellspacing="0"><thead>
             	<tr>
                 	<th>Bodega de Origen</th>
-                    <th>Bodega Destino</th>
-                    <th>Destino de Despacho</th>
-                    <th>Comentarios</th>
-                    <th>Productos</th>
-                    <th width="50">&nbsp;</th>
-                </tr></thead><tbody>
+                  <th>Bodega Destino</th>
+                  <th>Destino de Despacho</th>
+                  <th>Comentarios</th>
+									<th width="50">&nbsp;</th>
+						  </tr></thead><tbody>
                 <?php
-					$warehouses = getTable('warehouses','deletedAt IS not NULL','id desc');
-					$numRows = mysql_num_rows($warehouses);
+					$transfers = getTable('transfers','deletedAt IS NULL','id desc');
+					$numRows = mysql_num_rows($transfers);
 					if($numRows > 0){
-						while($warehouse = mysql_fetch_array($warehouses)){
-							$location = getItemLocation('warehouses',$warehouse['id']);
+						while($transfer = mysql_fetch_array($transfers)){
+							$starting_warehouse = getTable('warehouses', "deletedAt IS NULL and id = $transfer[starting_warehouse]","",1);
+							$destination_warehouse = getTable('warehouses', "deletedAt IS NULL and id = $transfer[destination_warehouse]","",1);
+							$shelter = getTable('shelters',"deletedAt IS NULL and id = $transfer[shelter_id]","",1);					
 				?>
                 <tr>
-                	<td><?php echo $warehouse['name']; ?></td>
-                    <td><?php echo $warehouse['type'] == 1 ? 'Física' : 'Virtual'; ?><br />
-                    	<span<?php echo $warehouse['occupation'] >= 90 ? ' class="full"' : ' class="available"'; ?>><?php echo $warehouse['occupation']; ?>%</span>
-                    </td>
-                    <td><a href="mailto:<?php echo $warehouse['email']; ?>"><?php echo $warehouse['contactName']; ?></a></td>
-                    <td>
-                    	<strong>Tel:</strong> <?php echo $warehouse['phoneNumber']; ?><br />
-                    	<strong>Cel:</strong> <?php echo $warehouse['cellphone']; ?><br />
-                        <strong>Fax:</strong> <?php echo $warehouse['faxNumber']; ?>
-                    </td>
-                    <td>
-						<?php echo $warehouse['address']; ?><br />
-                        <?php echo utf8_encode($location['town'] . ', ' . $location['province']); ?>
-                    </td>
-                    <td>
-                    <?php if($rol== 1 || $rol== 2){?>
-                    	<ul class="table-actions">
-                        <li><a href="includes/forms/delete.php?t=warehouses&d=<?php echo $warehouse['id']; ?>" class="icon delete colorbox" title="Eliminar"><span>Eliminar</span></a></li>
-                        </ul>
-			        <?php } ?>          
-        
-                    </td>
-                </tr>
-                <?php
-						}
+                	<td><?php echo $starting_warehouse['name'] == null ? "Virtual" : $starting_warehouse['name'] ; ?></td>
+              	 	<td><?php echo $destination_warehouse['name']; ?></td>
+									<td><?php echo $shelter['name']; ?></td>
+									<td><?php echo $transfer['notes']; ?></td>
+									<td>
+                 		<ul class="table-actions">
+                    	<li><a href="includes/forms/transferView.php?t=<?php echo $transfers['id']; ?>" class="icon view colorbox" title="Ver"><span>Ver</span></a></li>
+                  	</ul>	
+            			</td>
+								</tr>
+				<?php
+					 }
 					}else{
 						echo '<tr><td colspan="6">No hay datos para mostrar</td></tr>';
 					}
