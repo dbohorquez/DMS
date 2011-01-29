@@ -10,7 +10,7 @@
 				FROM products
 				INNER JOIN products_donations
 				ON products.id=products_donations.products_id
-				WHERE products_donations.state=2
+				WHERE products_donations.state=2 AND products_donations.deletedAt IS NULL
 				GROUP BY products.id, products.name
 				ORDER BY products.name";
 			$products = runQuery($query);
@@ -50,8 +50,9 @@
         </div>
         <div class="column c50p last">
         <fieldset>
-                <label for="shelter">Beneficiarios: <span class="required">*</span></label>
+                <label for="shelter">Beneficiarios:</label>
                 <select name="shelter" id="shelter">
+								<option value="" selected="selected">Ninguno</option>
                 <?php
                     $shelters = getTable('shelters','','name asc');
                     while($shelter = mysql_fetch_array($shelters)){
@@ -100,13 +101,41 @@
 		$('.datepicker').datepicker("option", "dateFormat", 'yy-mm-dd');
 		$('#add').hide();
 		var data = [<?php echo $data; ?>];
+		
 		$('#product').autocomplete({
 			source: data,
 			mustMatch: true,
 			select: function(event, ui){
-				$('#add').show();
-				updateElm('#quantity','includes/data/productQuantity.php?p=' + ui.item.value);
+				$('#add').show();				
+				from = $('#warehousefrom').val()
+				updateElm('#quantity','includes/data/productQuantity.php?p='+ ui.item.value+"&w="+from);
 			}
 		});
+		
+		$('#warehousefrom').change(function () {		
+			 selValue = $(this).children(":selected").val()
+		   $("#warehouseto").children().show()
+			 if (selValue != -1){
+				$("#warehouseto").children("option[value='"+selValue+"']").hide()
+			}
+			$("#warehouseto").children(":visible:first").attr("selected","selected")
+			warehouse_id = $(this).val()
+			
+			$.ajax({
+				type	 : 'POST', 
+				url      : "includes/data/getProductNames.php",
+				dataType : "text",
+				data     : { warehouse : warehouse_id },
+				success  : function(msg){
+					if (msg != "error"){
+						newData = msg.replace('"',"").split(",")
+						$('#product').autocomplete( "option", "source",newData)
+					}
+				}
+			})
+			
+			
+		}) 
+		
 	</script>
 </div>

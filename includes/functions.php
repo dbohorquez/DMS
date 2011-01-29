@@ -818,7 +818,7 @@ function getProductQuantity($product,$donation = '',$state='',$warehouse=''){
 		$state= ' and state = '.$state;
 		
 	if ($warehouse!='')
-		$warehouse= ' and warehouse_id = '.$warehouse;
+		$warehouse= ' and warehouses_id = '.$warehouse;
 	
 	if($donation != ''){
 		$idp = findRow('products','name',"'".$product."'",'id');
