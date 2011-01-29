@@ -430,15 +430,23 @@ function transferProducts ($data){
 		if($warehouse){
 			$sw=false;
 			foreach($data as $key => $value){
-			//se busca si el usuario elgio productos
+			//se busca si el usuario elijio productos
 				if(substr($key,0,5) == 'hitem'){
 					if($sw==false){
 						$sw=true;
 						// si hay productos se ingresa la tranferencia a la que se le van asociar los productos
 						if($data['warehousefrom']!=-1){
-							$datos = array(starting_warehouse => $data['warehousefrom'], destination_warehouse => $data['warehouseto'], notes => $data['notes'],state => 1, shelter_id => $data['shelter']);
+							if($data['shelter']!=''){
+								$datos = array(starting_warehouse => $data['warehousefrom'], destination_warehouse => $data['warehouseto'], notes => $data['notes'],state => 1, shelter_id => $data['shelter']);
+							}else{
+								$datos = array(starting_warehouse => $data['warehousefrom'], destination_warehouse => $data['warehouseto'], notes => $data['notes'],state => 1);
+							}
 						}else{
-							$datos = array(destination_warehouse => $data['warehouseto'], notes => $data['notes'],state => 1, shelter_id => $data['shelter']);
+							if($data['shelter']!=''){
+								$datos = array(destination_warehouse => $data['warehouseto'], notes => $data['notes'],state => 1, shelter_id => $data['shelter']);
+							}else{
+								$datos = array(destination_warehouse => $data['warehouseto'], notes => $data['notes'],state => 1);
+							}
 						}					
 						$idtranfer=dbInsert("transfers",$datos);
 						if($idtranfer){
