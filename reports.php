@@ -1,5 +1,6 @@
 <?php $section = 'inicio'; ?>
 <?php include('includes/header.php'); ?>
+<?php $company_id = $_POST['compan']; ?>
 			<h2>Bienvenido</h2>
    			<h2>Puntos de Reorden de atencion Critica</h2>
             <table cellpadding="0" cellspacing="0"><thead>
@@ -43,6 +44,27 @@
             </tbody></table>
             
    			<h2>Solicitudes a Operadores Comerciales</h2>
+            <form name="datos" action="reports.php" method="post" enctype="application/x-www-form-urlencoded">
+					<div class="toolbar">
+						
+						<div class="input inline alignleft">Seleccione un operador Comercial</div>
+						<select name="compan" id="compan">
+                        		
+							<?php 
+							$query = "select * from companies where type=1";
+							$companies = runQuery($query);
+							$numRows = mysql_num_rows($companies);
+							if($numRows > 0){
+							while($company = mysql_fetch_array($companies)){
+							?>
+							<option value="<?php echo $company['id']; ?>"><?php echo $company['name']; ?></option>
+							<?php } 
+							}
+							?>
+						</select>
+						<input type="submit" class="btn" value="Consultar" name="bt-consulta" />
+					</div>
+
             <table cellpadding="0" cellspacing="0"><thead>
             	<tr>
                 	<th>Operador</th>
@@ -51,11 +73,11 @@
                 </tr></thead><tbody>
                 <?php
 
-					$query = "SELECT DISTINCT(sequence),bill FROM products_donations_tranfers, products_donations pd,donations d WHERE pd.id=product_donation_id AND donations_id=sequence";
-					if($company_id=''){
-					$query.="AND companies_id=$company_id";	
+					$query = "SELECT DISTINCT(sequence),bill,companies_id FROM products_donations_tranfers, products_donations pd,donations d WHERE pd.id=product_donation_id AND donations_id=sequence";
+					
+					if($company_id){
+					$query.=" AND companies_id=$company_id";	
 					}
-					 
 					$companies = runQuery($query);
 					
 
@@ -65,7 +87,7 @@
 				
 				?>
                 <tr>
-                	<td><?php $company_name = getTable('companies',"id = 44444444",'',1);
+                	<td><?php $company_name = getTable('companies',"id = $company[companies_id]",'',1);
 					echo $company_name['name']; ?></td>
                     <td><?php echo $company['bill']; ?></td>
                     <td>
@@ -90,4 +112,5 @@
 					}
 				?>
             </tbody></table>
+            </form>       
 <?php include('includes/footer.php'); ?>
