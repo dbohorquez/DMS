@@ -1028,9 +1028,9 @@ function addDistribution($data){
 										addStatesChanges ($row['id'],7,$_SESSION['dms_id'],'Se envio desde el operador de distribucion '.$company);
 									}
 								}else if ($data['state']==1){//si el estado es programada
-									addStatesChanges ($row['id'],8,$_SESSION['dms_id'],'En distribucion programada desde la bodega '.$warehouse.'al operador '.$company);
+									addStatesChanges ($row['id'],8,$_SESSION['dms_id'],'En distribucion programada desde la bodega '.$warehouse.' al operador '.$company);
 								}else{// si ninguna de las anteriores entonces pasa a pendiente
-									addStatesChanges ($row['id'],9,$_SESSION['dms_id'],'En distribucion pendiente de la bodega '.$warehouse.'al operador '.$company);
+									addStatesChanges ($row['id'],9,$_SESSION['dms_id'],'En distribucion pendiente de la bodega '.$warehouse.' al operador '.$company);
 								}
 							}	
 						}
@@ -1061,6 +1061,7 @@ function validateExistenceProduct($data){
 }
 function editDistribution($data){
 	if($data['state'] != ""){
+		echo $data['state'];
 		$datos = array(state => $data['state']);
 			if(dbUpdate("distributions",$datos,"id=$data[id]")){				
 				$query = "select id from products_donations  where id in (select products_donations_id from products_donations_distributions where distributions_id = $data[id])";
@@ -1072,9 +1073,9 @@ function editDistribution($data){
 							addStatesChanges ($row['id'],7,$_SESSION['dms_id'],'Se envio desde el operador de distribucion '.$company);
 						}
 					}else if ($data['state']==1){//si el estado es programada
-						addStatesChanges ($row['id'],8,$_SESSION['dms_id'],'En distribucion programada desde la bodega '.$warehouse.'al operador '.$company);
+						addStatesChanges ($row['id'],8,$_SESSION['dms_id'],'En distribucion programada desde la bodega '.$warehouse.' al operador '.$company);
 					}else{// si ninguna de las anteriores entonces pasa a pendiente
-						addStatesChanges ($row['id'],9,$_SESSION['dms_id'],'En distribucion pendiente de la bodega '.$warehouse.'al operador '.$company);
+						addStatesChanges ($row['id'],9,$_SESSION['dms_id'],'En distribucion pendiente de la bodega '.$warehouse.' al operador '.$company);
 					}
 				}
 				$success = "La distribución fue agregada exitosamente.";	

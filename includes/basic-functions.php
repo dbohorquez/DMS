@@ -40,7 +40,6 @@ function dbUpdate($table,$changes,$condition){
 	//$changes: Array de campos con sus respectivos valores
 	
 	$query = "update " . $table . " set ";
-	
 	foreach($changes as $field => $value){
 		$query .= $field . "='{$value}',";
 	}
