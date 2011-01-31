@@ -20,7 +20,7 @@
                 	  <th>Operador de Distribución</th>
                     <th>Bodega</th>
                     <th>Fecha</th>
-                    <th>Destino</th>
+                    <th>Beneficiario</th>
                     <th width="50">&nbsp;</th>
                 </tr></thead><tbody>
                 <?php
@@ -30,7 +30,7 @@
 						while($distribution = mysql_fetch_array($distributions)){
 							$company = getTable('companies',"id = $distribution[companies_id]",'',1);
 							$warehouse = getTable('warehouses',"id = $distribution[warehouses_id]",'',1);
-							$shelter = getTable('shelters',"id = $distribution[shelter_id]")
+							$shelter = getTable('shelters',"id = $distribution[shelter_id]",'',1)
 				?>
                 <tr>
                 	<td><?php echo $company['name']; ?></td>
@@ -40,8 +40,11 @@
                     <td>
                     <?php if($rol== 1 || $rol== 2){?>
                     	<ul class="table-actions">
-                        	<li><a href="includes/forms/distributionsEdit.php?e=<?php echo $distribution['id']; ?>&us=<?php echo $_SESSION['dms_id']?>" class="icon edit colorbox" title="Editar"><span>Editar</span></a></li>
-                            <li><a href="includes/forms/delete.php?t=distributions&d=<?php echo $distribution['id']; ?>" class="icon delete colorbox" title="Eliminar"><span>Eliminar</span></a></li>
+												 <?php if($distribution['state'] ==  2 ) { ?>
+                        		<li><a href="includes/forms/distributionsEdit.php?e=<?php echo $distribution['id']; ?>&us=<?php echo $_SESSION['dms_id']?>" class="icon view colorbox" title="Editar"><span>Ver</span></a></li>												
+													<?php }else{ ?>
+                        		<li><a href="includes/forms/distributionsEdit.php?e=<?php echo $distribution['id']; ?>&us=<?php echo $_SESSION['dms_id']?>" class="icon edit colorbox" title="Editar"><span>Editar</span></a></li>
+													<?php }end ?>
                         </ul>
 
 					<?php } ?>

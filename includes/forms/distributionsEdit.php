@@ -22,8 +22,8 @@
 ?>
 
 <div class="medium">
-	<h3>Editar Distribución</h3>
-    <p>Los datos marcados con  <span class="required">*</span> son obligatorios</p>
+	<h3><?php echo $distribution['state'] == 2 ? "Ver" : "Editar" ?> Distribución</h3>
+      <?php if ($distribution['state'] != 2) { ?><p>Los datos marcados con  <span class="required">*</span> son obligatorios</p> <?php } ?>
 		<div id="errorMessage" class="error"> </div>
 
     <form action="distribution.php" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateColorboxForm();">
@@ -38,12 +38,16 @@
         </div>
         <div class="column c50p last">
             <fieldset>
+							<?php if ($distribution['state'] != 2) { ?>
                 <label for="state">Estado: <span class="required">*</span></label>
                 <select name="state" id="state">
                     <option value="1"<?php if($distribution['state'] == 1){ ?> selected="selected"<?php } ?>>Programada</option>
                     <option value="2"<?php if($distribution['state'] == 2){ ?> selected="selected"<?php } ?>>Entregada</option>
                     <option value="3"<?php if($distribution['state'] == 3){ ?> selected="selected"<?php } ?>>Pendiente</option>
                 </select>
+							<?php } else { ?>
+								<p><strong>Estado: </strong>Entregado</p>
+							<?php } ?>
             </fieldset>
         </div>
 				<div class="clear"></div>
@@ -76,13 +80,17 @@
 			   </table>
 		   </div>		
        <fieldset class="clear">
-        <?php 
-		$rol=isAnyRol($userid);
-		if($rol== 1 || $rol== 2){?>
-  	    <input type="submit" class="btn clear" value="Guardar Cambios" name="bt-edit" />
-        <?php } ?>
-        <span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
-        </fieldset>
+        <?php
+					if ($distribution['state'] != 2) { 
+						$rol=isAnyRol($userid);
+						if($rol== 1 || $rol== 2){?>
+  	    			<input type="submit" class="btn clear" value="Guardar Cambios" name="bt-edit" />
+         		<?php } ?>
+        		<span class="cancel">o <a href="javascript:void(0);" onClick="$.colorbox.close()">Cancelar</a></span>
+         <?php } else { ?>
+					 	<input type="button" class="btn clear" value="Ok" onClick="$.colorbox.close()" />
+	         <?php } ?>
+				</fieldset>
     </form>
     <script type="text/javascript">
 		$('.datepicker').datepicker($.datepicker.regional[ "es" ],{
