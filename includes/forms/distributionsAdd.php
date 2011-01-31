@@ -112,5 +112,26 @@
 				updateElm('#quantity','includes/data/productQuantity.php?p=' + ui.item.value);
 			}
 		});
+		
+		$("#add").click(function() {
+			$('#warehouse').attr("disabled","disabled")
+		})
+		
+		$('#warehouse').change(function () {		
+			warehouse_id = $(this).val()
+			$.ajax({
+				type	 : 'POST', 
+				url      : "includes/data/getProductNames.php",
+				dataType : "text",
+				data     : { warehouse : warehouse_id },
+				success  : function(msg){
+					if (msg != "error"){
+						newData = msg.replace('"',"").split(",")
+						$('#product').autocomplete( "option", "source",newData)
+					}
+				}
+			})
+
+		})
 	</script>
 </div>
