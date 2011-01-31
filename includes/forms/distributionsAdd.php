@@ -45,7 +45,7 @@
             </fieldset>
 						 <fieldset>
 	                <label for="shelter">Beneficiarios:</label>
-	         				<select name="company" id="company">
+	         				<select name="shelter" id="shelter">
 	                <?php
 	                    $shelters = getTable('shelters','deletedAt IS NULL','name asc');
 	                    while($shelter = mysql_fetch_array($shelters)){
