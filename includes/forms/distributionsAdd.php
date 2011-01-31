@@ -21,7 +21,7 @@
 			}
 		?>
         <div class="column c50p">
-            <fieldset>
+						<fieldset>
                 <label for="warehouse">Bodega: <span class="required">*</span></label>
                 <select name="warehouse" id="warehouse">
                 <?php
@@ -108,9 +108,29 @@
 			source: data,
 			mustMatch: true,
 			select: function(event, ui){
+				var warehouse_val = $("#warehouse").val();
 				$('#add').show();
-				updateElm('#quantity','includes/data/productQuantity.php?p=' + ui.item.value);
+				updateElm('#quantity','includes/data/productQuantity.php?p=' + ui.item.value+"&w="+warehouse_val);
 			}
 		});
+			
+		$('#warehouse').change(function () {		
+			$("input[type=hidden]").remove();
+			$(".product-list").html("");
+			warehouse_id = $(this).val()
+			$.ajax({
+				type	 : 'POST', 
+				url      : "includes/data/getProductNames.php",
+				dataType : "text",
+				data     : { warehouse : warehouse_id },
+				success  : function(msg){
+					if (msg != "error"){
+						newData = msg.replace('"',"").split(",")
+						$('#product').autocomplete( "option", "source",newData)
+					}
+				}
+			})
+
+		})
 	</script>
 </div>
