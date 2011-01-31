@@ -452,7 +452,7 @@ function transferProducts ($data){
 						if($idtranfer){
 							$success = "La transferencia fue  exitosa.";
 						}else{
-							$warning = "No agregó ningun producto para tranferir. Por favor inténtelo nuevamente.";
+							$warning = "No agregó ningun producto para transferir. Por favor inténtelo nuevamente.";
 							return array($warning, $success);
 						}
 					}
@@ -471,9 +471,9 @@ function transferProducts ($data){
 						$update=dbUpdate(products_donations,array(warehouses_id => $warehouse),"id=$row[id]");
 						// se ingresa el cambio de estado del producto
 						if($data[warehouse]!=-1){
-							addStatesChanges ($row[id],1,$_SESSION['dms_id'],$reason = 'Tranferencia desde la bodega '.$data[warehouse]);
+							addStatesChanges ($row[id],1,$_SESSION['dms_id'],$reason = 'Transferencia desde la bodega '.$data[warehouse]);
 						}else{
-							addStatesChanges ($row[id],1,$_SESSION['dms_id'],$reason = 'Tranferencia desde la bodega virtual');
+							addStatesChanges ($row[id],1,$_SESSION['dms_id'],$reason = 'Transferencia desde la bodega virtual');
 						}
 						
 					}
@@ -1017,7 +1017,7 @@ function addDistribution($data){
 							$qtyname = 'citem' . substr($key,-7);
 							$qty = $data[$qtyname];
 							$idp = findRow('products','name',"'".$value."'",'id');
-							$query = "select * from products_donations where products_id=$idp and state in (1) order by expirationDate limit $qty";
+							$query = "select * from products_donations where deletedAt is null and warehouses_id = $warehouse and products_id = $idp and state in (1) order by expirationDate limit $qty";
 							$result= runQuery($query);
 							while($result and $row = mysql_fetch_array($result)){
 								$datos = array(products_donations_id => $row['id'], distributions_id =>$id);
@@ -1339,7 +1339,7 @@ function receiveDonationPromise($data){
 				$warehouse = exists("warehouses","id=$data[warehouse]");	
 				//$company = exists("companies","id=$data[company]");	
 				if($warehouse){
-					$datos = array(warehouses_id => $warehouse, companies_id  => $company , bill => $data['bill'], type => 1, detail => "Se tranfirio de bodega de promesas por el usuario ".$_SESSION['dms_id']);
+					$datos = array(warehouses_id => $warehouse, companies_id  => $company , bill => $data['bill'], type => 1, detail => "Se transfirio de bodega de promesas por el usuario ".$_SESSION['dms_id']);
 					if(dbUpdate("donations",$datos,"sequence=$data[id]")){
 						foreach($data as $key => $value){
 							if(substr($key,0,5) == 'hitem'){
@@ -1352,7 +1352,7 @@ function receiveDonationPromise($data){
 									$query = "select * from products_donations where deletedAt is null and products_id=$idp and donations_id=$data[id]";
 									$result= runQuery($query);
 									while($result and $row = mysql_fetch_array($result)){
-										addStatesChanges ($row['id'],1,$_SESSION['dms_id'],$reason ='Se tranfirio a la bodega '.$warehouse);
+										addStatesChanges ($row['id'],1,$_SESSION['dms_id'],$reason ='Se transfirio a la bodega '.$warehouse);
 									}
 								}
 								$qtyreal=getProductQuantity($value,$data['id']);
