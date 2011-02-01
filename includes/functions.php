@@ -1027,7 +1027,7 @@ function addDistribution($data){
 							while($result and $row = mysql_fetch_array($result)){
 								$datos = array(products_donations_id => $row['id'], distributions_id =>$id);
 								$idlist = dbInsert("products_donations_distributions",$datos);
-								if($data['state']==2){// si el estao es entregada
+								if($data['state']==2){// si el estado es entregada
 									addStatesChanges ($row['id'],5,$_SESSION['dms_id'],'Se distribuyo desde la bodega '.$warehouse);
 									if($data['shelter']!=''){
 										addStatesChanges ($row['id'],7,$_SESSION['dms_id'],'Se envio desde el operador de distribucion '.$company);
@@ -1066,7 +1066,6 @@ function validateExistenceProduct($data){
 }
 function editDistribution($data){
 	if($data['state'] != ""){
-		echo $data['state'];
 		$datos = array(state => $data['state']);
 			if(dbUpdate("distributions",$datos,"id=$data[id]")){				
 				$query = "select id from products_donations  where id in (select products_donations_id from products_donations_distributions where distributions_id = $data[id])";
