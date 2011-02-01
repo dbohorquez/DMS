@@ -77,6 +77,11 @@ function getDistributionProducts($id){
 	return $products;
 }
 
+function getTransferProducts($id){
+	$query = "SELECT p.*, pd.*, pdt.*, t.*, COUNT(p.id) quantity FROM  transfer t, products_donations_tranfers pdt, products_donations pd, products p WHERE pd.deletedAt IS NULL AND d.id = pdt.tranfer_id AND pdt.products_donations_id = pd.id AND pd.products_id = p.id AND t.id = $id GROUP BY p.id ORDER BY p.name asc";
+	$products = runQuery($query);
+	return $products;
+}
 
 function findRow($table,$identifier,$id,$field){
 	$query = "select * from $table where $identifier=$id";
