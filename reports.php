@@ -3,7 +3,6 @@
 <?php 
 	$company_id = $_POST['compan']; 
 	$product_name = $_POST['product']; 
-	echo $product_name;
 	if($product_name!='')
 	{
 	$product_id = findRow('products','name',"'".$product_name."'",'id');	
@@ -146,30 +145,17 @@
                 <?php
 
 				
-					if($product_id){
-					$query.="select * from productos where id=".$product_id;	
-
-					$companies = runQuery($query);
-					$numRows = mysql_num_rows($companies);
+					if($product_id!= ''){
+					$query="SELECT COUNT(*) AS cont FROM products_donations WHERE products_id=".$product_id." AND state = 1 ";	
+					$conts = runQuery($query);
+					$numRows = mysql_num_rows($conts);
 					if($numRows > 0){
-						while($company = mysql_fetch_array($companies)){
+						while($cont = mysql_fetch_array($conts)){
 				
 				?>
                 <tr>
                 	<td><?php echo $product_name;?></td>
-                    <td><?php echo $ca; ?></td>
-                    <td>
-                    <?php
-					$query = "SELECT name, COUNT(name) AS quantity FROM products_donations_tranfers, products_donations pd, products p WHERE pd.id=product_donation_id AND donations_id=$company[sequence] AND products_id=p.id GROUP BY p.name";
-							$count = runQuery($query);
-							echo "<ul>";
-
-							while($row = mysql_fetch_array($count)){
-							echo "<li>$row[name]: $row[quantity] unidades</li>";
-							}
-							echo "</ul>";
-					?>
-                    </td>
+                    <td><?php echo $cont['cont']; ?></td>
                 </tr>
                 <?php
 							
