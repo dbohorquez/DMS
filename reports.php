@@ -1,6 +1,20 @@
 <?php $section = 'inicio'; ?>
 <?php include('includes/header.php'); ?>
-<?php $company_id = $_POST['compan']; ?>
+<?php 
+	$company_id = $_POST['compan']; 
+	$product_name = $_POST['product']; 
+	echo $product_name;
+	if($product_name!='')
+	{
+	$product_id = findRow('products','name',"'".$product_name."'",'id');	
+	}
+	
+	$products = getTable('products','','name asc');
+	$data = '';
+	while($product = mysql_fetch_array($products)){
+		$data .= '"' . $product['name'] . '",';
+	}
+?>
 			<h2>Bienvenido</h2>
    			<h2>Puntos de Reorden de atencion Critica</h2>
             <table cellpadding="0" cellspacing="0"><thead>
@@ -113,4 +127,73 @@
 				?>
             </tbody></table>
             </form>       
+
+   			<h2>Productos en Bodega</h2>
+            <form name="datos" action="reports.php" method="post" enctype="application/x-www-form-urlencoded">
+					<div class="toolbar">
+						
+						<div class="input inline alignleft">Digite un Producto</div>
+	                    <input type="text" class="text autocomplete" size="20" name="product" id="product" />
+
+						<input type="submit" class="btn" value="Consultar" name="bt-consulta" />
+					</div>
+
+            <table cellpadding="0" cellspacing="0"><thead>
+            	<tr>
+                	<th>Producto</th>
+                    <th>Cantidad</th>
+                </tr></thead><tbody>
+                <?php
+
+				
+					if($product_id){
+					$query.="select * from productos where id=".$product_id;	
+
+					$companies = runQuery($query);
+					$numRows = mysql_num_rows($companies);
+					if($numRows > 0){
+						while($company = mysql_fetch_array($companies)){
+				
+				?>
+                <tr>
+                	<td><?php echo $product_name;?></td>
+                    <td><?php echo $ca; ?></td>
+                    <td>
+                    <?php
+					$query = "SELECT name, COUNT(name) AS quantity FROM products_donations_tranfers, products_donations pd, products p WHERE pd.id=product_donation_id AND donations_id=$company[sequence] AND products_id=p.id GROUP BY p.name";
+							$count = runQuery($query);
+							echo "<ul>";
+
+							while($row = mysql_fetch_array($count)){
+							echo "<li>$row[name]: $row[quantity] unidades</li>";
+							}
+							echo "</ul>";
+					?>
+                    </td>
+                </tr>
+                <?php
+							
+				
+						}
+					}else{
+						echo '<tr><td colspan="5">No hay datos para mostrar</td></tr>';
+					}
+					}else{
+						echo '<tr><td colspan="5">No hay datos para mostrar</td></tr>';
+					}
+				?>
+            </tbody></table>
+            </form>       
+		<script>
+		var data = [<?php echo $data; ?>];
+		$('#product').autocomplete({
+			source: data,
+			mustMatch: true,
+			select: function(event, ui){
+				$('#add').show();
+			}
+		});
+		</script>
+
+
 <?php include('includes/footer.php'); ?>
