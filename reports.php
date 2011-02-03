@@ -4,6 +4,7 @@
 	$company_id = $_POST['compan']; 
 	$warehouse_id = $_POST['warehouse']; 
 	$product_name = $_POST['product']; 
+	$company_warehouse_id = $_POST['compan_ware']; 
 	if($product_name!='')
 	{
 	$product_id = findRow('products','name',"'".$product_name."'",'id');	
@@ -233,6 +234,72 @@
 				?>
             </tbody></table>
             </form>       
+
+   			<h2>Productos por Compañia</h2>
+            <form name="datos" action="reports.php" method="post" enctype="application/x-www-form-urlencoded">
+					<div class="toolbar">
+						<div class="input inline alignleft">Seleccione un operador Comercial</div>
+						<select name="compan_ware" id="compan_ware">
+                        		
+							<?php 
+							$query = "select * from companies where type=1";
+							$companies = runQuery($query);
+							$numRows = mysql_num_rows($companies);
+							if($numRows > 0){
+							while($company = mysql_fetch_array($companies)){
+							?>
+							<option value="<?php echo $company['id']; ?>"><?php echo $company['name']; ?></option>
+							<?php } 
+							}
+							?>
+						</select>
+
+						<input type="submit" class="btn" value="Consultar" name="bt-consulta" />
+					</div>
+
+            <table cellpadding="0" cellspacing="0"><thead>
+            	<tr>
+                	<th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Bodega</th>
+                </tr></thead><tbody>
+                <?php
+
+					
+					if($company_warehouse_id){
+					$query = "SELECT COUNT(*) AS cont, products_id,name FROM products_donations,warehouses w WHERE warehouses_id=w.id and companies_id=".$company_warehouse_id." AND state=1 GROUP BY products_id";
+	
+	
+					$warehouses = runQuery($query);
+					
+
+					$numRows = mysql_num_rows($warehouses);
+					if($numRows > 0){
+						while($warehouse = mysql_fetch_array($warehouses)){
+				
+				?>
+                <tr>
+                	<td><?php $product_name = getTable('products',"id = $warehouse[products_id]",'',1);
+					echo $product_name['name']; ?></td>
+                    <td><?php echo $warehouse['cont']; ?></td>
+                    <td><?php echo $warehouse['name']; ?></td>
+                </tr>
+                <?php
+							
+				
+						}
+					}else{
+						echo '<tr><td colspan="5">No hay datos para mostrar</td></tr>';
+					}
+					}else{
+						echo '<tr><td colspan="5">No hay datos para mostrar</td></tr>';
+					}
+	
+				?>
+            </tbody></table>
+            </form>       
+
+
  
 		<script>
 		var data = [<?php echo $data; ?>];
