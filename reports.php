@@ -2,6 +2,7 @@
 <?php include('includes/header.php'); ?>
 <?php 
 	$company_id = $_POST['compan']; 
+	$warehouse_id = $_POST['warehouse']; 
 	$product_name = $_POST['product']; 
 	if($product_name!='')
 	{
@@ -170,6 +171,69 @@
 				?>
             </tbody></table>
             </form>       
+            
+   			<h2>Productos por Bodega</h2>
+            <form name="datos" action="reports.php" method="post" enctype="application/x-www-form-urlencoded">
+					<div class="toolbar">
+						
+						<div class="input inline alignleft">Seleccione una Bodega</div>
+						<select name="warehouse" id="warehouse">
+                        		
+							<?php 
+							$query = "select * from warehouses";
+							$warehouses = runQuery($query);
+							$numRows = mysql_num_rows($warehouses);
+							if($numRows > 0){
+							while($warehouse = mysql_fetch_array($warehouses)){
+							?>
+							<option value="<?php echo $warehouse['id']; ?>"><?php echo $warehouse['name']; ?></option>
+							<?php } 
+							}
+							?>
+						</select>
+						<input type="submit" class="btn" value="Consultar" name="bt-consulta" />
+					</div>
+
+            <table cellpadding="0" cellspacing="0"><thead>
+            	<tr>
+                	<th>Producto</th>
+                    <th>Cantidad</th>
+                </tr></thead><tbody>
+                <?php
+
+					
+					if($warehouse_id){
+					$query = "SELECT COUNT(*) AS cont, products_id FROM products_donations WHERE warehouses_id=".$warehouse_id." AND state=1 GROUP BY products_id";
+	
+	
+					$warehouses = runQuery($query);
+					
+
+					$numRows = mysql_num_rows($warehouses);
+					if($numRows > 0){
+						while($warehouse = mysql_fetch_array($warehouses)){
+				
+				?>
+                <tr>
+                	<td><?php $product_name = getTable('products',"id = $warehouse[products_id]",'',1);
+					echo $product_name['name']; ?></td>
+                    <td><?php echo $warehouse['cont']; ?></td>
+                </tr>
+                <?php
+							
+				
+						}
+					}else{
+						echo '<tr><td colspan="5">No hay datos para mostrar</td></tr>';
+					}
+					}else{
+						echo '<tr><td colspan="5">No hay datos para mostrar</td></tr>';
+					}
+	
+				?>
+            </tbody></table>
+            </form>       
+ 
 		<script>
 		var data = [<?php echo $data; ?>];
 		$('#product').autocomplete({
