@@ -5,6 +5,7 @@
 	$warehouse_id = $_POST['warehouse']; 
 	$product_name = $_POST['product']; 
 	$company_warehouse_id = $_POST['compan_ware']; 
+	$donor_id = $_POST['donorId']; 
 	if($product_name!='')
 	{
 	$product_id = findRow('products','name',"'".$product_name."'",'id');	
@@ -298,11 +299,70 @@
 				?>
             </tbody></table>
             </form>       
+		
+        <h2>Información de Donantes</h2>
+            <form name="datos" action="reports.php" method="post" enctype="application/x-www-form-urlencoded">
+					<div class="toolbar">
+						
+						<label for="donorId">Número de Identificación:</label><input type="text" class="text autocomplete" id="donorId" name="donorId" />
+						<input type="submit" class="btn" value="Consultar" name="bt-consulta" />
+					</div>
 
+            <table cellpadding="0" cellspacing="0"><thead>
+            	<tr>
+                	<th>Consecutivo</th>
+                	<th>Donante</th>
+                    <th>Bodega</th>
+                    <th>Detalles</th>
+                </tr></thead><tbody>
+                <?php
 
+				
+					if($donor_id!= ''){
+					$query="SELECT * FROM donations WHERE donors_id=".$donor_id;
+					$donations = runQuery($query);
+					$numRows = mysql_num_rows($donations);
+					if($numRows > 0){
+						while($donation = mysql_fetch_array($donations)){
+							$donor = getTable('donors',"id = $donation[donors_id]",'',1);
+							$location = getItemLocation('donors',$donor['id']);
+							$types = array("","C.C.","C.E.","NIT");
+							$warehouse = getTable('warehouses',"id = $donation[warehouses_id]",'',1);
+				?>
+                <tr>
+                	<td><?php echo $donation['sequence']; ?></td>
+                    <td><?php echo $donor['name']; ?> (<?php echo $types[$donor['type']] . ': ' . $donor['id']; ?>)</td>
+                    <td><?php echo $warehouse['name']; ?><br />
+					<?php echo formatDate($donation['date']); ?></td>
+                    <td><?php echo $donation['bill'] != '' ? '<strong>Factura:</strong> ' . $donation['bill'] . '<br />' : ''; ?><?php echo $donation['detail']; ?>                </tr>
+                <?php
+							
+				
+						}
+					}else{
+						echo '<tr><td colspan="5">No hay datos para mostrar</td></tr>';
+					}
+					}else{
+						echo '<tr><td colspan="5">No hay datos para mostrar</td></tr>';
+					}
+				?>
+            </tbody></table>
+            </form>       
+
+		<?php
+                $donors = getTable('donors','','id asc');
+                $ddata = '';
+                while($donor = mysql_fetch_array($donors)){
+                    $ddata .= '"' . $donor['id'] . '",';
+				}
+        ?>
  
 		<script>
 		var data = [<?php echo $data; ?>];
+		var ddata = [<?php echo $ddata; ?>];
+				$('#donorId').autocomplete({
+					source: ddata
+				});
 		$('#product').autocomplete({
 			source: data,
 			mustMatch: true,
