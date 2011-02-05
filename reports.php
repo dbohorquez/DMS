@@ -17,8 +17,19 @@
 		$data .= '"' . $product['name'] . '",';
 	}
 ?>
-			<h2>Bienvenido</h2>
-   			<h2>Puntos de Reorden de atencion Critica</h2>
+			<h2>Reportes y Consultas</h2>
+      <?php if(!isset($_GET['r'])){ ?>
+      <ul>
+        <li><a href="reports.php?r=1">Puntos de Reorden de Atención Crítica</a></li>
+        <li><a href="reports.php?r=2">Solicitudes a Operadores Comerciales</a></li>
+        <li><a href="reports.php?r=3">Productos en Bodega</a></li>
+        <li><a href="reports.php?r=4">Productos por Bodega</a></li>
+        <li><a href="reports.php?r=5">Productos por Compañía</a></li>
+        <li><a href="reports.php?r=6">Información de Donantes</a></li>
+      </ul>
+      <?php }else{ ?>
+      <?php if($_GET['r'] == 1){ ?>
+   		<h3>Puntos de Reorden de Atención Crítica</h3>
             <table cellpadding="0" cellspacing="0"><thead>
             	<tr>
                 	<th>Producto</th>
@@ -58,9 +69,9 @@
 					}
 				?>
             </tbody></table>
-            
-   			<h2>Solicitudes a Operadores Comerciales</h2>
-            <form name="datos" action="reports.php" method="post" enctype="application/x-www-form-urlencoded">
+        <?php }elseif($_GET['r'] == 2){ ?> 
+   			<h3>Solicitudes a Operadores Comerciales</h3>
+            <form name="datos" action="reports.php?r=2" method="post" enctype="application/x-www-form-urlencoded">
 					<div class="toolbar">
 						
 						<div class="input inline alignleft">Seleccione un operador Comercial</div>
@@ -129,9 +140,9 @@
 				?>
             </tbody></table>
             </form>       
-
-   			<h2>Productos en Bodega</h2>
-            <form name="datos" action="reports.php" method="post" enctype="application/x-www-form-urlencoded">
+				<?php }elseif($_GET['r'] == 3){ ?> 
+   			<h3>Productos en Bodega</h3>
+            <form name="datos" action="reports.php?r=3" method="post" enctype="application/x-www-form-urlencoded">
 					<div class="toolbar">
 						
 						<div class="input inline alignleft">Digite un Producto</div>
@@ -173,9 +184,9 @@
 				?>
             </tbody></table>
             </form>       
-            
-   			<h2>Productos por Bodega</h2>
-            <form name="datos" action="reports.php" method="post" enctype="application/x-www-form-urlencoded">
+        <?php }elseif($_GET['r'] == 4){ ?>   
+   			<h3>Productos por Bodega</h3>
+            <form name="datos" action="reports.php?r=4" method="post" enctype="application/x-www-form-urlencoded">
 					<div class="toolbar">
 						
 						<div class="input inline alignleft">Seleccione una Bodega</div>
@@ -235,9 +246,9 @@
 				?>
             </tbody></table>
             </form>       
-
-   			<h2>Productos por Compañia</h2>
-            <form name="datos" action="reports.php" method="post" enctype="application/x-www-form-urlencoded">
+				<?php }elseif($_GET['r'] == 5){ ?> 
+   			<h3>Productos por Compañía</h3>
+            <form name="datos" action="reports.php?r=5" method="post" enctype="application/x-www-form-urlencoded">
 					<div class="toolbar">
 						<div class="input inline alignleft">Seleccione un operador Comercial</div>
 						<select name="compan_ware" id="compan_ware">
@@ -299,9 +310,9 @@
 				?>
             </tbody></table>
             </form>       
-		
-        <h2>Información de Donantes</h2>
-            <form name="datos" action="reports.php" method="post" enctype="application/x-www-form-urlencoded">
+				<?php }elseif($_GET['r'] == 6){ ?> 
+        <h3>Información de Donantes</h3>
+            <form name="datos" action="reports.php?r=6" method="post" enctype="application/x-www-form-urlencoded">
 					<div class="toolbar">
 						
 						<label for="donorId">Número de Identificación:</label><input type="text" class="text autocomplete" id="donorId" name="donorId" />
@@ -319,15 +330,15 @@
 
 				
 					if($donor_id!= ''){
-					$query="SELECT * FROM donations WHERE donors_id=".$donor_id;
-					$donations = runQuery($query);
-					$numRows = mysql_num_rows($donations);
-					if($numRows > 0){
-						while($donation = mysql_fetch_array($donations)){
-							$donor = getTable('donors',"id = $donation[donors_id]",'',1);
-							$location = getItemLocation('donors',$donor['id']);
-							$types = array("","C.C.","C.E.","NIT");
-							$warehouse = getTable('warehouses',"id = $donation[warehouses_id]",'',1);
+						$query="SELECT * FROM donations WHERE donors_id=".$donor_id;
+						$donations = runQuery($query);
+						$numRows = mysql_num_rows($donations);
+						if($numRows > 0){
+							while($donation = mysql_fetch_array($donations)){
+								$donor = getTable('donors',"id = $donation[donors_id]",'',1);
+								$location = getItemLocation('donors',$donor['id']);
+								$types = array("","C.C.","C.E.","NIT");
+								$warehouse = getTable('warehouses',"id = $donation[warehouses_id]",'',1);
 				?>
                 <tr>
                 	<td><?php echo $donation['sequence']; ?></td>
@@ -338,17 +349,18 @@
                 <?php
 							
 				
+							}
+						}else{
+							echo '<tr><td colspan="5">No hay datos para mostrar</td></tr>';
 						}
-					}else{
-						echo '<tr><td colspan="5">No hay datos para mostrar</td></tr>';
-					}
 					}else{
 						echo '<tr><td colspan="5">No hay datos para mostrar</td></tr>';
 					}
 				?>
             </tbody></table>
-            </form>       
-
+            </form>    
+            <?php } ?>
+            <?php } ?>   
 		<?php
                 $donors = getTable('donors','','id asc');
                 $ddata = '';
@@ -356,7 +368,6 @@
                     $ddata .= '"' . $donor['id'] . '",';
 				}
         ?>
- 
 		<script>
 		var data = [<?php echo $data; ?>];
 		var ddata = [<?php echo $ddata; ?>];

@@ -132,6 +132,8 @@ body, input, textarea, select{
 	width:200px;
 }
 
+#nav ul.large{width:300px;}
+
 #nav li:hover ul{
 	display:block;
 }

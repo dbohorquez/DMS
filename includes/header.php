@@ -36,41 +36,47 @@ if($section != 'login' && !isset($_SESSION['dms_authorized'])){ header('Location
             <?php if($section != 'login'){ 
 			$rol=isAnyRol($_SESSION['dms_id']);
 			?>
-            
-					
             <ul id="nav">
                 <li<?php if($section == 'home'){ ?> class="active"<?php } ?>><a href="index.php">Inicio</a></li>
                 <?php if($rol== 1 || $rol== 2){?>
                 <li<?php if($section == 'warehouses'){ ?> class="active"<?php } ?>><?php if($rol== 1){?><a href="warehouses.php">Bodegas</a><?php }?>
 	                <ul>
-                      <li><a href="transfers.php">Transferencias</a></li>
-                      <li><a href="products_checkpoint.php">Puntos de reorden</a></li>
-                    </ul>
+                    <li><a href="transfers.php">Transferencias</a></li>
+                    <li><a href="products_checkpoint.php">Puntos de Reorden</a></li>
+                  </ul>
                 </li>
                 <?php }?>
                 <li<?php if($section == 'products'){ ?> class="active"<?php } ?>><a href="products.php">Productos</a>
                 	<ul>
-                    	<li><a href="categories.php">Categorías</a></li>
-                      <li><a href="producttypes.php">Tipos</a></li>
-                      <li><a href="kits.php">Kits</a></li>
-											<li><a href="goals.php">Metas</a></li>
+                    <li><a href="categories.php">Categorías</a></li>
+                    <li><a href="producttypes.php">Tipos</a></li>
+                    <li><a href="kits.php">Kits</a></li>
+                    <li><a href="goals.php">Metas</a></li>
                   </ul>
                 </li>
                 <li<?php if($section == 'companies'){ ?> class="active"<?php } ?>><a href="companies.php">Operadores</a></li>
                 <li<?php if($section == 'donations'){ ?> class="active"<?php } ?>><a <?php if($rol== 5 || $rol== 1){?>href="donations.php"<?php }?>>Donaciones</a>
                 	<ul>
-                    	 <?php if($rol== 6 || $rol== 1){?><li><a href="virtual-receptions.php">Donación Virtual</a></li><?php }?>
-                      <li><a href="donation-checkin.php">Comprobantes DV</a></li>
-                    	<li><a href="donations-promises.php">Promesas de Donación</a></li>
-                      <li><a href="donors.php">Donantes</a></li>
-                    </ul>
+										 <?php if($rol== 6 || $rol== 1){?><li><a href="virtual-receptions.php">Donación Virtual</a></li><?php }?>
+                    <li><a href="donation-checkin.php">Comprobantes DV</a></li>
+                    <li><a href="donations-promises.php">Promesas de Donación</a></li>
+                    <li><a href="donors.php">Donantes</a></li>
+                  </ul>
                 </li>
                 <li<?php if($section == 'distribution'){ ?> class="active"<?php } ?>><a href="distribution.php">Distribución</a>
                 	<ul>
                     	<li><a href="beneficiaries.php">Beneficiarios</a></li>
                     </ul>
                 </li>
-                <li<?php if($section == 'reports'){ ?> class="active"<?php } ?>><a href="reports.php">Reportes y consultas</a>
+                <li<?php if($section == 'reports'){ ?> class="active"<?php } ?>><a href="reports.php">Reportes y Consultas</a>
+                	<ul class="large">
+                    <li><a href="reports.php?r=1">Puntos de Reorden de Atención Crítica</a></li>
+                    <li><a href="reports.php?r=2">Solicitudes a Operadores Comerciales</a></li>
+                    <li><a href="reports.php?r=3">Productos en Bodega</a></li>
+                    <li><a href="reports.php?r=4">Productos por Bodega</a></li>
+                    <li><a href="reports.php?r=5">Productos por Compañía</a></li>
+                    <li><a href="reports.php?r=6">Información de Donantes</a></li>
+                  </ul>
                 </li>
             </ul>
             <ul id="options">
