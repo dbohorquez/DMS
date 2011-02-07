@@ -16,7 +16,7 @@
 						ON products.id=products_donations.products_id
 						LEFT JOIN donations
 						ON donations.sequence=products_donations.donations_id
-						WHERE  products_donations.state=2 AND products_donations.deletedAt IS NULL AND donations.companies_id=$_POST['company']
+						WHERE  products_donations.state=2 AND products_donations.deletedAt IS NULL AND donations.companies_id=$_POST[company]
 						GROUP BY products.id, products.name
 						ORDER BY products.name";
 		}

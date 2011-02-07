@@ -17,7 +17,6 @@
 							WHERE  products_donations.state=2 AND products_donations.deletedAt IS NULL AND donations.companies_id= $company[id]
 							GROUP BY products.id, products.name
 							ORDER BY products.name";
-							echo $query;
 				$products = runQuery($query);
 				$data = '';
 				$userid = $_GET['us']; 
@@ -157,6 +156,26 @@
 			
 			
 		}) 
+		
+			$('#company').change(function () {		
+				company_id = $(this).val()
+				warehouse_id = $("#warehouseto").val()
+
+				$.ajax({
+					type	 : 'POST', 
+					url      : "includes/data/getProductNames.php",
+					dataType : "text",
+					data     : { warehouse : warehouse_id, company : company_id },
+					success  : function(msg){
+						if (msg != "error"){
+							newData = msg.replace('"',"").split(",")
+							$('#product').autocomplete( "option", "source",newData)
+						}
+					}
+				})
+
+
+			})
 		
 	</script>
 </div>
