@@ -159,7 +159,7 @@
 		
 			$('#company').change(function () {		
 				company_id = $(this).val()
-				warehouse_id = $("#warehouseto").val()
+				warehouse_id = $("#warehousefrom").val()
 
 				$.ajax({
 					type	 : 'POST', 
