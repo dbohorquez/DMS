@@ -37,7 +37,7 @@
 									<td><?php echo $transfer['notes']; ?></td>
 									<td>
                  		<ul class="table-actions">
-                    	<li><a href="includes/forms/transferView.php?t=<?php echo $transfers['id']; ?>" class="icon view colorbox" title="Ver"><span>Ver</span></a></li>
+                    	<li><a href="includes/forms/transfersView.php?t=<?php echo $transfer['id']; ?>" class="icon view colorbox" title="Ver"><span>Ver</span></a></li>
                   	</ul>	
             			</td>
 								</tr>
