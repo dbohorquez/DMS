@@ -34,7 +34,19 @@
                 <?php } ?>
                 </select>
             </fieldset>
-                        <fieldset>
+						<fieldset>
+                <label for="company">Operador comercial: <span class="required">*</span></label>
+                <select name="company" id="company">
+                <?php
+                    $companies = getTable('companies','type = 1 and deletedAt IS NULL','name asc');
+                    while($company = mysql_fetch_array($companies)){
+                ?>
+                    <option value="<?php echo $company['id']; ?>"><?php echo $company['name']; ?></option>
+                <?php } ?>
+                </select>
+            </fieldset>
+
+            <fieldset>
                 <label for="warehouseto">Bodega Destino: <span class="required">*</span></label>
                 <select name="warehouseto" id="warehouseto">
                 <?php
@@ -45,8 +57,6 @@
                 <?php } ?>
                 </select>
             </fieldset>
-
-            
         </div>
         <div class="column c50p last">
         <fieldset>
@@ -116,8 +126,13 @@
 			 selValue = $(this).children(":selected").val()
 		   $("#warehouseto").children().show()
 			 if (selValue != -1){
-				$("#warehouseto").children("option[value='"+selValue+"']").hide()
-			}
+					$("#warehouseto").children("option[value='"+selValue+"']").hide()
+					$("#company").parent().hide()
+					company_id = ""
+				}else{
+					$("#company").parent().show()
+					company_id = $("#company").val()
+				}
 			$("#warehouseto").children(":visible:first").attr("selected","selected")
 			warehouse_id = $(this).val()
 			
@@ -125,7 +140,7 @@
 				type	 : 'POST', 
 				url      : "includes/data/getProductNames.php",
 				dataType : "text",
-				data     : { warehouse : warehouse_id },
+				data     : { warehouse : warehouse_id, company : company_id },
 				success  : function(msg){
 					if (msg != "error"){
 						newData = msg.replace('"',"").split(",")
