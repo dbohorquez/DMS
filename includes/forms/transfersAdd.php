@@ -6,18 +6,24 @@
     <form action="transfers.php" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateColorboxForm();"> 
     	<?php
 			include('../functions.php');
-			$query = "SELECT  products.id, products.name, COUNT(products_donations.id)
-				FROM products
-				INNER JOIN products_donations
-				ON products.id=products_donations.products_id
-				WHERE products_donations.state=2 AND products_donations.deletedAt IS NULL
-				GROUP BY products.id, products.name
-				ORDER BY products.name";
-			$products = runQuery($query);
-			$data = '';
-			$userid = $_GET['us']; 
-			while($product = mysql_fetch_array($products)){
-				$data .= '"' . $product['name'] . '",';
+			$companies = getTable('companies','type = 1 and deletedAt IS NULL','name asc');
+        	 if($company = mysql_fetch_array($companies)){
+				$query = "SELECT  products.id, products.name, COUNT(products_donations.id)
+							FROM products
+							INNER JOIN products_donations
+							ON products.id=products_donations.products_id
+							LEFT JOIN donations
+							ON donations.sequence=products_donations.donations_id
+							WHERE  products_donations.state=2 AND products_donations.deletedAt IS NULL AND donations.companies_id= $company[id]
+							GROUP BY products.id, products.name
+							ORDER BY products.name";
+							echo $query;
+				$products = runQuery($query);
+				$data = '';
+				$userid = $_GET['us']; 
+				while($product = mysql_fetch_array($products)){
+					$data .= '"' . $product['name'] . '",';
+				}
 			}
 		?>
         <div class="column c50p">
