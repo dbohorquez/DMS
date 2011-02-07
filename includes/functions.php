@@ -83,6 +83,7 @@ function getTransferProducts($id){
 	return $products;
 }
 
+
 function findRow($table,$identifier,$id,$field){
 	$query = "select * from $table where $identifier=$id";
 	$result = runQuery($query);
@@ -433,91 +434,101 @@ function transferProducts ($data){
 	if($data['warehouseto'] != "" ){
 		$warehouse = exists("warehouses","id='$data[warehouseto]'");	
 		if($warehouse){
-			$sw=false;
-			foreach($data as $key => $value){
-			//se busca si el usuario elijio productos
-				if(substr($key,0,5) == 'hitem'){
-					if($sw==false){
-						$sw=true;
-						// si hay productos se ingresa la tranferencia a la que se le van asociar los productos
-						if($data['warehousefrom']!=-1){
-							if($data['shelter']!=''){
-								$datos = array(starting_warehouse => $data['warehousefrom'], destination_warehouse => $data['warehouseto'], notes => $data['notes'],state => 1, shelter_id => $data['shelter']);
+			$sw=true;
+			$company="";
+			if( $data['warehousefrom']==-1 and  $data['company']!=''){
+				$company=" and company_id = $data[company] ";
+			}else if ( $data['warehousefrom']==-1){
+				$sw=false;
+			}
+			if($sw){
+				$sw=false;
+				foreach($data as $key => $value){
+				//se busca si el usuario elijio productos
+					if(substr($key,0,5) == 'hitem'){
+						if($sw==false){
+							$sw=true;
+							// si hay productos se ingresa la tranferencia a la que se le van asociar los productos
+							if($data['warehousefrom']!=-1){
+								if($data['shelter']!=''){
+									$datos = array(starting_warehouse => $data['warehousefrom'], destination_warehouse => $data['warehouseto'], notes => $data['notes'],state => 1, shelter_id => $data['shelter']);
+								}else{
+									$datos = array(starting_warehouse => $data['warehousefrom'], destination_warehouse => $data['warehouseto'], notes => $data['notes'],state => 1);
+								}
 							}else{
-								$datos = array(starting_warehouse => $data['warehousefrom'], destination_warehouse => $data['warehouseto'], notes => $data['notes'],state => 1);
-							}
-						}else{
-							if($data['shelter']!=''){
-								$datos = array(destination_warehouse => $data['warehouseto'], notes => $data['notes'],state => 1, shelter_id => $data['shelter']);
+								if($data['shelter']!=''){
+									$datos = array(destination_warehouse => $data['warehouseto'], notes => $data['notes'],state => 1, shelter_id => $data['shelter']);
+								}else{
+									$datos = array(destination_warehouse => $data['warehouseto'], notes => $data['notes'],state => 1);
+								}
+							}					
+							$idtranfer=dbInsert("transfers",$datos);
+							if($idtranfer){
+								$success = "La transferencia fue  exitosa.";
 							}else{
-								$datos = array(destination_warehouse => $data['warehouseto'], notes => $data['notes'],state => 1);
+								$warning = "No agregó ningun producto para transferir. Por favor inténtelo nuevamente.";
+								return array($warning, $success);
 							}
-						}					
-						$idtranfer=dbInsert("transfers",$datos);
-						if($idtranfer){
-							$success = "La transferencia fue  exitosa.";
-						}else{
-							$warning = "No agregó ningun producto para transferir. Por favor inténtelo nuevamente.";
-							return array($warning, $success);
 						}
-					}
-					$qtyname = 'citem' . substr($key,-7);
-					$qty = $data[$qtyname];
-					//se busca el producto con el nombre
-					$idp = findRow('products','name',"'".$value."'",'id');
-					//se agregan los productos a la donacion
-					$datos = array(product_donation_id => $idp, tranfer_id => $idtranfer, quantity => $qty);
-					$idtranfer=dbInsert("products_donations_transfers",$datos);
-					//se buscan los productos que se van a tranferir con fecha de expracion mas proxima
-					$query = "select * from products_donations where products_id=$idp and state in (2) order by expirationDate limit $qty";
-					$result= runQuery($query);
-					while($row = mysql_fetch_array($result)){
-						// se actualiza la bodega del producto
-						$update=dbUpdate(products_donations,array(warehouses_id => $warehouse),"id=$row[id]");
-						// se ingresa el cambio de estado del producto
-						if($data[warehouse]!=-1){
-							addStatesChanges ($row[id],1,$_SESSION['dms_id'],$reason = 'Transferencia desde la bodega '.$data[warehouse]);
-						}else{
-							addStatesChanges ($row[id],1,$_SESSION['dms_id'],$reason = 'Transferencia desde la bodega virtual');
+						$qtyname = 'citem' . substr($key,-7);
+						$qty = $data[$qtyname];
+						//se busca el producto con el nombre
+						$idp = findRow('products','name',"'".$value."'",'id');
+						//se agregan los productos a la donacion
+						$datos = array(product_donation_id => $idp, tranfer_id => $idtranfer, quantity => $qty);
+						$idtranfer=dbInsert("products_donations_transfers",$datos);
+						//se buscan los productos que se van a tranferir con fecha de expracion mas proxima
+						$query = "select * from products_donations where products_id=$idp and state in (2) order by expirationDate limit $qty";
+						$result= runQuery($query);
+						while($row = mysql_fetch_array($result)){
+							
+							// se actualiza la bodega del producto
+							$update=dbUpdate(products_donations,array(warehouses_id => $warehouse),"id=$row[id]");
+							// se ingresa el cambio de estado del producto
+							if($data[warehouse]!=-1){
+								addStatesChanges ($row[id],1,$_SESSION['dms_id'],$reason = 'Transferencia desde la bodega '.$data[warehouse]);
+							}else{
+								addStatesChanges ($row[id],1,$_SESSION['dms_id'],$reason = 'Transferencia desde la bodega virtual');
+							}
+							if($data['shelter']!=''){
+								addStatesChanges ($row['id'],7,$_SESSION['dms_id'],'Se envio por una tranferencia por el operador '.$data['company']);
+							}
+							
 						}
-						
-					}
-					
-							if($data[warehouse]==-1){
+						//envio de mensaje notificando de la transferencia
+						if($data[warehouse]==-1){
 							$currentdate = date("Y-m-d H:i");
 							$headers = 'From: Sahana Caribe <admin@sahanacaribe.com>' . "\r\n" .'Fecha: '.$date. "\r\n";
 							$subject = 'Informe de transferencia"\r\n"';
 							$query = "SELECT DISTINCT(sequence),companies_id,email,bill FROM products_donations_tranfers, products_donations pd,donations d,companies c WHERE tranfer_id=$idtranfer AND pd.id=product_donation_id AND donations_id=sequence AND c.id=companies_id";
 							$result= runQuery($query);
 							while($row = mysql_fetch_array($result)){	
-							
-							$body = 'El dia '.$currentdate.' ha sido realizada una solicitud de transferencia hacia su compañia relacionado a la factura $row[bill]. Los productos solicitados son: ';
-							
-							$query = "SELECT name, COUNT(name) AS quantity FROM products_donations_tranfers, products_donations pd, products p WHERE tranfer_id=$idtranfer AND pd.id=product_donation_id AND donations_id=$row[sequence] AND products_id=p.id GROUP BY p.name";
-							$result2= runQuery($query);
-							$body = $body."<ul>";
-							while($row2 = mysql_fetch_array($result2)){	
-							$body = $body."<li>$row2[name]: $row[quantity] unidades</li>";
-							}
-							$body = $body."</ul>";
-							$body = $body."Le agradecemos gestionar este certificado de donación con la mayor brevedad posible, para entregar al usuario en forma de reconocimiento por su colaboración.". "\r\n";
-							$body = $body."Un cordial saludo.". "\r\n Gobernación del Atlántico.";
-							$email = $row['email'];
-							if(mail($email,$subject,$body,$headers)){
-								  $success = "Mensaje Enviado con exito.";
-								  
+								$body = 'El dia '.$currentdate.' ha sido realizada una solicitud de transferencia hacia su compañia relacionado a la factura $row[bill]. Los productos solicitados son: ';
+								
+								$query = "SELECT name, COUNT(name) AS quantity FROM products_donations_tranfers, products_donations pd, products p WHERE tranfer_id=$idtranfer AND pd.id=product_donation_id AND donations_id=$row[sequence] AND products_id=p.id GROUP BY p.name";
+								$result2= runQuery($query);
+								$body = $body."<ul>";
+								while($row2 = mysql_fetch_array($result2)){	
+									$body = $body."<li>$row2[name]: $row[quantity] unidades</li>";
+								}
+								$body = $body."</ul>";
+								$body = $body."Le agradecemos gestionar este certificado de donación con la mayor brevedad posible, para entregar al usuario en forma de reconocimiento por su colaboración.". "\r\n";
+								$body = $body."Un cordial saludo.". "\r\n Gobernación del Atlántico.";
+								$email = $row['email'];
+								if(mail($email,$subject,$body,$headers)){
+									$success = "Mensaje Enviado con exito.";
 									$datos = array(subjectnot => $subject, fromnot  => 'admin@sahanacaribe.com' , tonot => $email ,bodynot => $body, users_id => $data['user']);
-									if(dbInsert("notifications",$datos)){
-										}
-									else
-									{
-									$warning = "El mensaje ha sido enviado, pero no ha podido guardarse en la base de datos. Por favor consulte al Administrador.2";
+									if(!dbInsert("notifications",$datos)){
+										$warning = "El mensaje ha sido enviado, pero no ha podido guardarse en la base de datos. Por favor consulte al Administrador.2";
 									}
-							}															
-						}    					
+								}															
+							}    					
+						}
 					}
 				}
-			}
+			}else{
+				$warning = "Error con la compañia que selecciono, por favor verifique.";
+			}	
 		}else{
 			$warning = "Hay datos que no existen, por favor verifique.";
 		}
